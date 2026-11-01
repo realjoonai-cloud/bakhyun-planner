@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: baekhyun-1-3-suhaeng-planner
+    runtime: python
+    buildCommand: ""
+    startCommand: "python3 server.py"
+    envVars:
+      - key: ADMIN_PASSWORD
+        value: "1300"
+      - key: PYTHON_VERSION
+        value: "3.11.0"

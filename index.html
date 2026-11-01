@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>백현중 1-3반 수행평가 &amp; 예상 성적표 플래너</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- 상단 헤더 -->
+    <header class="top-header">
+      <div class="brand-area">
+        <span class="school-badge" id="schoolBadge">🏫 성남 백현중학교 1-3반</span>
+        <div>
+          <h1 class="app-title">수행평가 데일리 체크 &amp; 예상 성적표</h1>
+          <div class="sync-meta" id="syncMetaText">
+            <span>서버 DB 연동 · 2026학년도 2학기 1학년 평가계획 반영</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-secondary" id="btnOpenBackup" title="내 개인 체크리스트 및 성적표 점수 백업">
+          💾 내 점수 백업
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnDarkMode" title="다크모드 전환">
+          🌙 다크모드
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnAdminToggle">
+          🔒 관리자 모드
+        </button>
+        <!-- 관리자 로그인 시에만 노출되는 수행평가 등록 버튼 -->
+        <button type="button" class="btn btn-primary" id="btnAddAssessment" style="display: none;">
+          ＋ 수행평가 등록 (DB)
+        </button>
+      </div>
+    </header>
+
+    <!-- 관리자 전용 컨트롤 배너 (관리자 로그인 시에만 표시) -->
+    <section class="admin-banner" id="adminBanner" style="display: none;">
+      <div class="admin-banner-left">
+        <span class="admin-tag">ADMIN</span>
+        <span>서버 관리자 모드 활성화됨 — 수행평가 일정, 과목별 평가계획(배점), 시간표 수정 사항이 서버 SQLite DB에 즉시 저장됩니다.</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" class="btn-admin-action" id="btnAdminAddTask">＋ 수행평가 추가</button>
+        <button type="button" class="btn-admin-action" id="btnAdminSyncNeis">🔄 시간표 DB 동기화</button>
+        <button type="button" class="btn-admin-action" id="btnAdminLogout">로그아웃</button>
+      </div>
+    </section>
+
+    <!-- 오늘의 백현중 1-3반 수업 & 수행평가 브리핑 배너 -->
+    <section class="briefing-banner" id="briefingBanner"></section>
+
+    <!-- 메인 4대 탭 네비게이션 -->
+    <nav class="main-tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="calendar" id="tabBtnCalendar">
+        📅 캘린더 &amp; 그날그날 체크
+      </button>
+      <button type="button" class="tab-btn" data-tab="grades" id="tabBtnGrades">
+        🎓 내 예상 성적표 &amp; 등급 계산기
+      </button>
+      <button type="button" class="tab-btn" data-tab="timetable" id="tabBtnTimetable">
+        🕒 백현중 1-3반 시간표
+      </button>
+      <button type="button" class="tab-btn" data-tab="analytics" id="tabBtnAnalytics">
+        🗂️ 전체 수행평가 모아보기
+      </button>
+    </nav>
+
+    <!-- 탭 컨텐츠 영역 -->
+    <main id="mainContent">
+      <!-- 1. 캘린더 & 그날그날 체크 탭 -->
+      <section id="viewCalendar" class="tab-view">
+        <div class="dashboard-grid">
+          <!-- 좌측: 월간 / 주간 캘린더 패널 -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span id="calendarTitleLabel">2026년 11월</span>
+              </div>
+              <div class="calendar-controls">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCalPrev">◀ 이전</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCalToday">오늘</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCalNext">다음 ▶</button>
+                <div class="view-Switch">
+                  <button type="button" id="btnModeMonth" class="active">월간</button>
+                  <button type="button" id="btnModeWeek">주간</button>
+                </div>
+              </div>
+            </div>
+            <div id="calendarBody"></div>
+          </div>
+
+          <!-- 우측: 선택한 날짜의 백현중 1-3반 시간표 & 일일 점검 체크 패널 -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title" id="selectedDatePanelTitle">
+                📌 선택한 날짜 브리핑
+              </div>
+              <!-- 관리자일 때만 노출 -->
+              <button type="button" class="btn btn-primary btn-sm" id="btnAddOnSelectedDate" style="display: none;">
+                ＋ 이 날짜에 추가 (DB)
+              </button>
+            </div>
+
+            <div class="selected-date-schedule" id="selectedDateScheduleBox"></div>
+            <div id="selectedDateTasksBox"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 내 예상 성적표 & 등급 계산기 탭 -->
+      <section id="viewGrades" class="tab-view" style="display: none;">
+        <div class="panel-card" style="margin-bottom: 20px;">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">🎓 2026학년도 2학기 개인 맞춤형 예상 성적표</h2>
+              <p style="font-size: 0.82rem; color: var(--text-sub); margin-top: 2px;">
+                수행평가 영역별 점수와 정기시험(1차·2차 지필) 점수를 입력하면 예상 총점과 중학교 성취도 등급(A~E / 예체능 A~C)을 자동 계산합니다. 입력한 점수는 내 브라우저에만 안전하게 저장됩니다.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnFillSampleScores">
+                ✨ 예시 점수 채워보기
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnClearScores">
+                🧹 입력 점수 초기화
+              </button>
+            </div>
+          </div>
+
+          <!-- 상단 KPI 요약 -->
+          <div class="grade-kpi-grid" id="gradeKpiGrid"></div>
+
+          <!-- 한눈에 보는 성적표 요약 테이블 -->
+          <div class="report-table-wrap" id="gradeSummaryTableWrap"></div>
+        </div>
+
+        <!-- 과목별 상세 점수 입력 & A등급 목표 시뮬레이터 -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title">✍️ 과목별 점수 입력 &amp; A등급 목표 계산기</h3>
+              <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 2px;">
+                평가영역명이나 배점이 학기 중 변경된 경우, 서버 관리자가 각 과목 카드 우측의 [⚙️ 평가계획 수정] 버튼으로 즉시 변경할 수 있습니다.
+              </p>
+            </div>
+          </div>
+          <div class="subject-score-grid" id="subjectScoreCardsContainer"></div>
+        </div>
+      </section>
+
+      <!-- 3. 백현중 1-3반 시간표 탭 -->
+      <section id="viewTimetable" class="tab-view" style="display: none;">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">🕒 성남 백현중학교 1학년 3반 주간 시간표</h2>
+              <p style="font-size: 0.82rem; color: var(--text-sub); margin-top: 2px;" id="timetableSubDesc">
+                각 교시 과목에 연결된 진행 중인 수행평가 배지가 함께 표시됩니다.
+              </p>
+            </div>
+          </div>
+          <div class="timetable-wrapper" id="fullTimetableContainer"></div>
+        </div>
+      </section>
+
+      <!-- 4. 전체 수행평가 모아보기 탭 -->
+      <section id="viewAnalytics" class="tab-view" style="display: none;">
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2 class="panel-title">🗂️ 전체 수행평가 필터 &amp; 체크리스트</h2>
+            <span id="filteredCountLabel" style="font-size: 0.84rem; font-weight: 700; color: var(--primary);"></span>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label for="selFilterSubject">과목</label>
+              <select id="selFilterSubject" class="filter-select"></select>
+            </div>
+            <div class="filter-group">
+              <label for="selFilterType">평가유형</label>
+              <select id="selFilterType" class="filter-select">
+                <option value="all">전체 유형</option>
+                <option value="보고서">보고서/논술</option>
+                <option value="발표">발표/토론</option>
+                <option value="실기">실기/실습</option>
+                <option value="포트폴리오">포트폴리오</option>
+                <option value="지필/단원평가">지필/단원평가</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="selFilterStatus">내 진행상태</label>
+              <select id="selFilterStatus" class="filter-select">
+                <option value="all">전체 상태</option>
+                <option value="incomplete">미완료 (미시작+준비중)</option>
+                <option value="done">제출/실시 완료만</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="selSortBy">정렬</label>
+              <select id="selSortBy" class="filter-select">
+                <option value="dday">마감일(D-Day) 임박순</option>
+                <option value="weight">영역배점(%) 높은순</option>
+                <option value="subject">과목 가나다순</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="task-card-list" id="filteredTaskListContainer"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       모달 1: 서버 관리자(Admin) 로그인
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalAdminLogin">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🔒 서버 관리자 인증</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseAdminLogin">닫기 ✕</button>
+      </div>
+      <form id="formAdminLogin" class="form-grid">
+        <p style="font-size: 0.84rem; color: var(--text-sub);">
+          수행평가 일정 등록·수정 및 교과별 평가계획 관리는 서버 관리자만 가능합니다.
+        </p>
+        <div class="form-field">
+          <label for="inputAdminPassword">관리자 비밀번호</label>
+          <input type="password" id="inputAdminPassword" class="form-input" placeholder="관리자 비밀번호 입력" required />
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="submit" class="btn btn-primary">관리자 로그인</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 2: 수행평가 등록 / 수정 (서버 관리자 전용 - SQLite DB 저장)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalAssessment">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalAssessmentTitle">수행평가 등록 (서버 DB)</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseAssessmentModal">닫기 ✕</button>
+      </div>
+      <form id="formAssessment" class="form-grid">
+        <input type="hidden" id="inputTaskId" />
+
+        <div class="form-field">
+          <label for="inputTitle">수행평가 제목 *</label>
+          <input type="text" id="inputTitle" class="form-input" placeholder="예: 실생활 속 통계 활용(논술형)" required />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputSubject">수업 과목 (백현중 1-3반) *</label>
+            <select id="inputSubject" class="form-input" required></select>
+          </div>
+          <div class="form-field">
+            <label for="inputType">평가 유형 *</label>
+            <select id="inputType" class="form-input">
+              <option value="보고서">📝 보고서/논술</option>
+              <option value="발표">🎤 발표/토론</option>
+              <option value="실기">🏃 실기/실습</option>
+              <option value="포트폴리오">📁 포트폴리오</option>
+              <option value="지필/단원평가">✏️ 지필/단원평가</option>
+              <option value="기타">📌 기타</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 백현중 1-3반 시간표 자동 매칭 힌트 박스 -->
+        <div class="timetable-hint-box" id="timetableHintBox">
+          과목과 날짜를 선택하면 백현중 1-3반 시간표의 수업 교시를 자동으로 안내합니다.
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputDueDate">마감일 / 실시일 *</label>
+            <input type="date" id="inputDueDate" class="form-input" required />
+          </div>
+          <div class="form-field">
+            <label for="inputPeriod">실시 교시 (시간표 연동)</label>
+            <select id="inputPeriod" class="form-input">
+              <option value="">교시 미지정</option>
+              <option value="1">1교시 (09:00)</option>
+              <option value="2">2교시 (09:55)</option>
+              <option value="3">3교시 (10:50)</option>
+              <option value="4">4교시 (11:45)</option>
+              <option value="5">5교시 (13:20)</option>
+              <option value="6">6교시 (14:15)</option>
+              <option value="7">7교시 (15:10)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="inputWeight">영역 배점 (%)</label>
+          <input type="number" id="inputWeight" class="form-input" min="0" max="100" step="1" placeholder="예: 20" value="20" />
+        </div>
+
+        <div class="form-field">
+          <label for="inputSubtasks">학생 공통 준비 단계 체크리스트 (줄바꿈으로 여러 개 입력)</label>
+          <textarea id="inputSubtasks" class="form-input" rows="3" placeholder="예:&#10;1단계: 주제 및 자료 선정하기&#10;2단계: 활동지 초안 작성하기&#10;3단계: 수업 시간 내 최종 제출"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="inputMemo">공지사항 / 준비물 안내</label>
+          <textarea id="inputMemo" class="form-input" rows="2" placeholder="예: 수업 시간 내 자필 작성, 교과서 지참"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn btn-secondary" id="btnCancelAssessment">취소</button>
+          <button type="submit" class="btn btn-primary">서버 DB에 저장하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 3: 교과별 평가계획 / 평가영역 수정 (관리자 전용 - 평가영역 변경 대응)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalSubjectPlan">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalSubjectPlanTitle">⚙️ 교과별 평가계획 수정</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseSubjectPlanModal">닫기 ✕</button>
+      </div>
+      <form id="formSubjectPlan" class="form-grid">
+        <input type="hidden" id="inputPlanId" />
+        <p style="font-size: 0.82rem; color: var(--text-sub);">
+          학기 중 수행평가 영역명이나 배점이 바뀌었을 때 여기서 수정하면 모든 학생의 예상 성적표 계산식에 즉시 반영됩니다.
+        </p>
+
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputPlanName">교과명</label>
+            <input type="text" id="inputPlanName" class="form-input" required />
+          </div>
+          <div class="form-field">
+            <label for="inputPlanCredits">이수 단위</label>
+            <input type="number" id="inputPlanCredits" class="form-input" min="1" max="10" required />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputPlanExam1">1차 정기시험 반영비율 (%)</label>
+            <input type="number" id="inputPlanExam1" class="form-input" min="0" max="100" required />
+          </div>
+          <div class="form-field">
+            <label for="inputPlanExam2">2차 정기시험 반영비율 (%)</label>
+            <input type="number" id="inputPlanExam2" class="form-input" min="0" max="100" required />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputPlanPerf">수행평가 총 반영비율 (%)</label>
+            <input type="number" id="inputPlanPerf" class="form-input" min="0" max="100" required />
+          </div>
+          <div class="form-field">
+            <label for="inputPlanScale">성취도 평정 단계</label>
+            <select id="inputPlanScale" class="form-input">
+              <option value="5tier">5단계 (A:90 / B:80 / C:70 / D:60 / E)</option>
+              <option value="3tier">3단계 예체능 (A:80 / B:60 / C)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="inputPlanAreasText">수행평가 세부 영역 및 배점 (한 줄에 하나씩 `영역명 : 배점` 형식)</label>
+          <textarea id="inputPlanAreasText" class="form-input" rows="5" placeholder="예:&#10;영역① 단어의 짜임 분석하기 : 20&#10;영역② 존중하는 언어 생활 프로젝트 : 20&#10;영역③ 책읽기 프로젝트 : 10"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="submit" class="btn btn-primary">평가계획 DB 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 4: 시간표 교시 칸 관리 (관리자 전용)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalTimetableCell">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTtCellTitle">시간표 교시 관리</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseTtCellModal">닫기 ✕</button>
+      </div>
+      <div class="form-grid">
+        <div id="ttCellSummaryBox" class="timetable-hint-box"></div>
+        <button type="button" class="btn btn-primary" id="btnQuickAddFromCell">
+          ＋ 이 수업 교시로 수행평가 바로 등록 (DB)
+        </button>
+
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 4px 0;" />
+        <div class="form-field">
+          <label for="inputCellSubject">교시 과목명 변경 (서버 DB 반영)</label>
+          <input type="text" id="inputCellSubject" class="form-input" placeholder="예: 국어A, 수학B, 정보" />
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnSaveCellEdit">시간표 칸 수정 저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 5: 내 개인 체크리스트 & 성적표 점수 백업/복원
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalBackup">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title">💾 내 개인 점수 &amp; 체크 기록 백업</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseBackupModal">닫기 ✕</button>
+      </div>
+      <div class="form-grid">
+        <p style="font-size: 0.85rem; color: var(--text-sub);">
+          학급 공통 수행평가 일정은 서버 DB에서 자동으로 불러오며, 내가 체크한 진행 상태와 내 성적표 점수는 개인정보 보호를 위해 현재 브라우저에만 저장됩니다. 기기를 옮길 때 아래 버튼으로 내 기록을 백업하세요.
+        </p>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" id="btnExportJSON">📥 내 기록 JSON 다운로드</button>
+          <label class="btn btn-secondary" style="cursor: pointer;">
+            📤 내 기록 JSON 불러오기
+            <input type="file" id="inputImportJSON" accept=".json" style="display: none;" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
