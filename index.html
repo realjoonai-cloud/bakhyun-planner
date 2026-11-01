@@ -229,14 +229,14 @@ button {
    ========================================================================== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
+  grid-template-columns: minmax(0, 1.35fr) minmax(360px, 1fr);
   gap: 20px;
   align-items: start;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 960px) {
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .top-nav {
     justify-content: center;
@@ -244,6 +244,7 @@ button {
 }
 
 .panel-card {
+  min-width: 0;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -261,9 +262,10 @@ button {
 }
 
 .panel-title {
-  font-size: 1.08rem;
+  font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .calendar-controls {
@@ -286,6 +288,7 @@ button {
   font-weight: 700;
   border-radius: 6px;
   color: var(--text-sub);
+  white-space: nowrap;
 }
 
 .view-Switch button.active {
@@ -297,7 +300,8 @@ button {
 /* 월간 캘린더 */
 .cal-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
   text-align: center;
   font-size: 0.78rem;
   font-weight: 700;
@@ -315,12 +319,15 @@ button {
 
 .cal-grid-month {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
+  width: 100%;
 }
 
 .cal-cell {
-  min-height: 88px;
+  min-width: 0;
+  min-height: 92px;
+  overflow: hidden;
   background: var(--bg-body);
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
@@ -355,8 +362,10 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 4px;
   font-size: 0.78rem;
   font-weight: 700;
+  min-width: 0;
 }
 
 .today-tag {
@@ -365,16 +374,23 @@ button {
   font-size: 0.64rem;
   padding: 1px 5px;
   border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .cal-task-list {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
+  width: 100%;
   overflow: hidden;
 }
 
 .cal-task-pill {
+  display: block;
+  width: 100%;
+  max-width: 100%;
   font-size: 0.7rem;
   padding: 2px 6px;
   border-radius: 5px;
@@ -472,6 +488,8 @@ button {
   color: #FFFFFF;
   font-size: 0.75rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .type-tag {
@@ -482,6 +500,8 @@ button {
   border-radius: 6px;
   font-size: 0.73rem;
   font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .weight-tag {
@@ -491,6 +511,8 @@ button {
   border-radius: 6px;
   font-size: 0.73rem;
   font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-dday-today {
@@ -500,6 +522,8 @@ button {
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-dday-urgent {
@@ -509,6 +533,8 @@ button {
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-dday-normal {
@@ -518,6 +544,8 @@ button {
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-dday-overdue {
@@ -527,6 +555,8 @@ button {
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-done {
@@ -536,6 +566,8 @@ button {
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .task-title {
