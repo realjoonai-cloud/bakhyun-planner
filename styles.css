@@ -1,0 +1,1019 @@
+/* ==========================================================================
+   백현중 1-3 수행평가 플래너 v3 - 미니멀 3탭 카드형 스타일시트 (styles.css)
+   토스/노션 스타일 클린 화이트 & 소프트 그레이 테마
+   ========================================================================== */
+
+:root {
+  --bg-body: #F7F8FA;
+  --bg-card: #FFFFFF;
+  --bg-muted: #F2F4F8;
+  --bg-soft: #EEF2FF;
+  --text-main: #191F28;
+  --text-sub: #4E5968;
+  --text-muted: #8B95A1;
+  --border-color: #E5E8EB;
+  --primary: #3182F6;
+  --primary-hover: #1B64DA;
+  --primary-soft: #E8F3FF;
+  --accent-green: #00C471;
+  --accent-amber: #F59E0B;
+  --accent-red: #F04452;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.14);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.app-container {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+  flex: 1;
+}
+
+/* ==========================================================================
+   미니멀 상단 네비게이션 바 (로고 + 중앙 3탭 세그먼트 + 우측 관리자 버튼)
+   ========================================================================== */
+.top-nav {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-badge {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.brand-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* 중앙 3탭 세그먼트 컨트롤 */
+.segment-tabs {
+  display: inline-flex;
+  background: var(--bg-muted);
+  padding: 4px;
+  border-radius: 14px;
+  gap: 4px;
+}
+
+.tab-btn {
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 15px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.86rem;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-muted);
+  color: var(--text-sub);
+}
+
+.btn-secondary:hover {
+  background: #E5E8EB;
+  color: var(--text-main);
+}
+
+.btn-sm {
+  padding: 6px 11px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+}
+
+/* 관리자 활성 배너 */
+.admin-banner {
+  background: #191F28;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-tag {
+  background: var(--primary);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.btn-admin-action {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.btn-admin-action:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ==========================================================================
+   탭 1: 수행평가 일정 (좌측 캘린더 + 우측 체크리스트)
+   ========================================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .top-nav {
+    justify-content: center;
+  }
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.panel-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.view-Switch {
+  display: inline-flex;
+  background: var(--bg-muted);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.view-Switch button {
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 6px;
+  color: var(--text-sub);
+}
+
+.view-Switch button.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 월간 캘린더 */
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-bottom: 10px;
+}
+
+.cal-weekdays span:first-child {
+  color: var(--accent-red);
+}
+
+.cal-weekdays span:last-child {
+  color: var(--primary);
+}
+
+.cal-grid-month {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-cell {
+  min-height: 88px;
+  background: var(--bg-body);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.cal-cell:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+
+.cal-cell.other-month {
+  opacity: 0.35;
+}
+
+.cal-cell.is-today {
+  background: #FFFFFF;
+  border-color: var(--primary);
+}
+
+.cal-cell.is-selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.cal-date-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.today-tag {
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 0.64rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.cal-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.cal-task-pill {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-task-pill.is-done {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+/* 주간 캘린더 */
+.cal-grid-week {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.week-day-row {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.week-day-row.is-selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.week-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.week-day-title {
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 수행평가 체크 카드 */
+.task-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  transition: all 0.15s ease;
+}
+
+.task-card:hover {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.task-card.status-done {
+  opacity: 0.65;
+}
+
+.task-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.task-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.subject-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.type-tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.weight-tag {
+  background: #FFFBEB;
+  color: #B45309;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.badge-dday-today {
+  background: var(--accent-red);
+  color: #FFFFFF;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-urgent {
+  background: #FEE2E2;
+  color: #DC2626;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-normal {
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-overdue {
+  background: #4E5968;
+  color: #FFFFFF;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-done {
+  background: #E8FDF2;
+  color: #00A859;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.task-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.task-card.status-done .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-meta {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
+.task-memo {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  background: var(--bg-card);
+  padding: 7px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 3px 4px;
+}
+
+.subtask-item input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+}
+
+.subtask-item.done span {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.daily-check-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+}
+
+.daily-check-btn.checked {
+  background: #E8FDF2;
+  border-color: var(--accent-green);
+  color: #00A859;
+}
+
+.status-select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   탭 2: 시간표 그리드
+   ========================================================================== */
+.timetable-wrapper {
+  overflow-x: auto;
+}
+
+.comcigan-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.comcigan-table th,
+.comcigan-table td {
+  border: 1px solid var(--border-color);
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.comcigan-table th {
+  background: var(--bg-body);
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: var(--text-sub);
+}
+
+.comcigan-table th.today-col {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.period-col-cell {
+  background: var(--bg-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  width: 96px;
+}
+
+.tt-cell {
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.tt-cell:hover {
+  background: var(--bg-body);
+}
+
+.tt-subj-badge {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
+.tt-task-indicator {
+  margin-top: 6px;
+  display: inline-block;
+  background: #FFF0F1;
+  color: var(--accent-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   탭 3: 예상 성적표 & 등급 계산기
+   ========================================================================== */
+.grade-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.grade-kpi-card {
+  background: var(--bg-body);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.grade-kpi-card .kpi-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.grade-kpi-card .kpi-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.report-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 660px;
+  font-size: 0.84rem;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  text-align: center;
+}
+
+.report-table th {
+  background: var(--bg-body);
+  font-weight: 800;
+  color: var(--text-sub);
+}
+
+.grade-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
+.grade-a { background: #E8FDF2; color: #00A859; }
+.grade-b { background: #E8F3FF; color: #1B64DA; }
+.grade-c { background: #FFF8E6; color: #D97706; }
+.grade-d { background: #FFEDD5; color: #C2410C; }
+.grade-e { background: #FFF0F1; color: #F04452; }
+.grade-none { background: var(--bg-muted); color: var(--text-muted); }
+
+.subject-score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 520px) {
+  .subject-score-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subject-score-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.score-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.score-input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.81rem;
+  border: 1px solid var(--border-color);
+}
+
+.score-input-row .row-title {
+  font-weight: 600;
+  flex: 1;
+}
+
+.score-input-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.score-num-input {
+  width: 64px;
+  padding: 5px 7px;
+  text-align: right;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-body);
+  font-weight: 700;
+}
+
+.guide-callout {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   모달 및 최초 진입 법적 고지 동의 모달
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 31, 40, 0.55);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.terms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-body);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  font-size: 0.84rem;
+  color: var(--text-sub);
+}
+
+.terms-item strong {
+  color: var(--text-main);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.consent-check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 12px 14px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.consent-check-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.form-input {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-body);
+  font-size: 0.88rem;
+}
+
+.timetable-hint-box {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* 하단 법적 고지 푸터 */
+.legal-footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 18px 16px;
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.legal-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link-terms-reopen {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast-msg {
+  background: #191F28;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 28px 16px;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}

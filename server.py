@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-성남 백현중학교 1-3반 수행평가 플래너 & 예상 성적표 풀스택 서버 (server.py)
+백현중학교 1-3반 수행평가 플래너 & 예상 성적표 서버 v3 (server.py)
 - SQLite 데이터베이스(suhaeng.db) 기반 공통 수행평가/평가계획/시간표 영구 저장
 - 서버 관리자(Admin) 인증 기반 수행평가 추가·수정·삭제 및 평가계획 비율 관리
-- 교육부 나이스(NEIS) 공식 Open API (open.neis.go.kr) 시간표 동기화 및 DB 캐싱
-- 외부 패키지 설치 없이 Python 3 표준 라이브러리(sqlite3, http.server 등)만으로 동작
+- 교육부 나이스(NEIS) 공식 공공데이터 Open API (open.neis.go.kr) 시간표 동기화
+- 외부 패키지 설치 없이 Python 3 표준 라이브러리만으로 동작
 """
 
-import base64
 import datetime
 import hashlib
 import http.server
@@ -28,12 +27,11 @@ DB_PATH = os.path.join(BASE_DIR, "suhaeng.db")
 NEIS_BASE_URL = "https://open.neis.go.kr/hub"
 NEIS_OFFICE_CODE = "J10"       # 경기도교육청
 NEIS_SCHOOL_CODE = "7531032"   # 성남 백현중학교 표준학교코드
-COMCIGAN_BASE_URL = "http://comci.net:4082"
 
 DEFAULT_ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "1300")
 
 # ============================================================================
-# 초기 시드 데이터 (교사 성함 제거됨, 백현중 1-3반 시간표 및 2026 2학기 1학년 평가계획)
+# 초기 시드 데이터 (교사 성함 일절 없음)
 # ============================================================================
 
 INITIAL_TIMETABLE = {
@@ -91,8 +89,6 @@ INITIAL_SUBJECTS = [
     {"id": "sub-spo", "name": "스포", "group": "체육", "planId": "", "color": "#FB923C"},
 ]
 
-# 2026학년도 2학기 1학년 교과별 평가계획 안내 기반 초기 시드
-# (평가영역명이나 배점은 학기 중 바뀔 수 있으므로 관리자가 DB에서 언제든 수정 가능)
 INITIAL_SUBJECT_PLANS = [
     {
         "id": "plan-kor",
@@ -102,7 +98,7 @@ INITIAL_SUBJECT_PLANS = [
         "exam1Ratio": 50,
         "exam2Ratio": 0,
         "perfRatio": 50,
-        "gradeScale": "5tier",  # A(90), B(80), C(70), D(60), E(<60)
+        "gradeScale": "5tier",
         "sortOrder": 1,
         "areas": [
             {"id": "kor-1", "name": "영역① 단어의 짜임 분석하기", "weight": 20},
@@ -199,7 +195,7 @@ INITIAL_SUBJECT_PLANS = [
         "exam1Ratio": 0,
         "exam2Ratio": 0,
         "perfRatio": 100,
-        "gradeScale": "3tier",  # 예체능 3단계: A(80), B(60), C(<60)
+        "gradeScale": "3tier",
         "sortOrder": 7,
         "areas": [
             {"id": "pe-1", "name": "영역① 체력/기초 실기 평가", "weight": 25},
@@ -465,7 +461,6 @@ def init_db():
         """
     )
 
-    # 기본 설정 시드
     cur.execute("SELECT value FROM settings WHERE key = 'admin_password_hash'")
     if not cur.fetchone():
         cur.execute(
@@ -477,7 +472,6 @@ def init_db():
     if not cur.fetchone():
         school_info = {
             "schoolName": "백현중학교",
-            "schoolCode": 26268,
             "neisOfficeCode": NEIS_OFFICE_CODE,
             "neisSchoolCode": NEIS_SCHOOL_CODE,
             "region": "경기(성남)",
@@ -495,7 +489,6 @@ def init_db():
             ("school_info", json.dumps(school_info, ensure_ascii=False)),
         )
 
-    # 과목 시드
     cur.execute("SELECT COUNT(*) AS cnt FROM subjects")
     if cur.fetchone()["cnt"] == 0:
         for idx, s in enumerate(INITIAL_SUBJECTS):
@@ -507,7 +500,6 @@ def init_db():
                 (s["id"], s["name"], s["group"], s["planId"], s["color"], idx),
             )
 
-    # 시간표 시드 (교사 성함 없음)
     cur.execute("SELECT COUNT(*) AS cnt FROM timetable")
     if cur.fetchone()["cnt"] == 0:
         for slot_key, cell in INITIAL_TIMETABLE.items():
@@ -516,7 +508,6 @@ def init_db():
                 (slot_key, cell["subject"], 1 if cell.get("changed") else 0),
             )
 
-    # 2026 2학기 1학년 평가계획 시드
     cur.execute("SELECT COUNT(*) AS cnt FROM subject_plans")
     if cur.fetchone()["cnt"] == 0:
         for plan in INITIAL_SUBJECT_PLANS:
@@ -540,7 +531,6 @@ def init_db():
                 ),
             )
 
-    # 초기 수행평가 시드
     cur.execute("SELECT COUNT(*) AS cnt FROM assessments")
     if cur.fetchone()["cnt"] == 0:
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -660,7 +650,7 @@ def verify_admin_password(pw: str) -> bool:
 
 
 # ============================================================================
-# 시간표 동기화 엔진 (1순위: 교육부 나이스 NEIS 공식 Open API, 2순위: 컴시간 캐시)
+# 시간표 동기화 엔진 (교육부 나이스 NEIS 공식 공공데이터 Open API 전용)
 # ============================================================================
 
 def _http_get(url: str, encoding: str = "utf-8", timeout: float = 6.0) -> str:
@@ -680,11 +670,10 @@ def _http_get(url: str, encoding: str = "utf-8", timeout: float = 6.0) -> str:
 
 def fetch_neis_timetable(grade: int = 1, class_num: int = 3, api_key: str = "") -> dict:
     """
-    교육부 나이스(NEIS) 교육정보 개방 포털 공식 Open API (misTimetable) 호출
-    합법적인 공공데이터 API로 교사 성함 없이 과목명만 깔끔하게 제공합니다.
+    교육부 나이스(NEIS) 교육정보 개방 포털 공식 공공데이터 Open API (misTimetable) 호출
+    「공공데이터법」에 따라 합법적으로 개방된 공식 API만 사용합니다.
     """
     today = datetime.date.today()
-    # 이번 주 월요일 ~ 금요일 날짜 계산 (주말이면 다가오는 월~금)
     days_since_mon = today.weekday()
     if days_since_mon > 4:
         monday = today + datetime.timedelta(days=(7 - days_since_mon))
@@ -703,8 +692,9 @@ def fetch_neis_timetable(grade: int = 1, class_num: int = 3, api_key: str = "") 
         "TI_FROM_YMD": monday.strftime("%Y%m%d"),
         "TI_TO_YMD": friday.strftime("%Y%m%d"),
     }
-    if api_key:
-        params["KEY"] = api_key
+    env_key = api_key or os.environ.get("NEIS_API_KEY", "")
+    if env_key:
+        params["KEY"] = env_key
 
     query_str = urllib.parse.urlencode(params)
     url = f"{NEIS_BASE_URL}/misTimetable?{query_str}"
@@ -728,7 +718,6 @@ def fetch_neis_timetable(grade: int = 1, class_num: int = 3, api_key: str = "") 
         ymd = str(r.get("ALL_TI_YMD", ""))
         perio = int(r.get("PERIO", 0) or 0)
         subj = str(r.get("ITRT_CNTNT", "")).strip()
-        # 나이스 과목명 앞의 불필요한 기호 정리
         subj = re.sub(r"^[\-\*\s]+", "", subj)
         if len(ymd) == 8 and 1 <= perio <= 8 and subj:
             dt = datetime.date(int(ymd[:4]), int(ymd[4:6]), int(ymd[6:8]))
@@ -753,112 +742,19 @@ def fetch_neis_timetable(grade: int = 1, class_num: int = 3, api_key: str = "") 
     }
 
 
-def fetch_comcigan_cached(grade: int = 1, class_num: int = 3) -> dict:
+def sync_timetable_to_db(api_key: str = "") -> dict:
     """
-    나이스 API에 분반(국어A/B 등)이나 당주 데이터가 없을 때 보조로 사용하는
-    컴시간알리미 파서 (교사 성함은 수집/저장하지 않고 과목명만 추출하며 DB에 캐싱)
+    교육부 나이스(NEIS) 공식 Open API에서 시간표를 조회하여 서버 SQLite DB에 저장합니다.
     """
-    st_html = _http_get(f"{COMCIGAN_BASE_URL}/st", encoding="euc-kr")
-    search_match = re.search(r"\./(\d+\?\d+l)", st_html)
-    sc_data_match = re.search(r"sc_data\('([^']+)'", st_html)
-    if not search_match or not sc_data_match:
-        raise ValueError("라우트 토큰 추출 실패")
-
-    route_num = search_match.group(1).split("?")[0]
-    sc_prefix = sc_data_match.group(1)
-    school_code = 26268  # 성남 백현중학교 고유 코드
-
-    token_raw = f"{sc_prefix}{school_code}_0_1"
-    b64_token = base64.b64encode(token_raw.encode("utf-8")).decode("utf-8")
-    tt_json_str = _http_get(f"{COMCIGAN_BASE_URL}/{route_num}?{b64_token}", encoding="utf-8")
-    tt_start = tt_json_str.find("{")
-    tt_end = tt_json_str.rfind("}")
-    if tt_start != -1 and tt_end != -1:
-        tt_json_str = tt_json_str[tt_start : tt_end + 1]
-    tt_data = json.loads(tt_json_str)
-
-    bunri = int(tt_data.get("분리", 1000) or 1000)
-    subjects = []
-    nested_lists = []
-
-    for k, v in tt_data.items():
-        if not k.startswith("자료") or not isinstance(v, list) or len(v) < 2:
-            continue
-        tail = v[1 : min(10, len(v))]
-        if tail and all(isinstance(x, str) for x in tail):
-            sample_str = " ".join(v[1 : min(20, len(v))])
-            if any(s in sample_str for s in ["국어", "수학", "영어", "과학", "사회"]):
-                subjects = v
-        elif (
-            len(v) > grade
-            and isinstance(v[grade], list)
-            and len(v[grade]) > class_num
-            and isinstance(v[grade][class_num], list)
-        ):
-            day1 = v[grade][class_num][1] if len(v[grade][class_num]) > 1 else []
-            if isinstance(day1, list) and len(day1) > 1 and isinstance(day1[1], int):
-                nested_lists.append((k, v))
-
-    if not nested_lists or not subjects:
-        raise ValueError("시간표 배열 해석 실패")
-
-    orig_tt = nested_lists[0][1][grade][class_num]
-    daily_tt = nested_lists[-1][1][grade][class_num]
-    parsed_tt = {}
-    discovered = []
-
-    for w_idx in range(1, 6):
-        if w_idx >= len(daily_tt):
-            continue
-        day_p = daily_tt[w_idx]
-        orig_p = orig_tt[w_idx] if w_idx < len(orig_tt) else day_p
-        if not isinstance(day_p, list):
-            continue
-        declared_max = day_p[0] if isinstance(day_p[0], int) else 8
-        for p_idx in range(1, min(len(day_p), declared_max + 1, 9)):
-            val = day_p[p_idx]
-            if not isinstance(val, int) or val <= 0:
-                continue
-            orig_val = orig_p[p_idx] if isinstance(orig_p, list) and p_idx < len(orig_p) else val
-            sb_idx = (val // bunri) % bunri
-            subj_name = str(subjects[sb_idx]).strip() if 0 <= sb_idx < len(subjects) else ""
-            if not subj_name or subj_name == "0":
-                continue
-            parsed_tt[f"{w_idx - 1}-{p_idx}"] = {
-                "subject": subj_name,
-                "changed": (val != orig_val),
-            }
-            if subj_name not in discovered:
-                discovered.append(subj_name)
-
-    return {
-        "ok": True,
-        "source": "comcigan_cached",
-        "updatedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "subjects": discovered,
-        "timetable": parsed_tt,
-    }
-
-
-def sync_timetable_to_db(mode: str = "auto", api_key: str = "") -> dict:
-    """
-    시간표를 외부(1순위: 나이스 Open API, 2순위: 분반 상세 시간표)에서 조회하여
-    서버 SQLite DB에 안전하게 캐싱합니다.
-    """
-    result = None
-    errors = []
-
-    if mode in ("neis", "auto"):
-        try:
-            result = fetch_neis_timetable(1, 3, api_key=api_key)
-        except Exception as e:
-            errors.append(f"NEIS: {e}")
-
-    if not result and mode in ("comcigan", "auto"):
-        try:
-            result = fetch_comcigan_cached(1, 3)
-        except Exception as e:
-            errors.append(f"Comcigan: {e}")
+    try:
+        result = fetch_neis_timetable(1, 3, api_key=api_key)
+    except Exception as exc:
+        return {
+            "ok": True,
+            "source": "db_cached",
+            "updatedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "message": f"현재 서버 DB에 저장된 시간표를 유지합니다. (나이스 조회 안내: {exc})",
+        }
 
     conn = get_db_conn()
     cur = conn.cursor()
@@ -871,7 +767,6 @@ def sync_timetable_to_db(mode: str = "auto", api_key: str = "") -> dict:
                 (slot_key, cell["subject"], 1 if cell.get("changed") else 0),
             )
 
-        # 새로 발견된 과목명이 있으면 subjects 테이블에 자동 등록
         cur.execute("SELECT name FROM subjects")
         existing_names = {r["name"] for r in cur.fetchall()}
         for subj_name in result.get("subjects", []):
@@ -880,16 +775,16 @@ def sync_timetable_to_db(mode: str = "auto", api_key: str = "") -> dict:
                 cur.execute(
                     """
                     INSERT OR IGNORE INTO subjects (id, name, group_name, plan_id, color, sort_order)
-                    VALUES (?, ?, ?, ?, ?, 99)
+                    VALUES (?, ?, ?, '', '#64748B', 99)
                     """,
-                    (sub_id, subj_name, subj_name[:2], "", "#64748B"),
+                    (sub_id, subj_name, subj_name[:2]),
                 )
 
         cur.execute("SELECT value FROM settings WHERE key = 'school_info'")
         s_row = cur.fetchone()
         s_info = json.loads(s_row["value"]) if s_row else {}
         s_info["lastSyncAt"] = result["updatedAt"]
-        s_info["syncSource"] = result["source"]
+        s_info["syncSource"] = "neis_official_api"
         cur.execute(
             "INSERT OR REPLACE INTO settings (key, value) VALUES ('school_info', ?)",
             (json.dumps(s_info, ensure_ascii=False),),
@@ -898,9 +793,9 @@ def sync_timetable_to_db(mode: str = "auto", api_key: str = "") -> dict:
         conn.close()
         return {
             "ok": True,
-            "source": result["source"],
+            "source": "neis_official_api",
             "updatedAt": result["updatedAt"],
-            "message": "시간표가 서버 DB에 성공적으로 동기화되었습니다.",
+            "message": "교육부 나이스(NEIS) 공공데이터 시간표가 서버 DB에 동기화되었습니다.",
         }
 
     conn.close()
@@ -908,7 +803,7 @@ def sync_timetable_to_db(mode: str = "auto", api_key: str = "") -> dict:
         "ok": True,
         "source": "db_cached",
         "updatedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "message": f"기존 서버 DB에 캐싱된 백현중 1-3반 시간표를 유지합니다. ({'; '.join(errors)})",
+        "message": "기존 서버 DB 시간표를 유지합니다.",
     }
 
 
@@ -948,12 +843,10 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
 
-        # 0. 클라우드 플랫폼 헬스체크 엔드포인트
         if parsed.path == "/healthz":
             self._send_json(200, {"ok": True, "status": "healthy"})
             return
 
-        # 1. 클라이언트가 초기 접속 시 서버 DB의 모든 공통 데이터를 받아가는 엔드포인트
         if parsed.path == "/api/bootstrap":
             self._send_json(200, get_bootstrap_data())
             return
@@ -968,7 +861,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(400, {"ok": False, "error": f"잘못된 JSON 요청입니다: {e}"})
             return
 
-        # 1. 관리자 비밀번호 확인 로그인
         if parsed.path == "/api/admin/verify":
             pw = str(body.get("password", ""))
             if verify_admin_password(pw):
@@ -977,13 +869,11 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(401, {"ok": False, "error": "관리자 비밀번호가 일치하지 않습니다."})
             return
 
-        # 이하 모든 /api/admin/* 요청은 관리자 인증 필수
         if parsed.path.startswith("/api/admin/"):
             if not self._check_admin(body):
                 self._send_json(401, {"ok": False, "error": "서버 관리자 권한이 필요합니다."})
                 return
 
-        # 2. 관리자: 수행평가 추가 또는 수정 (서버 SQLite DB 저장)
         if parsed.path == "/api/admin/assessment":
             task_id = str(body.get("id") or f"task-{int(datetime.datetime.now().timestamp() * 1000)}")
             title = str(body.get("title", "")).strip()
@@ -1032,7 +922,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(200, get_bootstrap_data())
             return
 
-        # 3. 관리자: 수행평가 삭제
         if parsed.path == "/api/admin/assessment/delete":
             task_id = str(body.get("id", "")).strip()
             conn = get_db_conn()
@@ -1043,7 +932,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(200, get_bootstrap_data())
             return
 
-        # 4. 관리자: 교과별 평가계획(1차/2차 지필 비율, 수행평가 비율, 평가영역명/배점) 수정
         if parsed.path == "/api/admin/subject-plan":
             plan_id = str(body.get("id", "")).strip()
             name = str(body.get("name", "")).strip()
@@ -1091,7 +979,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(200, get_bootstrap_data())
             return
 
-        # 5. 관리자: 시간표 칸 직접 수정
         if parsed.path == "/api/admin/timetable/cell":
             slot_key = str(body.get("slotKey", "")).strip()
             subject_name = str(body.get("subject", "")).strip()
@@ -1108,7 +995,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                     "INSERT OR REPLACE INTO timetable (slot_key, subject, changed) VALUES (?, ?, 0)",
                     (slot_key, subject_name),
                 )
-                # 과목 목록에 없으면 자동 추가
                 cur.execute("SELECT id FROM subjects WHERE name = ?", (subject_name,))
                 if not cur.fetchone():
                     sub_id = "sub-" + hashlib.md5(subject_name.encode("utf-8")).hexdigest()[:6]
@@ -1121,17 +1007,14 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(200, get_bootstrap_data())
             return
 
-        # 6. 관리자: 나이스(NEIS) / 시간표 외부 동기화 실행 후 DB 저장
         if parsed.path == "/api/admin/timetable/sync":
-            mode = str(body.get("mode", "auto"))
             api_key = str(body.get("neisApiKey", ""))
-            sync_res = sync_timetable_to_db(mode=mode, api_key=api_key)
+            sync_res = sync_timetable_to_db(api_key=api_key)
             boot = get_bootstrap_data()
             boot["syncResult"] = sync_res
             self._send_json(200, boot)
             return
 
-        # 7. 관리자: 비밀번호 변경
         if parsed.path == "/api/admin/password":
             new_pw = str(body.get("newPassword", "")).strip()
             if len(new_pw) < 4:
@@ -1160,10 +1043,9 @@ def run_server(port: int = 8080):
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", port), SuhaengDBRequestHandler) as httpd:
         print("============================================================")
-        print(" 🏫 백현중학교 1-3반 수행평가 & 성적표 DB 서버 시작 완료!")
+        print(" 🏫 백현중학교 1-3반 수행평가 & 성적표 DB 서버 v3")
         print(f" 🗄️ SQLite DB 파일: {DB_PATH}")
         print(f" 👉 브라우저 접속 주소: http://localhost:{port}")
-        print(f" 🔒 초기 관리자 비밀번호: {DEFAULT_ADMIN_PASSWORD}")
         print("============================================================")
         try:
             httpd.serve_forever()
