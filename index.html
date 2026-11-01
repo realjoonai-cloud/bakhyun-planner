@@ -4,7 +4,1028 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>백현중 1-3 수행평가 플래너</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+/* ==========================================================================
+   백현중 1-3 수행평가 플래너 v3 - 미니멀 3탭 카드형 스타일시트 (styles.css)
+   토스/노션 스타일 클린 화이트 & 소프트 그레이 테마
+   ========================================================================== */
+
+:root {
+  --bg-body: #F7F8FA;
+  --bg-card: #FFFFFF;
+  --bg-muted: #F2F4F8;
+  --bg-soft: #EEF2FF;
+  --text-main: #191F28;
+  --text-sub: #4E5968;
+  --text-muted: #8B95A1;
+  --border-color: #E5E8EB;
+  --primary: #3182F6;
+  --primary-hover: #1B64DA;
+  --primary-soft: #E8F3FF;
+  --accent-green: #00C471;
+  --accent-amber: #F59E0B;
+  --accent-red: #F04452;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.14);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.app-container {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+  flex: 1;
+}
+
+/* ==========================================================================
+   미니멀 상단 네비게이션 바 (로고 + 중앙 3탭 세그먼트 + 우측 관리자 버튼)
+   ========================================================================== */
+.top-nav {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-badge {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.brand-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* 중앙 3탭 세그먼트 컨트롤 */
+.segment-tabs {
+  display: inline-flex;
+  background: var(--bg-muted);
+  padding: 4px;
+  border-radius: 14px;
+  gap: 4px;
+}
+
+.tab-btn {
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 15px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.86rem;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-muted);
+  color: var(--text-sub);
+}
+
+.btn-secondary:hover {
+  background: #E5E8EB;
+  color: var(--text-main);
+}
+
+.btn-sm {
+  padding: 6px 11px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+}
+
+/* 관리자 활성 배너 */
+.admin-banner {
+  background: #191F28;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-tag {
+  background: var(--primary);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.btn-admin-action {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.btn-admin-action:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ==========================================================================
+   탭 1: 수행평가 일정 (좌측 캘린더 + 우측 체크리스트)
+   ========================================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .top-nav {
+    justify-content: center;
+  }
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.panel-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.view-Switch {
+  display: inline-flex;
+  background: var(--bg-muted);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.view-Switch button {
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 6px;
+  color: var(--text-sub);
+}
+
+.view-Switch button.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 월간 캘린더 */
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-bottom: 10px;
+}
+
+.cal-weekdays span:first-child {
+  color: var(--accent-red);
+}
+
+.cal-weekdays span:last-child {
+  color: var(--primary);
+}
+
+.cal-grid-month {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-cell {
+  min-height: 88px;
+  background: var(--bg-body);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.cal-cell:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+
+.cal-cell.other-month {
+  opacity: 0.35;
+}
+
+.cal-cell.is-today {
+  background: #FFFFFF;
+  border-color: var(--primary);
+}
+
+.cal-cell.is-selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.cal-date-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.today-tag {
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 0.64rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.cal-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.cal-task-pill {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-task-pill.is-done {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+/* 주간 캘린더 */
+.cal-grid-week {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.week-day-row {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.week-day-row.is-selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.week-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.week-day-title {
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 수행평가 체크 카드 */
+.task-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  transition: all 0.15s ease;
+}
+
+.task-card:hover {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.task-card.status-done {
+  opacity: 0.65;
+}
+
+.task-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.task-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.subject-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.type-tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.weight-tag {
+  background: #FFFBEB;
+  color: #B45309;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.badge-dday-today {
+  background: var(--accent-red);
+  color: #FFFFFF;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-urgent {
+  background: #FEE2E2;
+  color: #DC2626;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-normal {
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-dday-overdue {
+  background: #4E5968;
+  color: #FFFFFF;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badge-done {
+  background: #E8FDF2;
+  color: #00A859;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.task-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.task-card.status-done .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-meta {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
+.task-memo {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  background: var(--bg-card);
+  padding: 7px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 3px 4px;
+}
+
+.subtask-item input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+}
+
+.subtask-item.done span {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.daily-check-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+}
+
+.daily-check-btn.checked {
+  background: #E8FDF2;
+  border-color: var(--accent-green);
+  color: #00A859;
+}
+
+.status-select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   탭 2: 시간표 그리드
+   ========================================================================== */
+.timetable-wrapper {
+  overflow-x: auto;
+}
+
+.comcigan-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.comcigan-table th,
+.comcigan-table td {
+  border: 1px solid var(--border-color);
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.comcigan-table th {
+  background: var(--bg-body);
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: var(--text-sub);
+}
+
+.comcigan-table th.today-col {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.period-col-cell {
+  background: var(--bg-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  width: 96px;
+}
+
+.tt-cell {
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.tt-cell:hover {
+  background: var(--bg-body);
+}
+
+.tt-subj-badge {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
+.tt-task-indicator {
+  margin-top: 6px;
+  display: inline-block;
+  background: #FFF0F1;
+  color: var(--accent-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   탭 3: 예상 성적표 & 등급 계산기
+   ========================================================================== */
+.grade-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.grade-kpi-card {
+  background: var(--bg-body);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.grade-kpi-card .kpi-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.grade-kpi-card .kpi-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.report-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 660px;
+  font-size: 0.84rem;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  text-align: center;
+}
+
+.report-table th {
+  background: var(--bg-body);
+  font-weight: 800;
+  color: var(--text-sub);
+}
+
+.grade-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
+.grade-a { background: #E8FDF2; color: #00A859; }
+.grade-b { background: #E8F3FF; color: #1B64DA; }
+.grade-c { background: #FFF8E6; color: #D97706; }
+.grade-d { background: #FFEDD5; color: #C2410C; }
+.grade-e { background: #FFF0F1; color: #F04452; }
+.grade-none { background: var(--bg-muted); color: var(--text-muted); }
+
+.subject-score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 520px) {
+  .subject-score-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subject-score-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.score-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.score-input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.81rem;
+  border: 1px solid var(--border-color);
+}
+
+.score-input-row .row-title {
+  font-weight: 600;
+  flex: 1;
+}
+
+.score-input-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.score-num-input {
+  width: 64px;
+  padding: 5px 7px;
+  text-align: right;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-body);
+  font-weight: 700;
+}
+
+.guide-callout {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   모달 및 최초 진입 법적 고지 동의 모달
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 31, 40, 0.55);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.terms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-body);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  font-size: 0.84rem;
+  color: var(--text-sub);
+}
+
+.terms-item strong {
+  color: var(--text-main);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.consent-check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 12px 14px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.consent-check-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.form-input {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-body);
+  font-size: 0.88rem;
+}
+
+.timetable-hint-box {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* 하단 법적 고지 푸터 */
+.legal-footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 18px 16px;
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.legal-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link-terms-reopen {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast-msg {
+  background: #191F28;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 28px 16px;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
+</style>
 </head>
 <body>
   <div class="app-container">
@@ -378,7 +1399,2249 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="js/store.js"></script>
-  <script src="js/app.js"></script>
+  <script>
+/**
+ * 백현중학교 1학년 3반 수행평가 플래너 & 예상 성적표 스토어 v3 (store.js)
+ * - 학급 공통 데이터(시간표, 평가계획, 수행평가 일정): 서버 SQLite DB (/api/bootstrap)에서 로드
+ * - 학생 개인 데이터(데일리 체크, 체크리스트, 내 수행/정기시험 점수): 각자 브라우저 LocalStorage에 저장
+ * - 법적 고지 및 사이트 이용 동의 상태 관리
+ */
+(function (global) {
+  'use strict';
+
+  const PERSONAL_STORAGE_KEY = 'suhaeng_baekhyun_1_3_personal_v3';
+  const CACHE_STORAGE_KEY = 'suhaeng_baekhyun_1_3_db_cache_v3';
+  const ADMIN_SESSION_KEY = 'suhaeng_baekhyun_admin_pw';
+  const TERMS_CONSENT_KEY = 'suhaeng_baekhyun_terms_consent_v1';
+
+  function getTodayStr() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function addDaysStr(baseStr, offsetDays) {
+    const [y, m, d] = baseStr.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    dt.setDate(dt.getDate() + offsetDays);
+    const ny = dt.getFullYear();
+    const nm = String(dt.getMonth() + 1).padStart(2, '0');
+    const nd = String(dt.getDate()).padStart(2, '0');
+    return `${ny}-${nm}-${nd}`;
+  }
+
+  function getWeekdayIndex(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const jsDay = new Date(y, m - 1, d).getDay();
+    return jsDay === 0 ? 6 : jsDay - 1;
+  }
+
+  function getNextWeekdayDate(baseStr, targetWeekdayIdx) {
+    for (let i = 0; i <= 14; i++) {
+      const candidate = addDaysStr(baseStr, i);
+      if (getWeekdayIndex(candidate) === targetWeekdayIdx) {
+        return candidate;
+      }
+    }
+    return baseStr;
+  }
+
+  const FALLBACK_TIMETABLE = {
+    '0-1': { subject: '스포', changed: false },
+    '0-2': { subject: '체육', changed: false },
+    '0-3': { subject: '기가', changed: false },
+    '0-4': { subject: '국어B', changed: false },
+    '0-5': { subject: '과학C', changed: false },
+    '0-6': { subject: '사회A', changed: false },
+    '1-1': { subject: '미술', changed: false },
+    '1-2': { subject: '진탐', changed: false },
+    '1-3': { subject: '수학A', changed: false },
+    '1-4': { subject: '영어A', changed: false },
+    '1-5': { subject: '과학C', changed: false },
+    '1-6': { subject: '도덕', changed: false },
+    '1-7': { subject: '체육', changed: false },
+    '2-1': { subject: '영어B', changed: false },
+    '2-2': { subject: '음악', changed: false },
+    '2-3': { subject: '수학A', changed: false },
+    '2-4': { subject: '사회A', changed: false },
+    '2-5': { subject: '미술', changed: false },
+    '2-6': { subject: '국어A', changed: false },
+    '3-1': { subject: '국어A', changed: false },
+    '3-2': { subject: '과학A', changed: false },
+    '3-3': { subject: '수학B', changed: false },
+    '3-4': { subject: '음악', changed: false },
+    '3-5': { subject: '기가', changed: false },
+    '3-6': { subject: '정보', changed: false },
+    '4-1': { subject: '영어A', changed: false },
+    '4-2': { subject: '체육', changed: false },
+    '4-3': { subject: '도덕', changed: false },
+    '4-4': { subject: '사회B', changed: false },
+    '4-5': { subject: '국어B', changed: false },
+    '4-6': { subject: '정보', changed: false }
+  };
+
+  const FALLBACK_SUBJECTS = [
+    { id: 'sub-korA', name: '국어A', group: '국어', planId: 'plan-kor', color: '#EF4444' },
+    { id: 'sub-korB', name: '국어B', group: '국어', planId: 'plan-kor', color: '#F87171' },
+    { id: 'sub-mathA', name: '수학A', group: '수학', planId: 'plan-math', color: '#3B82F6' },
+    { id: 'sub-mathB', name: '수학B', group: '수학', planId: 'plan-math', color: '#60A5FA' },
+    { id: 'sub-engA', name: '영어A', group: '영어', planId: 'plan-eng', color: '#F59E0B' },
+    { id: 'sub-engB', name: '영어B', group: '영어', planId: 'plan-eng', color: '#FBBF24' },
+    { id: 'sub-sciA', name: '과학A', group: '과학', planId: 'plan-sci', color: '#8B5CF6' },
+    { id: 'sub-sciC', name: '과학C', group: '과학', planId: 'plan-sci', color: '#A78BFA' },
+    { id: 'sub-socA', name: '사회A', group: '사회', planId: 'plan-soc', color: '#10B981' },
+    { id: 'sub-socB', name: '사회B', group: '사회', planId: 'plan-soc', color: '#34D399' },
+    { id: 'sub-eth', name: '도덕', group: '도덕', planId: 'plan-eth', color: '#14B8A6' },
+    { id: 'sub-tech', name: '기가', group: '기술·가정', planId: 'plan-tech', color: '#EC4899' },
+    { id: 'sub-info', name: '정보', group: '정보', planId: 'plan-info', color: '#06B6D4' },
+    { id: 'sub-pe', name: '체육', group: '체육', planId: 'plan-pe', color: '#F97316' },
+    { id: 'sub-mus', name: '음악', group: '음악', planId: 'plan-mus', color: '#6366F1' },
+    { id: 'sub-art', name: '미술', group: '미술', planId: 'plan-art', color: '#D946EF' },
+    { id: 'sub-car', name: '진탐', group: '기타', planId: '', color: '#84CC16' },
+    { id: 'sub-spo', name: '스포', group: '체육', planId: '', color: '#FB923C' }
+  ];
+
+  const FALLBACK_SUBJECT_PLANS = [
+    {
+      id: 'plan-kor', name: '국어', color: '#EF4444', credits: 4,
+      exam1Ratio: 50, exam2Ratio: 0, perfRatio: 50, gradeScale: '5tier', sortOrder: 1,
+      areas: [
+        { id: 'kor-1', name: '영역① 단어의 짜임 분석하기', weight: 20 },
+        { id: 'kor-2', name: '영역② 존중하는 언어 생활 프로젝트', weight: 20 },
+        { id: 'kor-3', name: '영역③ 책읽기 프로젝트', weight: 10 }
+      ]
+    },
+    {
+      id: 'plan-soc', name: '사회', color: '#10B981', credits: 3,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '5tier', sortOrder: 2,
+      areas: [
+        { id: 'soc-1', name: '영역① 민주주의 발전 과정 탐구', weight: 30 },
+        { id: 'soc-2', name: '영역② 역할 갈등 사례 분석(논술형)', weight: 20 },
+        { id: 'soc-3', name: '영역③ 정치 주체 / 변동 평가영역', weight: 20 },
+        { id: 'soc-4', name: '영역④ 생활 속의 법 탐구하기', weight: 30 }
+      ]
+    },
+    {
+      id: 'plan-eth', name: '도덕', color: '#14B8A6', credits: 2,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '5tier', sortOrder: 3,
+      areas: [
+        { id: 'eth-1', name: '영역① 도덕 탐구 / 토론·논술 평가', weight: 40 },
+        { id: 'eth-2', name: '영역② 인권·평화 연구활동 평가', weight: 40 },
+        { id: 'eth-3', name: '영역③ 생명존중 방안탐구', weight: 20 }
+      ]
+    },
+    {
+      id: 'plan-math', name: '수학', color: '#3B82F6', credits: 3,
+      exam1Ratio: 0, exam2Ratio: 50, perfRatio: 50, gradeScale: '5tier', sortOrder: 4,
+      areas: [
+        { id: 'math-1', name: '영역① 실생활 속 통계 활용(논술형)', weight: 20 },
+        { id: 'math-2', name: '영역② 도형/교과 탐구 평가(변동 가능)', weight: 20 },
+        { id: 'math-3', name: '영역③ 학습활동 과정평가', weight: 10 }
+      ]
+    },
+    {
+      id: 'plan-sci', name: '과학', color: '#8B5CF6', credits: 3,
+      exam1Ratio: 0, exam2Ratio: 50, perfRatio: 50, gradeScale: '5tier', sortOrder: 5,
+      areas: [
+        { id: 'sci-1', name: '영역① 기체의 성질 스토리보드(논술형)', weight: 10 },
+        { id: 'sci-2', name: '영역② 부력 탐구하기(탐구·논술형)', weight: 15 },
+        { id: 'sci-3', name: '영역③ 태양계 홍보프로젝트(탐구·논술형)', weight: 25 }
+      ]
+    },
+    {
+      id: 'plan-tech', name: '기술·가정', color: '#EC4899', credits: 2,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '5tier', sortOrder: 6,
+      areas: [
+        { id: 'tech-1', name: '영역① 영양소 표현·연구(실습/연구)', weight: 40 },
+        { id: 'tech-2', name: '영역② 합리적인 소비 생활(논술형)', weight: 30 },
+        { id: 'tech-3', name: '영역③ 기술 제작/실습 평가(변동 가능)', weight: 30 }
+      ]
+    },
+    {
+      id: 'plan-pe', name: '체육', color: '#F97316', credits: 3,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '3tier', sortOrder: 7,
+      areas: [
+        { id: 'pe-1', name: '영역① 체력/기초 실기 평가', weight: 25 },
+        { id: 'pe-2', name: '영역② 구기/스포츠 실기 평가', weight: 25 },
+        { id: 'pe-3', name: '영역③ 축구 리프팅', weight: 25 },
+        { id: 'pe-4', name: '영역④ 영역형 경쟁스포츠 논술', weight: 25 }
+      ]
+    },
+    {
+      id: 'plan-mus', name: '음악', color: '#6366F1', credits: 2,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '3tier', sortOrder: 8,
+      areas: [
+        { id: 'mus-1', name: '영역① 난타 연주하기', weight: 30 },
+        { id: 'mus-2', name: '영역② 리코더 연주하기', weight: 30 },
+        { id: 'mus-3', name: '영역③ 음악 감상하기', weight: 20 },
+        { id: 'mus-4', name: '영역④ 음악이 갖는 의미와 역할 설명', weight: 20 }
+      ]
+    },
+    {
+      id: 'plan-art', name: '미술', color: '#D946EF', credits: 2,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '3tier', sortOrder: 9,
+      areas: [
+        { id: 'art-1', name: '영역① 표현 활동 평가 1', weight: 25 },
+        { id: 'art-2', name: '영역② 표현 활동 평가 2', weight: 25 },
+        { id: 'art-3', name: '영역③ 디자인 표현 평가', weight: 25 },
+        { id: 'art-4', name: '영역④ 미술 작품 감상(논술형)', weight: 25 }
+      ]
+    },
+    {
+      id: 'plan-eng', name: '영어', color: '#F59E0B', credits: 3,
+      exam1Ratio: 50, exam2Ratio: 0, perfRatio: 50, gradeScale: '5tier', sortOrder: 10,
+      areas: [
+        { id: 'eng-1', name: '영역① 리딩 로그 작성하기(논술형)', weight: 20 },
+        { id: 'eng-2', name: '영역② 영어 글쓰기/작문 평가(변동 가능)', weight: 20 },
+        { id: 'eng-3', name: '영역③ 희망 직업 소개하기(말하기)', weight: 10 }
+      ]
+    },
+    {
+      id: 'plan-info', name: '정보', color: '#06B6D4', credits: 2,
+      exam1Ratio: 0, exam2Ratio: 0, perfRatio: 100, gradeScale: '5tier', sortOrder: 11,
+      areas: [
+        { id: 'info-1', name: '영역① 정보/데이터 영역 평가', weight: 25 },
+        { id: 'info-2', name: '영역② 알고리즘 영역 평가', weight: 25 },
+        { id: 'info-3', name: '영역③ 프로그래밍 실습', weight: 25 },
+        { id: 'info-4', name: '영역④ 인공지능윤리문제(논술형)', weight: 25 }
+      ]
+    }
+  ];
+
+  function buildFallbackAssessments(todayStr) {
+    const mon = getNextWeekdayDate(todayStr, 0);
+    const tue = getNextWeekdayDate(todayStr, 1);
+    const wed = getNextWeekdayDate(todayStr, 2);
+    const thu = getNextWeekdayDate(todayStr, 3);
+    const fri = getNextWeekdayDate(todayStr, 4);
+
+    return [
+      {
+        id: 'task-init-1',
+        title: '존중하는 언어 생활 프로젝트',
+        subjectId: 'sub-korB',
+        planId: 'plan-kor',
+        areaId: 'kor-2',
+        type: '보고서',
+        dueDate: mon,
+        period: 4,
+        weight: 20,
+        memo: '월요일 4교시 국어B 수업 시간 내 작성 및 제출',
+        subtasks: [
+          { id: 'st-1', text: '주제 선정 및 사례 조사' },
+          { id: 'st-2', text: '활동지 초안 작성 완료' },
+          { id: 'st-3', text: '수업 시간 내 최종 제출' }
+        ]
+      },
+      {
+        id: 'task-init-2',
+        title: '실생활 속 통계 활용(논술형)',
+        subjectId: 'sub-mathA',
+        planId: 'plan-math',
+        areaId: 'math-1',
+        type: '보고서',
+        dueDate: tue,
+        period: 3,
+        weight: 20,
+        memo: '화요일 3교시 수학A 시간 실시, 통계 그래프 해석 연습',
+        subtasks: [
+          { id: 'st-4', text: '교과서 통계 단원 개념 복습' },
+          { id: 'st-5', text: '서술형 연습 프린트 풀이' }
+        ]
+      },
+      {
+        id: 'task-init-3',
+        title: '희망 직업 소개하기(말하기)',
+        subjectId: 'sub-engB',
+        planId: 'plan-eng',
+        areaId: 'eng-3',
+        type: '발표',
+        dueDate: wed,
+        period: 1,
+        weight: 10,
+        memo: '수요일 1교시 영어B 수업 중 발표 진행',
+        subtasks: [
+          { id: 'st-6', text: '영어 발표 대본 작성 및 점검' },
+          { id: 'st-7', text: '발음 및 1분 스피치 리허설' }
+        ]
+      },
+      {
+        id: 'task-init-4',
+        title: '인공지능윤리문제(논술형)',
+        subjectId: 'sub-info',
+        planId: 'plan-info',
+        areaId: 'info-4',
+        type: '보고서',
+        dueDate: thu,
+        period: 6,
+        weight: 25,
+        memo: '목요일 6교시 정보 시간 실시, AI 윤리 딜레마 사례 정리',
+        subtasks: [
+          { id: 'st-8', text: '인공지능 윤리 가이드라인 핵심 정리' },
+          { id: 'st-9', text: '논술형 답안 구조 연습' }
+        ]
+      },
+      {
+        id: 'task-init-5',
+        title: '생활 속의 법 탐구하기',
+        subjectId: 'sub-socB',
+        planId: 'plan-soc',
+        areaId: 'soc-4',
+        type: '보고서',
+        dueDate: fri,
+        period: 4,
+        weight: 30,
+        memo: '금요일 4교시 사회B 수업 시간 제출',
+        subtasks: [
+          { id: 'st-10', text: '생활 속 법률 사례 2가지 조사' },
+          { id: 'st-11', text: '탐구 보고서 양식 작성' }
+        ]
+      }
+    ];
+  }
+
+  function computeAchievementGrade(score, gradeScale) {
+    if (score === null || score === undefined || Number.isNaN(score)) {
+      return { grade: '-', cls: 'grade-none', targetA: gradeScale === '3tier' ? 80 : 90 };
+    }
+    const val = Number(score);
+    if (gradeScale === '3tier') {
+      if (val >= 80) return { grade: 'A', cls: 'grade-a', targetA: 80 };
+      if (val >= 60) return { grade: 'B', cls: 'grade-b', targetA: 80 };
+      return { grade: 'C', cls: 'grade-c', targetA: 80 };
+    }
+    if (val >= 90) return { grade: 'A', cls: 'grade-a', targetA: 90 };
+    if (val >= 80) return { grade: 'B', cls: 'grade-b', targetA: 90 };
+    if (val >= 70) return { grade: 'C', cls: 'grade-c', targetA: 90 };
+    if (val >= 60) return { grade: 'D', cls: 'grade-d', targetA: 90 };
+    return { grade: 'E', cls: 'grade-e', targetA: 90 };
+  }
+
+  class Store {
+    constructor() {
+      this.listeners = [];
+      this.adminPassword = '';
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          this.adminPassword = sessionStorage.getItem(ADMIN_SESSION_KEY) || '';
+        }
+      } catch (e) {}
+
+      this.state = this.loadInitialState();
+    }
+
+    hasAgreedTerms() {
+      try {
+        return localStorage.getItem(TERMS_CONSENT_KEY) === 'agreed';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    acceptTerms() {
+      try {
+        localStorage.setItem(TERMS_CONSENT_KEY, 'agreed');
+      } catch (e) {}
+    }
+
+    loadInitialState() {
+      const todayStr = getTodayStr();
+      let cachedShared = null;
+      let personal = null;
+
+      try {
+        const rawCache = localStorage.getItem(CACHE_STORAGE_KEY);
+        if (rawCache) cachedShared = JSON.parse(rawCache);
+      } catch (e) {}
+
+      try {
+        const rawPersonal = localStorage.getItem(PERSONAL_STORAGE_KEY);
+        if (rawPersonal) personal = JSON.parse(rawPersonal);
+      } catch (e) {}
+
+      const schoolInfo = (cachedShared && cachedShared.schoolInfo) || {
+        schoolName: '백현중학교',
+        neisOfficeCode: 'J10',
+        neisSchoolCode: '7531032',
+        region: '경기(성남)',
+        grade: 1,
+        classNum: 3,
+        lastSyncAt: todayStr,
+        syncSource: 'db_cached',
+        periodTimes: [
+          '1(09:00)', '2(09:55)', '3(10:50)', '4(11:45)',
+          '5(13:20)', '6(14:15)', '7(15:10)'
+        ]
+      };
+
+      const subjects =
+        cachedShared && Array.isArray(cachedShared.subjects) && cachedShared.subjects.length
+          ? cachedShared.subjects
+          : JSON.parse(JSON.stringify(FALLBACK_SUBJECTS));
+
+      const timetable =
+        cachedShared && cachedShared.timetable && Object.keys(cachedShared.timetable).length
+          ? cachedShared.timetable
+          : JSON.parse(JSON.stringify(FALLBACK_TIMETABLE));
+
+      const subjectPlans =
+        cachedShared && Array.isArray(cachedShared.subjectPlans) && cachedShared.subjectPlans.length
+          ? cachedShared.subjectPlans
+          : JSON.parse(JSON.stringify(FALLBACK_SUBJECT_PLANS));
+
+      const rawAssessments =
+        cachedShared && Array.isArray(cachedShared.assessments)
+          ? cachedShared.assessments
+          : buildFallbackAssessments(todayStr);
+
+      const myProgress = (personal && personal.myProgress) || {};
+      const myScores = (personal && personal.myScores) || {};
+      const ui = Object.assign(
+        {
+          activeTab: 'calendar', // 'calendar' | 'timetable' | 'grades'
+          calendarMode: 'month',
+          selectedDate: todayStr,
+          currentMonthDate: todayStr,
+          filterSubjectId: 'all'
+        },
+        (personal && personal.ui) || {},
+        {
+          selectedDate: todayStr,
+          isAdmin: !!this.adminPassword
+        }
+      );
+
+      const mergedAssessments = this.mergeAssessmentsWithPersonal(rawAssessments, myProgress);
+
+      return {
+        schoolInfo,
+        subjects,
+        timetable,
+        subjectPlans,
+        rawAssessments,
+        assessments: mergedAssessments,
+        myProgress,
+        myScores,
+        ui
+      };
+    }
+
+    mergeAssessmentsWithPersonal(rawList, myProgress) {
+      return (rawList || []).map((item) => {
+        const prog = myProgress[item.id] || {};
+        const doneSubtaskIds = Array.isArray(prog.doneSubtaskIds) ? prog.doneSubtaskIds : [];
+        const subtasks = (item.subtasks || []).map((st, idx) => {
+          const stId = st.id || `st-${idx}`;
+          return {
+            id: stId,
+            text: st.text,
+            done: doneSubtaskIds.includes(stId) || prog.status === 'done'
+          };
+        });
+        return Object.assign({}, item, {
+          status: prog.status || 'todo',
+          dailyChecks: Array.isArray(prog.dailyChecks) ? prog.dailyChecks.slice() : [],
+          subtasks
+        });
+      });
+    }
+
+    savePersonalToStorage() {
+      try {
+        const payload = {
+          myProgress: this.state.myProgress,
+          myScores: this.state.myScores,
+          ui: {
+            activeTab: this.state.ui.activeTab,
+            calendarMode: this.state.ui.calendarMode
+          }
+        };
+        localStorage.setItem(PERSONAL_STORAGE_KEY, JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    saveSharedCacheToStorage() {
+      try {
+        const payload = {
+          schoolInfo: this.state.schoolInfo,
+          subjects: this.state.subjects,
+          timetable: this.state.timetable,
+          subjectPlans: this.state.subjectPlans,
+          assessments: this.state.rawAssessments
+        };
+        localStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    subscribe(fn) {
+      this.listeners.push(fn);
+      return () => {
+        this.listeners = this.listeners.filter((l) => l !== fn);
+      };
+    }
+
+    notify() {
+      this.state.assessments = this.mergeAssessmentsWithPersonal(
+        this.state.rawAssessments,
+        this.state.myProgress
+      );
+      this.savePersonalToStorage();
+      this.saveSharedCacheToStorage();
+      this.listeners.forEach((fn) => fn(this.state));
+    }
+
+    setUI(patch) {
+      this.state.ui = Object.assign({}, this.state.ui, patch);
+      this.notify();
+    }
+
+    async fetchBootstrapFromServer() {
+      const resp = await fetch('/api/bootstrap', { cache: 'no-store' });
+      if (!resp.ok) {
+        throw new Error(`서버 응답 오류 (${resp.status})`);
+      }
+      const data = await resp.json();
+      if (!data || !data.ok) {
+        throw new Error('유효하지 않은 부트스트랩 응답');
+      }
+      this.applyServerBootstrapData(data);
+      return data;
+    }
+
+    applyServerBootstrapData(data) {
+      if (data.schoolInfo) this.state.schoolInfo = data.schoolInfo;
+      if (Array.isArray(data.subjects)) this.state.subjects = data.subjects;
+      if (data.timetable) this.state.timetable = data.timetable;
+      if (Array.isArray(data.subjectPlans)) this.state.subjectPlans = data.subjectPlans;
+      if (Array.isArray(data.assessments)) this.state.rawAssessments = data.assessments;
+      this.notify();
+    }
+
+    async loginAdmin(password) {
+      const trimmed = (password || '').trim();
+      if (!trimmed) throw new Error('비밀번호를 입력해 주세요.');
+
+      try {
+        const resp = await fetch('/api/admin/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: trimmed })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || '비밀번호가 일치하지 않습니다.');
+        }
+      } catch (err) {
+        if (window.location.protocol === 'file:') {
+          if (trimmed !== '1300') {
+            throw new Error('관리자 비밀번호가 일치하지 않습니다.');
+          }
+        } else {
+          throw err;
+        }
+      }
+
+      this.adminPassword = trimmed;
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem(ADMIN_SESSION_KEY, trimmed);
+        }
+      } catch (e) {}
+      this.state.ui.isAdmin = true;
+      this.notify();
+      return true;
+    }
+
+    logoutAdmin() {
+      this.adminPassword = '';
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.removeItem(ADMIN_SESSION_KEY);
+        }
+      } catch (e) {}
+      this.state.ui.isAdmin = false;
+      this.notify();
+    }
+
+    async adminSaveAssessment(payload) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 모드에서만 수행평가를 추가·수정할 수 있습니다.');
+      }
+      if (window.location.protocol.startsWith('http')) {
+        const resp = await fetch('/api/admin/assessment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Admin-Password': this.adminPassword
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || '수행평가 저장 실패');
+        }
+        this.applyServerBootstrapData(data);
+        return data;
+      }
+
+      const taskId = payload.id || 'task-' + Date.now();
+      const idx = this.state.rawAssessments.findIndex((a) => a.id === taskId);
+      const record = {
+        id: taskId,
+        title: payload.title,
+        subjectId: payload.subjectId,
+        planId: payload.planId || '',
+        areaId: payload.areaId || '',
+        type: payload.type || '보고서',
+        dueDate: payload.dueDate || getTodayStr(),
+        period: payload.period ? Number(payload.period) : null,
+        weight: Number(payload.weight) || 0,
+        memo: payload.memo || '',
+        subtasks: Array.isArray(payload.subtasks) ? payload.subtasks : []
+      };
+      if (idx !== -1) {
+        this.state.rawAssessments[idx] = record;
+      } else {
+        this.state.rawAssessments.push(record);
+      }
+      this.notify();
+      return record;
+    }
+
+    async adminDeleteAssessment(id) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      if (window.location.protocol.startsWith('http')) {
+        const resp = await fetch('/api/admin/assessment/delete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Admin-Password': this.adminPassword
+          },
+          body: JSON.stringify({ id })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || '삭제 실패');
+        }
+        this.applyServerBootstrapData(data);
+        return;
+      }
+      this.state.rawAssessments = this.state.rawAssessments.filter((a) => a.id !== id);
+      this.notify();
+    }
+
+    async adminSaveSubjectPlan(planPayload) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      if (window.location.protocol.startsWith('http')) {
+        const resp = await fetch('/api/admin/subject-plan', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Admin-Password': this.adminPassword
+          },
+          body: JSON.stringify(planPayload)
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || '평가계획 저장 실패');
+        }
+        this.applyServerBootstrapData(data);
+        return;
+      }
+      const idx = this.state.subjectPlans.findIndex((p) => p.id === planPayload.id);
+      if (idx !== -1) {
+        this.state.subjectPlans[idx] = Object.assign({}, this.state.subjectPlans[idx], planPayload);
+      } else {
+        this.state.subjectPlans.push(planPayload);
+      }
+      this.notify();
+    }
+
+    async adminUpdateTimetableCell(weekdayIdx, period, subjectName) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const slotKey = `${weekdayIdx}-${period}`;
+      if (window.location.protocol.startsWith('http')) {
+        const resp = await fetch('/api/admin/timetable/cell', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Admin-Password': this.adminPassword
+          },
+          body: JSON.stringify({ slotKey, subject: subjectName })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || '시간표 수정 실패');
+        }
+        this.applyServerBootstrapData(data);
+        return;
+      }
+      if (!subjectName || !subjectName.trim()) {
+        delete this.state.timetable[slotKey];
+      } else {
+        this.state.timetable[slotKey] = { subject: subjectName.trim(), changed: false };
+      }
+      this.notify();
+    }
+
+    async adminSyncTimetable(neisApiKey = '') {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const resp = await fetch('/api/admin/timetable/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword
+        },
+        body: JSON.stringify({ neisApiKey })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '시간표 동기화 실패');
+      }
+      this.applyServerBootstrapData(data);
+      return data.syncResult;
+    }
+
+    getSubjectById(subjectId) {
+      return this.state.subjects.find((s) => s.id === subjectId) || null;
+    }
+
+    getSubjectByName(name) {
+      if (!name) return null;
+      const trimmed = name.trim();
+      return this.state.subjects.find((s) => s.name === trimmed) || null;
+    }
+
+    getPlanById(planId) {
+      return this.state.subjectPlans.find((p) => p.id === planId) || null;
+    }
+
+    getDDay(dueDateStr, baseDateStr = getTodayStr()) {
+      const [y1, m1, d1] = baseDateStr.split('-').map(Number);
+      const [y2, m2, d2] = dueDateStr.split('-').map(Number);
+      const dt1 = new Date(y1, m1 - 1, d1);
+      const dt2 = new Date(y2, m2 - 1, d2);
+      return Math.round((dt2 - dt1) / (1000 * 60 * 60 * 24));
+    }
+
+    formatDDayBadge(dueDateStr, status) {
+      if (status === 'done') return { text: '완료됨', cls: 'badge-done' };
+      const diff = this.getDDay(dueDateStr);
+      if (diff === 0) return { text: 'D-Day', cls: 'badge-dday-today' };
+      if (diff > 0 && diff <= 3) return { text: `D-${diff}`, cls: 'badge-dday-urgent' };
+      if (diff > 3) return { text: `D-${diff}`, cls: 'badge-dday-normal' };
+      return { text: `D+${Math.abs(diff)}`, cls: 'badge-dday-overdue' };
+    }
+
+    getDaySchedule(dateStr) {
+      const weekdayIdx = getWeekdayIndex(dateStr);
+      if (weekdayIdx > 4) return [];
+      const periods = [];
+      for (let p = 1; p <= 7; p++) {
+        const key = `${weekdayIdx}-${p}`;
+        const cell = this.state.timetable[key];
+        if (cell && cell.subject) {
+          const subjObj = this.getSubjectByName(cell.subject);
+          periods.push({
+            period: p,
+            weekdayIdx,
+            subjectName: cell.subject,
+            changed: !!cell.changed,
+            subjectId: subjObj ? subjObj.id : null,
+            color: subjObj ? subjObj.color : '#64748B'
+          });
+        }
+      }
+      return periods;
+    }
+
+    getMatchingPeriodsForDate(subjectId, dateStr) {
+      const subj = this.getSubjectById(subjectId);
+      if (!subj || !dateStr) return [];
+      const daySchedule = this.getDaySchedule(dateStr);
+      return daySchedule
+        .filter((item) => item.subjectName === subj.name)
+        .map((item) => item.period);
+    }
+
+    getSubjectWeeklySlots(subjectId) {
+      const subj = this.getSubjectById(subjectId);
+      if (!subj) return [];
+      const dayNames = ['월', '화', '수', '목', '금'];
+      const slots = [];
+      for (let w = 0; w <= 4; w++) {
+        for (let p = 1; p <= 7; p++) {
+          const cell = this.state.timetable[`${w}-${p}`];
+          if (cell && cell.subject === subj.name) {
+            slots.push({
+              weekdayIdx: w,
+              weekdayName: dayNames[w],
+              period: p
+            });
+          }
+        }
+      }
+      return slots;
+    }
+
+    _ensureTaskProgress(id) {
+      if (!this.state.myProgress[id]) {
+        this.state.myProgress[id] = {
+          status: 'todo',
+          dailyChecks: [],
+          doneSubtaskIds: []
+        };
+      }
+      return this.state.myProgress[id];
+    }
+
+    setAssessmentStatus(id, status) {
+      const prog = this._ensureTaskProgress(id);
+      prog.status = status;
+      const raw = this.state.rawAssessments.find((a) => a.id === id);
+      if (status === 'done' && raw && Array.isArray(raw.subtasks)) {
+        prog.doneSubtaskIds = raw.subtasks.map((st, idx) => st.id || `st-${idx}`);
+      }
+      this.notify();
+    }
+
+    toggleDailyCheck(id, dateStr = getTodayStr()) {
+      const prog = this._ensureTaskProgress(id);
+      const idx = prog.dailyChecks.indexOf(dateStr);
+      let checked = false;
+      if (idx === -1) {
+        prog.dailyChecks.push(dateStr);
+        if (prog.status === 'todo') prog.status = 'in_progress';
+        checked = true;
+      } else {
+        prog.dailyChecks.splice(idx, 1);
+        checked = false;
+      }
+      this.notify();
+      return checked;
+    }
+
+    toggleSubtask(taskId, subtaskId) {
+      const prog = this._ensureTaskProgress(taskId);
+      const raw = this.state.rawAssessments.find((a) => a.id === taskId);
+      if (!raw || !Array.isArray(raw.subtasks)) return;
+
+      const idx = prog.doneSubtaskIds.indexOf(subtaskId);
+      if (idx === -1) {
+        prog.doneSubtaskIds.push(subtaskId);
+      } else {
+        prog.doneSubtaskIds.splice(idx, 1);
+      }
+
+      const totalCount = raw.subtasks.length;
+      const doneCount = prog.doneSubtaskIds.length;
+      if (totalCount > 0 && doneCount >= totalCount) {
+        prog.status = 'done';
+      } else if (doneCount > 0 && prog.status === 'todo') {
+        prog.status = 'in_progress';
+      } else if (doneCount < totalCount && prog.status === 'done') {
+        prog.status = 'in_progress';
+      }
+      this.notify();
+    }
+
+    getPersonalSubjectScore(planId) {
+      return (
+        this.state.myScores[planId] || {
+          exam1: '',
+          exam2: '',
+          areaScores: {}
+        }
+      );
+    }
+
+    updatePersonalScore(planId, field, value, areaId = null) {
+      if (!this.state.myScores[planId]) {
+        this.state.myScores[planId] = { exam1: '', exam2: '', areaScores: {} };
+      }
+      const entry = this.state.myScores[planId];
+      if (field === 'area' && areaId) {
+        if (value === '' || value === null || value === undefined) {
+          delete entry.areaScores[areaId];
+        } else {
+          entry.areaScores[areaId] = Math.max(0, Number(value));
+        }
+      } else if (field === 'exam1' || field === 'exam2') {
+        if (value === '' || value === null || value === undefined) {
+          entry[field] = '';
+        } else {
+          entry[field] = Math.min(100, Math.max(0, Number(value)));
+        }
+      }
+      this.notify();
+    }
+
+    fillSamplePersonalScores() {
+      this.state.subjectPlans.forEach((plan) => {
+        const entry = { exam1: '', exam2: '', areaScores: {} };
+        if (plan.exam1Ratio > 0) entry.exam1 = 92;
+        if (plan.exam2Ratio > 0) entry.exam2 = 90;
+        (plan.areas || []).forEach((area) => {
+          entry.areaScores[area.id] = area.weight;
+        });
+        this.state.myScores[plan.id] = entry;
+      });
+      this.notify();
+    }
+
+    clearPersonalScores() {
+      this.state.myScores = {};
+      this.notify();
+    }
+
+    calculateGradeReport() {
+      const rows = this.state.subjectPlans.map((plan) => {
+        const userScore = this.getPersonalSubjectScore(plan.id);
+        let earnedTotal = 0;
+        let enteredMaxTotal = 0;
+
+        let exam1Weighted = null;
+        if (plan.exam1Ratio > 0) {
+          if (userScore.exam1 !== '' && userScore.exam1 !== null && userScore.exam1 !== undefined) {
+            const raw1 = Math.min(100, Math.max(0, Number(userScore.exam1)));
+            exam1Weighted = Number(((raw1 * plan.exam1Ratio) / 100).toFixed(2));
+            earnedTotal += exam1Weighted;
+            enteredMaxTotal += plan.exam1Ratio;
+          }
+        }
+
+        let exam2Weighted = null;
+        if (plan.exam2Ratio > 0) {
+          if (userScore.exam2 !== '' && userScore.exam2 !== null && userScore.exam2 !== undefined) {
+            const raw2 = Math.min(100, Math.max(0, Number(userScore.exam2)));
+            exam2Weighted = Number(((raw2 * plan.exam2Ratio) / 100).toFixed(2));
+            earnedTotal += exam2Weighted;
+            enteredMaxTotal += plan.exam2Ratio;
+          }
+        }
+
+        let perfEarned = 0;
+        let perfEnteredMax = 0;
+        const areaDetails = (plan.areas || []).map((area) => {
+          const val = userScore.areaScores ? userScore.areaScores[area.id] : undefined;
+          const isEntered = val !== '' && val !== null && val !== undefined;
+          const clamped = isEntered ? Math.min(area.weight, Math.max(0, Number(val))) : null;
+          if (isEntered) {
+            perfEarned += clamped;
+            perfEnteredMax += Number(area.weight) || 0;
+            earnedTotal += clamped;
+            enteredMaxTotal += Number(area.weight) || 0;
+          }
+          return {
+            id: area.id,
+            name: area.name,
+            weight: Number(area.weight) || 0,
+            earned: clamped,
+            isEntered
+          };
+        });
+
+        earnedTotal = Number(earnedTotal.toFixed(2));
+        const remainingMax = Math.max(0, 100 - enteredMaxTotal);
+        const maxPossibleScore = Number((earnedTotal + remainingMax).toFixed(2));
+        const projectedScore =
+          enteredMaxTotal > 0
+            ? Number(((earnedTotal / enteredMaxTotal) * 100).toFixed(1))
+            : null;
+
+        const gradeTargetScore = enteredMaxTotal === 100 ? earnedTotal : projectedScore;
+        const gradeInfo = computeAchievementGrade(gradeTargetScore, plan.gradeScale);
+
+        const cutoffA = plan.gradeScale === '3tier' ? 80 : 90;
+        const neededPointsForA = Number(Math.max(0, cutoffA - earnedTotal).toFixed(1));
+        let guideMessage = '';
+        if (enteredMaxTotal === 0) {
+          guideMessage = `점수를 입력하면 예상 등급과 A등급(${cutoffA}점) 달성 조건을 계산합니다.`;
+        } else if (earnedTotal >= cutoffA) {
+          guideMessage = `🎉 현재 확보 점수(${earnedTotal}점)만으로 A등급(${cutoffA}점 이상) 확정입니다!`;
+        } else if (neededPointsForA > remainingMax) {
+          guideMessage = `현재 최고 도달 가능 점수는 ${maxPossibleScore}점입니다.`;
+        } else if (remainingMax > 0) {
+          const onlyExam1Left =
+            plan.exam1Ratio > 0 && exam1Weighted === null && remainingMax === plan.exam1Ratio;
+          const onlyExam2Left =
+            plan.exam2Ratio > 0 && exam2Weighted === null && remainingMax === plan.exam2Ratio;
+          if (onlyExam1Left || onlyExam2Left) {
+            const examLabel = onlyExam1Left ? '1차 정기시험' : '2차 정기시험';
+            const neededRawExam = Math.ceil((neededPointsForA / remainingMax) * 100);
+            guideMessage = `💡 A등급(${cutoffA}점)을 받으려면 ${examLabel}에서 원점수 ${neededRawExam}점 이상(환산 ${neededPointsForA}점)이 필요합니다!`;
+          } else {
+            guideMessage = `💡 A등급(${cutoffA}점)까지 남은 배점(${remainingMax}점) 중 ${neededPointsForA}점 이상 획득하면 달성됩니다!`;
+          }
+        } else {
+          guideMessage = `모든 평가 입력 완료 · 최종 총점 ${earnedTotal}점 (${gradeInfo.grade}등급)`;
+        }
+
+        return {
+          plan,
+          userScore,
+          exam1Weighted,
+          exam2Weighted,
+          perfEarned: Number(perfEarned.toFixed(2)),
+          perfEnteredMax,
+          areaDetails,
+          earnedTotal,
+          enteredMaxTotal,
+          remainingMax,
+          maxPossibleScore,
+          projectedScore,
+          gradeInfo,
+          cutoffA,
+          neededPointsForA,
+          guideMessage
+        };
+      });
+
+      const activeRows = rows.filter((r) => r.enteredMaxTotal > 0);
+      let avgProjected = 0;
+      let weightedSum = 0;
+      let totalCredits = 0;
+      let countA = 0;
+
+      activeRows.forEach((r) => {
+        const s = r.enteredMaxTotal === 100 ? r.earnedTotal : r.projectedScore || 0;
+        avgProjected += s;
+        weightedSum += s * r.plan.credits;
+        totalCredits += r.plan.credits;
+        if (r.gradeInfo.grade === 'A') countA++;
+      });
+
+      return {
+        rows,
+        summary: {
+          enteredSubjectsCount: activeRows.length,
+          totalSubjectsCount: rows.length,
+          avgScore: activeRows.length > 0 ? Number((avgProjected / activeRows.length).toFixed(1)) : 0,
+          weightedAvgScore: totalCredits > 0 ? Number((weightedSum / totalCredits).toFixed(1)) : 0,
+          countA
+        }
+      };
+    }
+  }
+
+  global.SuhaengStore = {
+    Store,
+    getTodayStr,
+    addDaysStr,
+    getWeekdayIndex,
+    computeAchievementGrade
+  };
+})(window);
+
+</script>
+<script>
+/**
+ * 백현중 1-3 수행평가 플래너 v3 컨트롤러 (app.js)
+ * - 노션/토스 스타일 심플 3탭 (수행평가 일정 / 시간표 / 예상 성적표)
+ * - 사이트 진입 시 법적 고지 및 이용 동의 모달
+ * - 다크모드, 백업, 상단 브리핑 배너 등 불필요한 부가 요소 전면 제거
+ */
+(function () {
+  'use strict';
+
+  const { Store, getTodayStr, addDaysStr, getWeekdayIndex } = window.SuhaengStore;
+  const store = new Store();
+
+  const WEEKDAY_LABELS = ['월', '화', '수', '목', '금', '토', '일'];
+  const CAL_HEADERS = ['일', '월', '화', '수', '목', '금', '토'];
+
+  let activeCellModalContext = null;
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function showToast(msg) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const el = document.createElement('div');
+    el.className = 'toast-msg';
+    el.textContent = msg;
+    container.appendChild(el);
+    setTimeout(() => {
+      el.remove();
+    }, 2800);
+  }
+
+  function formatKoreanDate(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const wIdx = getWeekdayIndex(dateStr);
+    return `${y}년 ${m}월 ${d}일 (${WEEKDAY_LABELS[wIdx]})`;
+  }
+
+  function getNextDateForWeekday(baseDateStr, targetWeekdayIdx) {
+    for (let i = 0; i <= 7; i++) {
+      const cand = addDaysStr(baseDateStr, i);
+      if (getWeekdayIndex(cand) === targetWeekdayIdx) {
+        return cand;
+      }
+    }
+    return baseDateStr;
+  }
+
+  // ==========================================================================
+  // 1. 상단 네비게이션 및 관리자 배너 상태 업데이트
+  // ==========================================================================
+  function renderTopNav(state) {
+    const isAdmin = !!state.ui.isAdmin;
+    const adminBanner = document.getElementById('adminBanner');
+    const btnAdminToggle = document.getElementById('btnAdminToggle');
+    const btnAddAssessment = document.getElementById('btnAddAssessment');
+    const btnAddOnSelectedDate = document.getElementById('btnAddOnSelectedDate');
+
+    if (adminBanner) adminBanner.style.display = isAdmin ? 'flex' : 'none';
+    if (btnAdminToggle) {
+      btnAdminToggle.textContent = isAdmin ? '🛠️ 관리자 활성' : '🔒 관리자';
+    }
+    if (btnAddAssessment) {
+      btnAddAssessment.style.display = isAdmin ? 'inline-flex' : 'none';
+    }
+    if (btnAddOnSelectedDate) {
+      btnAddOnSelectedDate.style.display = isAdmin ? 'inline-flex' : 'none';
+    }
+  }
+
+  // ==========================================================================
+  // 2. 수행평가 카드 생성
+  // ==========================================================================
+  function createTaskCardHtml(task) {
+    const todayStr = getTodayStr();
+    const isAdmin = !!store.state.ui.isAdmin;
+    const subj = store.getSubjectById(task.subjectId) || {
+      name: '기타',
+      color: '#64748B'
+    };
+    const ddayBadge = store.formatDDayBadge(task.dueDate, task.status);
+    const isCheckedToday =
+      Array.isArray(task.dailyChecks) && task.dailyChecks.includes(todayStr);
+
+    const wIdx = getWeekdayIndex(task.dueDate);
+    const periodText = task.period
+      ? `${WEEKDAY_LABELS[wIdx]}요일 ${task.period}교시`
+      : `${WEEKDAY_LABELS[wIdx]}요일`;
+
+    const subtasksHtml =
+      Array.isArray(task.subtasks) && task.subtasks.length > 0
+        ? `<div class="subtask-list">
+            ${task.subtasks
+              .map(
+                (st) => `
+              <label class="subtask-item ${st.done ? 'done' : ''}" data-task-id="${escapeHtml(task.id)}" data-subtask-id="${escapeHtml(st.id)}">
+                <input type="checkbox" ${st.done ? 'checked' : ''} />
+                <span>${escapeHtml(st.text)}</span>
+              </label>
+            `
+              )
+              .join('')}
+          </div>`
+        : '';
+
+    const adminButtonsHtml = isAdmin
+      ? `
+        <button type="button" class="btn btn-secondary btn-sm" data-action="edit" data-id="${escapeHtml(task.id)}">수정</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-action="delete" data-id="${escapeHtml(task.id)}" style="color:var(--accent-red);">삭제</button>
+      `
+      : '';
+
+    return `
+      <article class="task-card status-${escapeHtml(task.status)}" data-card-id="${escapeHtml(task.id)}">
+        <div class="task-card-top">
+          <div class="task-badges">
+            <span class="subject-tag" style="background:${subj.color}">
+              ${escapeHtml(subj.name)}
+            </span>
+            <span class="type-tag">${escapeHtml(task.type)}</span>
+            ${task.weight ? `<span class="weight-tag">${Number(task.weight)}%</span>` : ''}
+          </div>
+          <span class="${ddayBadge.cls}">${escapeHtml(ddayBadge.text)}</span>
+        </div>
+
+        <h4 class="task-title">${escapeHtml(task.title)}</h4>
+        <div class="task-meta">
+          📅 ${escapeHtml(task.dueDate)} (${periodText})
+        </div>
+
+        ${task.memo ? `<div class="task-memo">${escapeHtml(task.memo)}</div>` : ''}
+        ${subtasksHtml}
+
+        <div class="task-card-footer">
+          <button type="button" class="daily-check-btn ${isCheckedToday ? 'checked' : ''}" data-action="daily-check" data-id="${escapeHtml(task.id)}">
+            ${isCheckedToday ? '✅ 오늘 확인 완료' : '🔥 오늘 확인 체크'}
+          </button>
+
+          <div style="display:flex;align-items:center;gap:6px;">
+            <select class="status-select" data-action="status-change" data-id="${escapeHtml(task.id)}" aria-label="진행 상태">
+              <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>미시작</option>
+              <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>준비중</option>
+              <option value="done" ${task.status === 'done' ? 'selected' : ''}>완료됨</option>
+            </select>
+            ${adminButtonsHtml}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function bindTaskCardEvents(container) {
+    if (!container) return;
+
+    container.querySelectorAll('[data-action="daily-check"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const checked = store.toggleDailyCheck(id, getTodayStr());
+        showToast(checked ? '🔥 오늘의 수행평가 점검 완료!' : '오늘 점검 체크를 해제했습니다.');
+      });
+    });
+
+    container.querySelectorAll('[data-action="status-change"]').forEach((sel) => {
+      sel.addEventListener('change', () => {
+        const id = sel.getAttribute('data-id');
+        store.setAssessmentStatus(id, sel.value);
+      });
+    });
+
+    container.querySelectorAll('.subtask-item input[type="checkbox"]').forEach((chk) => {
+      chk.addEventListener('change', (e) => {
+        const label = e.target.closest('.subtask-item');
+        if (!label) return;
+        store.toggleSubtask(
+          label.getAttribute('data-task-id'),
+          label.getAttribute('data-subtask-id')
+        );
+      });
+    });
+
+    container.querySelectorAll('[data-action="edit"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const task = store.state.rawAssessments.find((a) => a.id === id);
+        if (task) openAssessmentModal(task);
+      });
+    });
+
+    container.querySelectorAll('[data-action="delete"]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const task = store.state.rawAssessments.find((a) => a.id === id);
+        if (!task) return;
+        if (window.confirm(`'${task.title}' 일정을 삭제하시겠습니까?`)) {
+          try {
+            await store.adminDeleteAssessment(id);
+            showToast('일정이 삭제되었습니다.');
+          } catch (err) {
+            alert(err.message);
+          }
+        }
+      });
+    });
+  }
+
+  // ==========================================================================
+  // 3. 탭 1: 수행평가 일정 (캘린더 + 우측 체크리스트)
+  // ==========================================================================
+  function renderCalendarTab(state) {
+    const { ui, assessments } = state;
+    const todayStr = getTodayStr();
+    const selectedDate = ui.selectedDate || todayStr;
+    const baseDate = ui.currentMonthDate || selectedDate;
+
+    const btnMonth = document.getElementById('btnModeMonth');
+    const btnWeek = document.getElementById('btnModeWeek');
+    if (btnMonth && btnWeek) {
+      btnMonth.classList.toggle('active', ui.calendarMode === 'month');
+      btnWeek.classList.toggle('active', ui.calendarMode === 'week');
+    }
+
+    const calBody = document.getElementById('calendarBody');
+    const titleLabel = document.getElementById('calendarTitleLabel');
+    if (!calBody || !titleLabel) return;
+
+    const [by, bm] = baseDate.split('-').map(Number);
+
+    if (ui.calendarMode === 'month') {
+      titleLabel.textContent = `${by}년 ${bm}월`;
+      const firstDay = new Date(by, bm - 1, 1);
+      const startDow = firstDay.getDay();
+      const firstCellDate = new Date(by, bm - 1, 1 - startDow);
+
+      let cellsHtml = '';
+      for (let i = 0; i < 42; i++) {
+        const cellDt = new Date(
+          firstCellDate.getFullYear(),
+          firstCellDate.getMonth(),
+          firstCellDate.getDate() + i
+        );
+        const cy = cellDt.getFullYear();
+        const cm = String(cellDt.getMonth() + 1).padStart(2, '0');
+        const cd = String(cellDt.getDate()).padStart(2, '0');
+        const dateStr = `${cy}-${cm}-${cd}`;
+        const isCurrentMonth = cellDt.getMonth() === bm - 1;
+        const isToday = dateStr === todayStr;
+        const isSelected = dateStr === selectedDate;
+
+        const dayTasks = assessments.filter((a) => a.dueDate === dateStr);
+        const pillsHtml = dayTasks
+          .slice(0, 3)
+          .map((t) => {
+            const subj = store.getSubjectById(t.subjectId) || { name: '기타', color: '#64748B' };
+            return `
+              <div class="cal-task-pill ${t.status === 'done' ? 'is-done' : ''}" style="background:${subj.color}">
+                ${escapeHtml(subj.name)} · ${escapeHtml(t.title)}
+              </div>
+            `;
+          })
+          .join('');
+        const moreHtml =
+          dayTasks.length > 3
+            ? `<div style="font-size:0.66rem;color:var(--text-sub);font-weight:700;">+${dayTasks.length - 3}건</div>`
+            : '';
+
+        cellsHtml += `
+          <div class="cal-cell ${isCurrentMonth ? '' : 'other-month'} ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}" data-date="${dateStr}">
+            <div class="cal-date-row">
+              <span>${cellDt.getDate()}</span>
+              ${isToday ? '<span class="today-tag">오늘</span>' : ''}
+            </div>
+            <div class="cal-task-list">
+              ${pillsHtml}
+              ${moreHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      calBody.innerHTML = `
+        <div class="cal-weekdays">
+          ${CAL_HEADERS.map((h) => `<span>${h}</span>`).join('')}
+        </div>
+        <div class="cal-grid-month">
+          ${cellsHtml}
+        </div>
+      `;
+    } else {
+      const wIdx = getWeekdayIndex(baseDate);
+      const mondayStr = addDaysStr(baseDate, -wIdx);
+      const sundayStr = addDaysStr(mondayStr, 6);
+      titleLabel.textContent = `${mondayStr.slice(5)} ~ ${sundayStr.slice(5)}`;
+
+      let rowsHtml = '';
+      for (let i = 0; i < 7; i++) {
+        const dStr = addDaysStr(mondayStr, i);
+        const isToday = dStr === todayStr;
+        const isSelected = dStr === selectedDate;
+        const dayTasks = assessments.filter((a) => a.dueDate === dStr);
+
+        const tasksHtml =
+          dayTasks.length > 0
+            ? dayTasks
+                .map((t) => {
+                  const subj = store.getSubjectById(t.subjectId) || { name: '기타', color: '#64748B' };
+                  const dday = store.formatDDayBadge(t.dueDate, t.status);
+                  return `
+                    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:6px 10px;border-radius:8px;border:1px solid var(--border-color);margin-top:4px;">
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="subject-tag" style="background:${subj.color}">${escapeHtml(subj.name)}</span>
+                        <strong style="font-size:0.84rem;">${escapeHtml(t.title)}</strong>
+                      </div>
+                      <span class="${dday.cls}">${dday.text}</span>
+                    </div>
+                  `;
+                })
+                .join('')
+            : '<div style="font-size:0.76rem;color:var(--text-muted);">예정된 수행평가 없음</div>';
+
+        rowsHtml += `
+          <div class="week-day-row ${isSelected ? 'is-selected' : ''}" data-date="${dStr}">
+            <div class="week-day-header">
+              <div class="week-day-title">
+                <span>${formatKoreanDate(dStr)}</span>
+                ${isToday ? '<span class="today-tag">오늘</span>' : ''}
+              </div>
+            </div>
+            ${tasksHtml}
+          </div>
+        `;
+      }
+
+      calBody.innerHTML = `<div class="cal-grid-week">${rowsHtml}</div>`;
+    }
+
+    calBody.querySelectorAll('[data-date]').forEach((cell) => {
+      cell.addEventListener('click', () => {
+        const d = cell.getAttribute('data-date');
+        store.setUI({ selectedDate: d, currentMonthDate: d });
+      });
+    });
+
+    renderTaskSidePanel(state, selectedDate);
+  }
+
+  function renderTaskSidePanel(state, selectedDate) {
+    const panelTitle = document.getElementById('selectedDatePanelTitle');
+    const tasksBox = document.getElementById('selectedDateTasksBox');
+    const selFilter = document.getElementById('selQuickSubjectFilter');
+    if (!panelTitle || !tasksBox || !selFilter) return;
+
+    panelTitle.textContent = `📌 ${formatKoreanDate(selectedDate)}`;
+
+    // 과목 필터 옵션 렌더링
+    const groups = ['국어', '수학', '영어', '과학', '사회', '기술·가정', '정보', '도덕', '체육', '음악', '미술'];
+    let optHtml = `<option value="all">전체 과목</option>`;
+    groups.forEach((g) => {
+      optHtml += `<option value="group:${g}" ${state.ui.filterSubjectId === 'group:' + g ? 'selected' : ''}>${g}</option>`;
+    });
+    selFilter.innerHTML = optHtml;
+
+    let list = state.assessments.slice();
+    if (state.ui.filterSubjectId && state.ui.filterSubjectId !== 'all') {
+      const gName = state.ui.filterSubjectId.replace('group:', '');
+      list = list.filter((a) => {
+        const s = store.getSubjectById(a.subjectId);
+        return s && s.group === gName;
+      });
+    }
+
+    const dueOnSelected = list.filter((a) => a.dueDate === selectedDate);
+    const dueIds = new Set(dueOnSelected.map((a) => a.id));
+    const otherOngoing = list
+      .filter((a) => !dueIds.has(a.id))
+      .sort((a, b) => {
+        if ((a.status === 'done') !== (b.status === 'done')) {
+          return a.status === 'done' ? 1 : -1;
+        }
+        return a.dueDate.localeCompare(b.dueDate);
+      });
+
+    let html = '';
+
+    if (dueOnSelected.length > 0) {
+      html += `
+        <div style="margin-bottom:16px;">
+          <div style="font-size:0.82rem;font-weight:800;color:var(--primary);margin-bottom:8px;">
+            🎯 선택한 날짜(${selectedDate.slice(5)}) 수행평가 (${dueOnSelected.length}건)
+          </div>
+          <div class="task-card-list">
+            ${dueOnSelected.map((t) => createTaskCardHtml(t)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    html += `
+      <div>
+        <div style="font-size:0.82rem;font-weight:800;color:var(--text-sub);margin-bottom:8px;">
+          📋 전체 수행평가 목록 (${otherOngoing.length}건)
+        </div>
+        ${
+          otherOngoing.length > 0
+            ? `<div class="task-card-list">${otherOngoing.map((t) => createTaskCardHtml(t)).join('')}</div>`
+            : `<div class="empty-state">등록된 수행평가가 없습니다.</div>`
+        }
+      </div>
+    `;
+
+    tasksBox.innerHTML = html;
+    bindTaskCardEvents(tasksBox);
+  }
+
+  // ==========================================================================
+  // 4. 탭 2: 시간표 렌더링
+  // ==========================================================================
+  function renderFullTimetable(state) {
+    const container = document.getElementById('fullTimetableContainer');
+    const descEl = document.getElementById('timetableSubDesc');
+    if (!container) return;
+
+    const isAdmin = !!state.ui.isAdmin;
+    if (descEl) {
+      descEl.textContent = isAdmin
+        ? '관리자 모드: 교시 칸을 클릭하면 수행평가를 바로 추가하거나 과목명을 수정할 수 있습니다.'
+        : '각 교시 과목에 진행 중인 수행평가가 있으면 함께 표시됩니다.';
+    }
+
+    const todayStr = getTodayStr();
+    const todayWIdx = getWeekdayIndex(todayStr);
+    const periodTimes = state.schoolInfo.periodTimes || [
+      '1(09:00)', '2(09:55)', '3(10:50)', '4(11:45)',
+      '5(13:20)', '6(14:15)', '7(15:10)'
+    ];
+
+    let rowsHtml = '';
+    for (let p = 1; p <= 7; p++) {
+      const pTimeLabel = periodTimes[p - 1] || `${p}교시`;
+      let colsHtml = '';
+
+      for (let w = 0; w <= 4; w++) {
+        const key = `${w}-${p}`;
+        const cell = state.timetable[key];
+        const isTodayCol = w === todayWIdx;
+
+        if (cell && cell.subject) {
+          const subjObj = store.getSubjectByName(cell.subject) || {
+            id: '',
+            name: cell.subject,
+            color: '#64748B'
+          };
+          const activeTasks = state.assessments.filter((a) => {
+            if (a.status === 'done') return false;
+            const s = store.getSubjectById(a.subjectId);
+            return s && s.name === cell.subject;
+          });
+
+          let taskBadgeHtml = '';
+          if (activeTasks.length > 0) {
+            const nearest = activeTasks
+              .slice()
+              .sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0];
+            const dday = store.formatDDayBadge(nearest.dueDate, nearest.status);
+            taskBadgeHtml = `
+              <div>
+                <span class="tt-task-indicator">수행 ${activeTasks.length} (${escapeHtml(dday.text)})</span>
+              </div>
+            `;
+          }
+
+          colsHtml += `
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-group="${escapeHtml(subjObj.group || '')}">
+              <span class="tt-subj-badge" style="background:${subjObj.color}">
+                ${escapeHtml(cell.subject)}
+              </span>
+              ${taskBadgeHtml}
+            </td>
+          `;
+        } else {
+          colsHtml += `
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-group="">
+              <span style="color:var(--text-muted);font-size:0.78rem;">-</span>
+            </td>
+          `;
+        }
+      }
+
+      rowsHtml += `
+        <tr>
+          <td class="period-col-cell">${escapeHtml(pTimeLabel)}</td>
+          ${colsHtml}
+        </tr>
+      `;
+    }
+
+    container.innerHTML = `
+      <table class="comcigan-table">
+        <thead>
+          <tr>
+            <th>교시</th>
+            ${[0, 1, 2, 3, 4]
+              .map(
+                (w) =>
+                  `<th class="${w === todayWIdx ? 'today-col' : ''}">${WEEKDAY_LABELS[w]}요일</th>`
+              )
+              .join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+    `;
+
+    container.querySelectorAll('.tt-cell').forEach((td) => {
+      td.addEventListener('click', () => {
+        const w = Number(td.getAttribute('data-w'));
+        const p = Number(td.getAttribute('data-p'));
+        const grp = td.getAttribute('data-group');
+        if (store.state.ui.isAdmin) {
+          openTimetableCellModal(w, p);
+        } else if (grp) {
+          store.setUI({ activeTab: 'calendar', filterSubjectId: 'group:' + grp });
+        }
+      });
+    });
+  }
+
+  // ==========================================================================
+  // 5. 탭 3: 예상 성적표 & 등급 계산기 렌더링
+  // ==========================================================================
+  function renderGradeReportTab(state) {
+    const kpiGrid = document.getElementById('gradeKpiGrid');
+    const tableWrap = document.getElementById('gradeSummaryTableWrap');
+    const cardsContainer = document.getElementById('subjectScoreCardsContainer');
+    if (!kpiGrid || !tableWrap || !cardsContainer) return;
+
+    const isAdmin = !!state.ui.isAdmin;
+    const report = store.calculateGradeReport();
+    const { rows, summary } = report;
+
+    kpiGrid.innerHTML = `
+      <div class="grade-kpi-card">
+        <span class="kpi-label">입력 과목</span>
+        <span class="kpi-value">${summary.enteredSubjectsCount} / ${summary.totalSubjectsCount}</span>
+      </div>
+      <div class="grade-kpi-card">
+        <span class="kpi-label">예상 평균 점수</span>
+        <span class="kpi-value">${summary.enteredSubjectsCount > 0 ? `${summary.avgScore}점` : '-'}</span>
+      </div>
+      <div class="grade-kpi-card">
+        <span class="kpi-label">단위 가중 평균</span>
+        <span class="kpi-value">${summary.enteredSubjectsCount > 0 ? `${summary.weightedAvgScore}점` : '-'}</span>
+      </div>
+      <div class="grade-kpi-card">
+        <span class="kpi-label">A등급 예상</span>
+        <span class="kpi-value" style="color:var(--accent-green);">${summary.countA}과목</span>
+      </div>
+    `;
+
+    const tableRowsHtml = rows
+      .map((r) => {
+        const { plan, exam1Weighted, exam2Weighted, perfEarned, perfEnteredMax, earnedTotal, enteredMaxTotal, projectedScore, gradeInfo } = r;
+        const exam1Cell =
+          plan.exam1Ratio > 0
+            ? exam1Weighted !== null
+              ? `<strong>${exam1Weighted}</strong> / ${plan.exam1Ratio}`
+              : `<span style="color:var(--text-muted)">- (${plan.exam1Ratio}%)</span>`
+            : `<span style="color:var(--text-muted)">-</span>`;
+
+        const exam2Cell =
+          plan.exam2Ratio > 0
+            ? exam2Weighted !== null
+              ? `<strong>${exam2Weighted}</strong> / ${plan.exam2Ratio}`
+              : `<span style="color:var(--text-muted)">- (${plan.exam2Ratio}%)</span>`
+            : `<span style="color:var(--text-muted)">-</span>`;
+
+        const perfCell =
+          perfEnteredMax > 0
+            ? `<strong>${perfEarned}</strong> / ${perfEnteredMax}%`
+            : `<span style="color:var(--text-muted)">- (${plan.perfRatio}%)</span>`;
+
+        const totalCell = enteredMaxTotal > 0 ? `<strong>${earnedTotal}점</strong>` : `-`;
+        const projCell =
+          projectedScore !== null
+            ? `<strong style="color:var(--primary)">${enteredMaxTotal === 100 ? earnedTotal : projectedScore}점</strong>`
+            : `-`;
+
+        return `
+          <tr>
+            <td><span class="subject-tag" style="background:${plan.color}">${escapeHtml(plan.name)}</span></td>
+            <td>${plan.credits}</td>
+            <td>${exam1Cell}</td>
+            <td>${exam2Cell}</td>
+            <td>${perfCell}</td>
+            <td>${totalCell}</td>
+            <td>${projCell}</td>
+            <td><span class="grade-pill ${gradeInfo.cls}">${gradeInfo.grade}</span></td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    tableWrap.innerHTML = `
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>과목</th>
+            <th>단위</th>
+            <th>1차 지필</th>
+            <th>2차 지필</th>
+            <th>수행평가</th>
+            <th>현재 합계</th>
+            <th>100점 환산</th>
+            <th>예상 등급</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRowsHtml}
+        </tbody>
+      </table>
+    `;
+
+    cardsContainer.innerHTML = rows
+      .map((r) => {
+        const { plan, userScore, areaDetails, earnedTotal, enteredMaxTotal, projectedScore, gradeInfo, guideMessage } = r;
+        let inputsHtml = '';
+
+        if (plan.exam1Ratio > 0) {
+          inputsHtml += `
+            <div class="score-input-row">
+              <div class="row-title">
+                ✏️ 1차 정기시험 (${plan.exam1Ratio}%)
+              </div>
+              <div class="score-input-box">
+                <input type="number" class="score-num-input" min="0" max="100" step="0.5"
+                  placeholder="0~100" value="${userScore.exam1 !== '' && userScore.exam1 !== undefined ? userScore.exam1 : ''}"
+                  data-score-plan="${escapeHtml(plan.id)}" data-score-field="exam1" />
+                <span>/ 100</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (plan.exam2Ratio > 0) {
+          inputsHtml += `
+            <div class="score-input-row">
+              <div class="row-title">
+                ✏️ 2차 정기시험 (${plan.exam2Ratio}%)
+              </div>
+              <div class="score-input-box">
+                <input type="number" class="score-num-input" min="0" max="100" step="0.5"
+                  placeholder="0~100" value="${userScore.exam2 !== '' && userScore.exam2 !== undefined ? userScore.exam2 : ''}"
+                  data-score-plan="${escapeHtml(plan.id)}" data-score-field="exam2" />
+                <span>/ 100</span>
+              </div>
+            </div>
+          `;
+        }
+
+        areaDetails.forEach((area) => {
+          inputsHtml += `
+            <div class="score-input-row">
+              <div class="row-title">
+                📋 ${escapeHtml(area.name)} <small style="color:var(--primary);font-weight:700;">(${area.weight}%)</small>
+              </div>
+              <div class="score-input-box">
+                <input type="number" class="score-num-input" min="0" max="${area.weight}" step="0.5"
+                  placeholder="0~${area.weight}" value="${area.isEntered ? area.earned : ''}"
+                  data-score-plan="${escapeHtml(plan.id)}" data-score-field="area" data-area-id="${escapeHtml(area.id)}" />
+                <span>/ ${area.weight}</span>
+                <button type="button" class="btn btn-secondary btn-sm" data-fill-max-plan="${escapeHtml(plan.id)}" data-fill-max-area="${escapeHtml(area.id)}" data-fill-max-val="${area.weight}">만점</button>
+              </div>
+            </div>
+          `;
+        });
+
+        const adminEditPlanBtn = isAdmin
+          ? `<button type="button" class="btn btn-secondary btn-sm" data-edit-plan="${escapeHtml(plan.id)}">⚙️ 수정</button>`
+          : '';
+
+        return `
+          <div class="subject-score-card">
+            <div class="score-card-header">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="subject-tag" style="background:${plan.color};font-size:0.84rem;">
+                  ${escapeHtml(plan.name)}
+                </span>
+                <span style="font-size:0.78rem;color:var(--text-sub);font-weight:700;">
+                  현재 ${earnedTotal}점 ${projectedScore !== null && enteredMaxTotal < 100 ? `(환산 ${projectedScore}점)` : ''}
+                </span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="grade-pill ${gradeInfo.cls}">
+                  ${gradeInfo.grade === '-' ? '-' : `${gradeInfo.grade}등급`}
+                </span>
+                ${adminEditPlanBtn}
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              ${inputsHtml}
+            </div>
+
+            <div class="guide-callout">
+              ${escapeHtml(guideMessage)}
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+    cardsContainer.querySelectorAll('.score-num-input').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        store.updatePersonalScore(
+          inp.getAttribute('data-score-plan'),
+          inp.getAttribute('data-score-field'),
+          inp.value,
+          inp.getAttribute('data-area-id')
+        );
+      });
+    });
+
+    cardsContainer.querySelectorAll('[data-fill-max-plan]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        store.updatePersonalScore(
+          btn.getAttribute('data-fill-max-plan'),
+          'area',
+          Number(btn.getAttribute('data-fill-max-val')),
+          btn.getAttribute('data-fill-max-area')
+        );
+      });
+    });
+
+    cardsContainer.querySelectorAll('[data-edit-plan]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        openSubjectPlanModal(btn.getAttribute('data-edit-plan'));
+      });
+    });
+  }
+
+  // ==========================================================================
+  // 6. 관리자 전용 모달 제어
+  // ==========================================================================
+  function populateSubjectSelect(selectedId) {
+    const sel = document.getElementById('inputSubject');
+    if (!sel) return;
+    sel.innerHTML = store.state.subjects
+      .map(
+        (s) =>
+          `<option value="${escapeHtml(s.id)}" ${s.id === selectedId ? 'selected' : ''}>${escapeHtml(s.name)}</option>`
+      )
+      .join('');
+  }
+
+  function updateTimetableHintInModal() {
+    const selSub = document.getElementById('inputSubject');
+    const inpDate = document.getElementById('inputDueDate');
+    const selPeriod = document.getElementById('inputPeriod');
+    const hintBox = document.getElementById('timetableHintBox');
+    if (!selSub || !inpDate || !selPeriod || !hintBox) return;
+
+    const subjectId = selSub.value;
+    const dateStr = inpDate.value;
+    const subj = store.getSubjectById(subjectId);
+    if (!subj) return;
+
+    const weeklySlots = store.getSubjectWeeklySlots(subjectId);
+    const matchingPeriods = store.getMatchingPeriodsForDate(subjectId, dateStr);
+    const slotDesc =
+      weeklySlots.length > 0
+        ? weeklySlots.map((s) => `${s.weekdayName} ${s.period}교시`).join(', ')
+        : '시간표 배정 없음';
+
+    if (matchingPeriods.length > 0) {
+      if (!selPeriod.value) {
+        selPeriod.value = String(matchingPeriods[0]);
+      }
+      hintBox.innerHTML = `✨ 선택한 날짜에는 <strong>${escapeHtml(subj.name)} 수업이 ${matchingPeriods.join(', ')}교시</strong>에 있습니다.`;
+    } else {
+      hintBox.innerHTML = `ℹ️ <strong>${escapeHtml(subj.name)}</strong> 주간 수업: [${escapeHtml(slotDesc)}]`;
+    }
+  }
+
+  function openAssessmentModal(prefill = {}) {
+    if (!store.state.ui.isAdmin) {
+      document.getElementById('modalAdminLogin').classList.add('open');
+      return;
+    }
+    const modal = document.getElementById('modalAssessment');
+    const titleEl = document.getElementById('modalAssessmentTitle');
+    if (!modal) return;
+
+    const isEdit = !!prefill.id && store.state.rawAssessments.some((a) => a.id === prefill.id);
+    if (titleEl) {
+      titleEl.textContent = isEdit ? '수행평가 수정' : '새 수행평가 등록';
+    }
+
+    const defaultSubId =
+      prefill.subjectId || (store.state.subjects[0] ? store.state.subjects[0].id : '');
+    populateSubjectSelect(defaultSubId);
+
+    document.getElementById('inputTaskId').value = isEdit ? prefill.id : '';
+    document.getElementById('inputTitle').value = prefill.title || '';
+    document.getElementById('inputType').value = prefill.type || '보고서';
+    document.getElementById('inputDueDate').value =
+      prefill.dueDate || store.state.ui.selectedDate || getTodayStr();
+    document.getElementById('inputPeriod').value = prefill.period ? String(prefill.period) : '';
+    document.getElementById('inputWeight').value =
+      prefill.weight !== undefined ? prefill.weight : 20;
+    document.getElementById('inputMemo').value = prefill.memo || '';
+
+    const subtasksText = Array.isArray(prefill.subtasks)
+      ? prefill.subtasks.map((s) => s.text).join('\n')
+      : '';
+    document.getElementById('inputSubtasks').value = subtasksText;
+
+    updateTimetableHintInModal();
+    modal.classList.add('open');
+  }
+
+  function closeAssessmentModal() {
+    const modal = document.getElementById('modalAssessment');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function openSubjectPlanModal(planId) {
+    if (!store.state.ui.isAdmin) return;
+    const plan = store.getPlanById(planId);
+    if (!plan) return;
+    const modal = document.getElementById('modalSubjectPlan');
+    if (!modal) return;
+
+    document.getElementById('inputPlanId').value = plan.id;
+    document.getElementById('inputPlanName').value = plan.name;
+    document.getElementById('inputPlanCredits').value = plan.credits;
+    document.getElementById('inputPlanExam1').value = plan.exam1Ratio;
+    document.getElementById('inputPlanExam2').value = plan.exam2Ratio;
+    document.getElementById('inputPlanPerf').value = plan.perfRatio;
+    document.getElementById('inputPlanScale').value = plan.gradeScale || '5tier';
+
+    const areasLines = (plan.areas || [])
+      .map((a) => `${a.name} : ${a.weight}`)
+      .join('\n');
+    document.getElementById('inputPlanAreasText').value = areasLines;
+
+    modal.classList.add('open');
+  }
+
+  function openTimetableCellModal(weekdayIdx, period) {
+    if (!store.state.ui.isAdmin) return;
+    const modal = document.getElementById('modalTimetableCell');
+    if (!modal) return;
+    const key = `${weekdayIdx}-${period}`;
+    const cell = store.state.timetable[key] || { subject: '' };
+    const nextDateStr = getNextDateForWeekday(getTodayStr(), weekdayIdx);
+
+    activeCellModalContext = {
+      weekdayIdx,
+      period,
+      dateStr: nextDateStr,
+      subjectName: cell.subject
+    };
+
+    document.getElementById('modalTtCellTitle').textContent =
+      `${WEEKDAY_LABELS[weekdayIdx]}요일 ${period}교시`;
+
+    const summaryBox = document.getElementById('ttCellSummaryBox');
+    summaryBox.innerHTML = cell.subject
+      ? `현재 과목: <strong>${escapeHtml(cell.subject)}</strong> (${formatKoreanDate(nextDateStr)})`
+      : `현재 비어 있는 교시입니다.`;
+
+    document.getElementById('inputCellSubject').value = cell.subject || '';
+    modal.classList.add('open');
+  }
+
+  // ==========================================================================
+  // 7. 전체 리렌더링 & 초기화
+  // ==========================================================================
+  function renderAll(state) {
+    renderTopNav(state);
+
+    const activeTab = state.ui.activeTab || 'calendar';
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === activeTab);
+    });
+
+    document.getElementById('viewCalendar').style.display =
+      activeTab === 'calendar' ? 'block' : 'none';
+    document.getElementById('viewTimetable').style.display =
+      activeTab === 'timetable' ? 'block' : 'none';
+    document.getElementById('viewGrades').style.display =
+      activeTab === 'grades' ? 'block' : 'none';
+
+    if (activeTab === 'calendar') {
+      renderCalendarTab(state);
+    } else if (activeTab === 'timetable') {
+      renderFullTimetable(state);
+    } else if (activeTab === 'grades') {
+      renderGradeReportTab(state);
+    }
+  }
+
+  function initConsentModal() {
+    const modal = document.getElementById('modalTermsConsent');
+    const chk = document.getElementById('chkTermsAgree');
+    const btnAccept = document.getElementById('btnAcceptTerms');
+    const btnReopen = document.getElementById('btnReopenTerms');
+
+    if (!store.hasAgreedTerms()) {
+      modal.classList.add('open');
+    }
+
+    btnAccept.addEventListener('click', () => {
+      if (!chk.checked) {
+        alert('안내사항 확인 및 동의 체크박스를 선택해 주세요.');
+        return;
+      }
+      store.acceptTerms();
+      modal.classList.remove('open');
+      showToast('사이트 이용 안내에 동의하셨습니다.');
+    });
+
+    btnReopen.addEventListener('click', () => {
+      chk.checked = store.hasAgreedTerms();
+      modal.classList.add('open');
+    });
+  }
+
+  function initEvents() {
+    initConsentModal();
+
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        store.setUI({ activeTab: btn.getAttribute('data-tab') });
+      });
+    });
+
+    document.getElementById('selQuickSubjectFilter').addEventListener('change', (e) => {
+      store.setUI({ filterSubjectId: e.target.value });
+    });
+
+    // 관리자 로그인/로그아웃
+    document.getElementById('btnAdminToggle').addEventListener('click', () => {
+      if (store.state.ui.isAdmin) {
+        if (window.confirm('관리자 모드를 종료하시겠습니까?')) {
+          store.logoutAdmin();
+          showToast('학생 모드로 전환되었습니다.');
+        }
+      } else {
+        document.getElementById('inputAdminPassword').value = '';
+        document.getElementById('modalAdminLogin').classList.add('open');
+      }
+    });
+
+    document.getElementById('btnCloseAdminLogin').addEventListener('click', () => {
+      document.getElementById('modalAdminLogin').classList.remove('open');
+    });
+
+    document.getElementById('formAdminLogin').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = document.getElementById('inputAdminPassword').value;
+      try {
+        await store.loginAdmin(pw);
+        document.getElementById('modalAdminLogin').classList.remove('open');
+        showToast('🛠️ 관리자 모드가 활성화되었습니다.');
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById('btnAdminLogout').addEventListener('click', () => {
+      store.logoutAdmin();
+      showToast('로그아웃되었습니다.');
+    });
+
+    document.getElementById('btnAdminAddTask').addEventListener('click', () => {
+      openAssessmentModal({ dueDate: store.state.ui.selectedDate });
+    });
+
+    document.getElementById('btnAdminSyncNeis').addEventListener('click', async () => {
+      try {
+        showToast('⏳ 교육부 나이스(NEIS) 공공데이터 시간표를 확인합니다...');
+        const res = await store.adminSyncTimetable();
+        showToast(res && res.message ? res.message : '동기화 완료!');
+      } catch (err) {
+        alert('동기화 오류: ' + err.message);
+      }
+    });
+
+    document.getElementById('btnAddAssessment').addEventListener('click', () => {
+      openAssessmentModal({ dueDate: store.state.ui.selectedDate });
+    });
+    document.getElementById('btnAddOnSelectedDate').addEventListener('click', () => {
+      openAssessmentModal({ dueDate: store.state.ui.selectedDate });
+    });
+
+    // 캘린더 컨트롤
+    document.getElementById('btnModeMonth').addEventListener('click', () => {
+      store.setUI({ calendarMode: 'month' });
+    });
+    document.getElementById('btnModeWeek').addEventListener('click', () => {
+      store.setUI({ calendarMode: 'week' });
+    });
+    document.getElementById('btnCalToday').addEventListener('click', () => {
+      const t = getTodayStr();
+      store.setUI({ selectedDate: t, currentMonthDate: t });
+    });
+    document.getElementById('btnCalPrev').addEventListener('click', () => {
+      const cur = store.state.ui.currentMonthDate || getTodayStr();
+      if (store.state.ui.calendarMode === 'week') {
+        const prevWeek = addDaysStr(cur, -7);
+        store.setUI({ currentMonthDate: prevWeek, selectedDate: prevWeek });
+      } else {
+        const [y, m] = cur.split('-').map(Number);
+        const dt = new Date(y, m - 2, 1);
+        const nextStr = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-01`;
+        store.setUI({ currentMonthDate: nextStr });
+      }
+    });
+    document.getElementById('btnCalNext').addEventListener('click', () => {
+      const cur = store.state.ui.currentMonthDate || getTodayStr();
+      if (store.state.ui.calendarMode === 'week') {
+        const nextWeek = addDaysStr(cur, 7);
+        store.setUI({ currentMonthDate: nextWeek, selectedDate: nextWeek });
+      } else {
+        const [y, m] = cur.split('-').map(Number);
+        const dt = new Date(y, m, 1);
+        const nextStr = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-01`;
+        store.setUI({ currentMonthDate: nextStr });
+      }
+    });
+
+    // 예상 성적표 버튼
+    document.getElementById('btnFillSampleScores').addEventListener('click', () => {
+      store.fillSamplePersonalScores();
+      showToast('✨ 예시 점수가 입력되었습니다.');
+    });
+    document.getElementById('btnClearScores').addEventListener('click', () => {
+      if (window.confirm('입력한 점수를 초기화하시겠습니까?')) {
+        store.clearPersonalScores();
+      }
+    });
+
+    // 수행평가 모달
+    document.getElementById('btnCloseAssessmentModal').addEventListener('click', closeAssessmentModal);
+    document.getElementById('btnCancelAssessment').addEventListener('click', closeAssessmentModal);
+    document.getElementById('inputSubject').addEventListener('change', () => {
+      document.getElementById('inputPeriod').value = '';
+      updateTimetableHintInModal();
+    });
+    document.getElementById('inputDueDate').addEventListener('change', () => {
+      document.getElementById('inputPeriod').value = '';
+      updateTimetableHintInModal();
+    });
+
+    document.getElementById('formAssessment').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('inputTaskId').value;
+      const title = document.getElementById('inputTitle').value.trim();
+      const subjectId = document.getElementById('inputSubject').value;
+      const type = document.getElementById('inputType').value;
+      const dueDate = document.getElementById('inputDueDate').value;
+      const periodVal = document.getElementById('inputPeriod').value;
+      const weight = Number(document.getElementById('inputWeight').value) || 0;
+      const memo = document.getElementById('inputMemo').value.trim();
+      const rawSubtasks = document.getElementById('inputSubtasks').value;
+
+      const subtasks = rawSubtasks
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((text, idx) => ({
+          id: 'st-' + Date.now() + '-' + idx,
+          text
+        }));
+
+      try {
+        await store.adminSaveAssessment({
+          id: id || undefined,
+          title,
+          subjectId,
+          type,
+          dueDate,
+          period: periodVal ? Number(periodVal) : null,
+          weight,
+          memo,
+          subtasks
+        });
+        closeAssessmentModal();
+        showToast('저장되었습니다.');
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // 평가계획 모달
+    document.getElementById('btnCloseSubjectPlanModal').addEventListener('click', () => {
+      document.getElementById('modalSubjectPlan').classList.remove('open');
+    });
+    document.getElementById('formSubjectPlan').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const planId = document.getElementById('inputPlanId').value;
+      const existingPlan = store.getPlanById(planId) || {};
+      const name = document.getElementById('inputPlanName').value.trim();
+      const credits = Number(document.getElementById('inputPlanCredits').value) || 3;
+      const exam1Ratio = Number(document.getElementById('inputPlanExam1').value) || 0;
+      const exam2Ratio = Number(document.getElementById('inputPlanExam2').value) || 0;
+      const perfRatio = Number(document.getElementById('inputPlanPerf').value) || 0;
+      const gradeScale = document.getElementById('inputPlanScale').value;
+      const rawAreas = document.getElementById('inputPlanAreasText').value;
+
+      const areas = rawAreas
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line, idx) => {
+          const parts = line.split(':');
+          const areaWeight = parts.length > 1 ? Number(parts[parts.length - 1].trim()) || 0 : 20;
+          const areaName =
+            parts.length > 1 ? parts.slice(0, -1).join(':').trim() : line;
+          const prevArea = (existingPlan.areas || [])[idx];
+          return {
+            id: prevArea ? prevArea.id : `${planId}-area-${idx + 1}`,
+            name: areaName,
+            weight: areaWeight
+          };
+        });
+
+      try {
+        await store.adminSaveSubjectPlan({
+          id: planId,
+          name,
+          color: existingPlan.color || '#3182F6',
+          credits,
+          exam1Ratio,
+          exam2Ratio,
+          perfRatio,
+          gradeScale,
+          areas
+        });
+        document.getElementById('modalSubjectPlan').classList.remove('open');
+        showToast('평가계획이 업데이트되었습니다.');
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // 시간표 셀 모달
+    document.getElementById('btnCloseTtCellModal').addEventListener('click', () => {
+      document.getElementById('modalTimetableCell').classList.remove('open');
+    });
+    document.getElementById('btnQuickAddFromCell').addEventListener('click', () => {
+      document.getElementById('modalTimetableCell').classList.remove('open');
+      if (!activeCellModalContext) return;
+      const { subjectName, dateStr, period } = activeCellModalContext;
+      const subObj = store.getSubjectByName(subjectName);
+      openAssessmentModal({
+        subjectId: subObj ? subObj.id : undefined,
+        dueDate: dateStr,
+        period
+      });
+    });
+    document.getElementById('btnSaveCellEdit').addEventListener('click', async () => {
+      if (!activeCellModalContext) return;
+      const newSub = document.getElementById('inputCellSubject').value.trim();
+      try {
+        await store.adminUpdateTimetableCell(
+          activeCellModalContext.weekdayIdx,
+          activeCellModalContext.period,
+          newSub
+        );
+        document.getElementById('modalTimetableCell').classList.remove('open');
+        showToast('시간표가 수정되었습니다.');
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
+
+  store.subscribe(renderAll);
+  initEvents();
+  renderAll(store.state);
+
+  if (window.location.protocol.startsWith('http')) {
+    store.fetchBootstrapFromServer().catch(() => {});
+  }
+})();
+
+</script>
 </body>
 </html>
