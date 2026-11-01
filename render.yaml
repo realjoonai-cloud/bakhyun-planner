@@ -6,6 +6,6 @@ services:
     startCommand: "python3 server.py"
     envVars:
       - key: ADMIN_PASSWORD
-        value: "1300"
+        sync: false
       - key: PYTHON_VERSION
         value: "3.11.0"

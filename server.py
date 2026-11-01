@@ -10,10 +10,12 @@
 
 import datetime
 import hashlib
+import hmac
 import http.server
 import json
 import os
 import re
+import secrets
 import socketserver
 import sqlite3
 import sys
@@ -28,7 +30,9 @@ NEIS_BASE_URL = "https://open.neis.go.kr/hub"
 NEIS_OFFICE_CODE = "J10"       # 경기도교육청
 NEIS_SCHOOL_CODE = "7531032"   # 성남 백현중학교 표준학교코드
 
-DEFAULT_ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "1300")
+# 환경변수 ADMIN_PASSWORD가 없으면 서버 시작 시 임시 난수 비밀번호를 생성해 콘솔에 출력
+DEFAULT_ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or secrets.token_urlsafe(8)
+PASSWORD_SALT = os.environ.get("PASSWORD_SALT", "baekhyun_planner_salt_v3")
 
 # ============================================================================
 # 초기 시드 데이터 (교사 성함 일절 없음)
@@ -380,7 +384,8 @@ def _build_initial_assessments() -> list:
 # ============================================================================
 
 def _hash_pw(pw: str) -> str:
-    return hashlib.sha256(pw.encode("utf-8")).hexdigest()
+    salted = f"{PASSWORD_SALT}:{pw}".encode("utf-8")
+    return hashlib.sha256(salted).hexdigest()
 
 
 def get_db_conn() -> sqlite3.Connection:
@@ -460,13 +465,6 @@ def init_db():
         )
         """
     )
-
-    cur.execute("SELECT value FROM settings WHERE key = 'admin_password_hash'")
-    if not cur.fetchone():
-        cur.execute(
-            "INSERT INTO settings (key, value) VALUES (?, ?)",
-            ("admin_password_hash", _hash_pw(DEFAULT_ADMIN_PASSWORD)),
-        )
 
     cur.execute("SELECT value FROM settings WHERE key = 'school_info'")
     if not cur.fetchone():
@@ -644,9 +642,8 @@ def verify_admin_password(pw: str) -> bool:
     cur.execute("SELECT value FROM settings WHERE key = 'admin_password_hash'")
     row = cur.fetchone()
     conn.close()
-    if not row:
-        return pw == DEFAULT_ADMIN_PASSWORD
-    return row["value"] == _hash_pw(pw)
+    target_hash = row["value"] if row else _hash_pw(DEFAULT_ADMIN_PASSWORD)
+    return hmac.compare_digest(target_hash, _hash_pw(pw))
 
 
 # ============================================================================
@@ -657,10 +654,7 @@ def _http_get(url: str, encoding: str = "utf-8", timeout: float = 6.0) -> str:
     req = urllib.request.Request(
         url,
         headers={
-            "User-Agent": (
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-            )
+            "User-Agent": "BaekhyunPlanner/3.0 (Student Educational Project; NEIS OpenAPI Client)"
         },
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -894,6 +888,23 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(400, {"ok": False, "error": "제목, 과목, 마감일은 필수입니다."})
                 return
 
+            if len(title) > 100:
+                self._send_json(400, {"ok": False, "error": "제목은 100자 이내로 입력해 주세요."})
+                return
+
+            if len(memo) > 500:
+                self._send_json(400, {"ok": False, "error": "안내 메모는 500자 이내로 입력해 주세요."})
+                return
+
+            subtasks = [
+                {
+                    "id": str(st.get("id", f"st-{idx}"))[:40],
+                    "text": str(st.get("text", "")).strip()[:200],
+                }
+                for idx, st in enumerate(subtasks[:20])
+                if isinstance(st, dict) and str(st.get("text", "")).strip()
+            ]
+
             conn = get_db_conn()
             cur = conn.cursor()
             cur.execute(
@@ -1045,6 +1056,8 @@ def run_server(port: int = 8080):
         print("============================================================")
         print(" 🏫 백현중학교 1-3반 수행평가 & 성적표 DB 서버 v3")
         print(f" 🗄️ SQLite DB 파일: {DB_PATH}")
+        if not os.environ.get("ADMIN_PASSWORD"):
+            print(f" 🔑 [임시 관리자 비밀번호]: {DEFAULT_ADMIN_PASSWORD} (환경변수 ADMIN_PASSWORD 미설정)")
         print(f" 👉 브라우저 접속 주소: http://localhost:{port}")
         print("============================================================")
         try:
