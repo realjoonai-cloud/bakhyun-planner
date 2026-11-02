@@ -174,6 +174,17 @@ button {
   color: var(--text-main);
 }
 
+.btn-survey {
+  background: #EEF2FF;
+  color: #3182F6;
+  border: 1px solid #C7D2FE;
+  text-decoration: none;
+}
+
+.btn-survey:hover {
+  background: #E0E7FF;
+}
+
 .btn-sm {
   padding: 6px 11px;
   font-size: 0.78rem;
@@ -1081,6 +1092,15 @@ button {
       </nav>
 
       <div class="nav-right">
+        <a
+          href="https://forms.gle/q2ZL1RzxNpKVHxE56"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-survey btn-sm"
+          id="btnHeaderSurvey"
+        >
+          📝 설문 참여
+        </a>
         <button type="button" class="btn btn-secondary btn-sm" id="btnAdminToggle">
           🔒 관리자
         </button>
@@ -1428,6 +1448,40 @@ button {
         <div style="display: flex; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary btn-sm" id="btnSaveCellEdit">과목명 저장</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 5: 설문조사 참여 안내 모달 (약 2분마다 표시)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalSurveyPrompt">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 460px; text-align: center;">
+      <div style="font-size: 2.2rem; margin-bottom: 8px;">📝</div>
+      <h3 class="modal-title" style="margin-bottom: 10px;">사이트 이용 만족도 및 개선 설문조사 안내</h3>
+      <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 18px; word-break: keep-all;">
+        백현중학교 1학년 3반 학우 여러분의 수행평가 일정 확인과 성적 관리를 돕기 위해 제작된 플래너입니다.<br /><br />
+        실제 사이트를 이용하시면서 느낀 편리한 점이나 불편했던 부분, 앞으로 추가되었으면 하는 기능에 대한 소중한 의견을 듣고자 합니다. 응답해 주신 내용은 모두 익명으로 처리되며, 더 완성도 높은 서비스를 만들고 개선하는 데 큰 도움이 됩니다. 약 1분 정도면 완료되오니 잠시만 시간을 내어 설문에 참여해 주시면 감사하겠습니다!
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a
+          href="https://forms.gle/q2ZL1RzxNpKVHxE56"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+          id="btnGoSurveyModal"
+          style="width: 100%; padding: 12px; text-decoration: none;"
+        >
+          설문조사 참여하러 가기
+        </a>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="btnCloseSurveyModal"
+          style="width: 100%; padding: 10px;"
+        >
+          닫기 (3분 뒤 다시 알림)
+        </button>
       </div>
     </div>
   </div>
@@ -3656,6 +3710,31 @@ button {
         alert(err.message);
       }
     });
+
+    // 설문조사 유도 모달 (3분마다 표시)
+    const modalSurvey = document.getElementById('modalSurveyPrompt');
+    const btnCloseSurvey = document.getElementById('btnCloseSurveyModal');
+    const btnGoSurvey = document.getElementById('btnGoSurveyModal');
+
+    if (btnCloseSurvey && modalSurvey) {
+      btnCloseSurvey.addEventListener('click', () => {
+        modalSurvey.classList.remove('open');
+      });
+    }
+    if (btnGoSurvey && modalSurvey) {
+      btnGoSurvey.addEventListener('click', () => {
+        modalSurvey.classList.remove('open');
+        showToast('🙏 설문에 참여해 주셔서 감사합니다!');
+      });
+    }
+
+    setInterval(() => {
+      const termsModal = document.getElementById('modalTermsConsent');
+      if (termsModal && termsModal.classList.contains('open')) return;
+      if (modalSurvey && !modalSurvey.classList.contains('open')) {
+        modalSurvey.classList.add('open');
+      }
+    }, 180000);
   }
 
   store.subscribe(renderAll);
