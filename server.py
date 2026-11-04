@@ -19,6 +19,8 @@ import secrets
 import socketserver
 import sqlite3
 import sys
+import threading
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -394,6 +396,19 @@ def get_db_conn() -> sqlite3.Connection:
     return conn
 
 
+def _bump_db_version(cur, explicit_ts: int = None) -> int:
+    cur.execute("SELECT value FROM settings WHERE key = 'school_info'")
+    row = cur.fetchone()
+    info = json.loads(row["value"]) if row else {}
+    ts = int(explicit_ts) if explicit_ts is not None else int(time.time() * 1000)
+    info["dbUpdatedAt"] = ts
+    cur.execute(
+        "INSERT OR REPLACE INTO settings (key, value) VALUES ('school_info', ?)",
+        (json.dumps(info, ensure_ascii=False),),
+    )
+    return ts
+
+
 def init_db():
     conn = get_db_conn()
     cur = conn.cursor()
@@ -477,6 +492,7 @@ def init_db():
             "classNum": 3,
             "lastSyncAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
             "syncSource": "neis_and_db",
+            "dbUpdatedAt": 0,
             "periodTimes": [
                 "1(09:00)", "2(09:55)", "3(10:50)", "4(11:45)",
                 "5(13:20)", "6(14:15)", "7(15:10)"
@@ -863,6 +879,85 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(401, {"ok": False, "error": "관리자 비밀번호가 일치하지 않습니다."})
             return
 
+        if parsed.path == "/api/bootstrap/restore":
+            incoming_ts = int(body.get("dbUpdatedAt", 0) or 0)
+            if incoming_ts <= 0:
+                self._send_json(400, {"ok": False, "error": "유효하지 않은 복구 타임스탬프입니다."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT value FROM settings WHERE key = 'school_info'")
+            s_row = cur.fetchone()
+            s_info = json.loads(s_row["value"]) if s_row else {}
+            current_ts = int(s_info.get("dbUpdatedAt", 0) or 0)
+
+            # 서버가 초기화된 직후(current_ts == 0)이거나 관리자 인증이 된 경우 더 최신 스냅샷으로 자동 복구
+            if incoming_ts > current_ts and (current_ts == 0 or self._check_admin(body)):
+                assessments = body.get("assessments")
+                if isinstance(assessments, list) and len(assessments) <= 200:
+                    cur.execute("DELETE FROM assessments")
+                    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                    for a in assessments:
+                        if not isinstance(a, dict):
+                            continue
+                        t_id = str(a.get("id") or "")[:60]
+                        title = str(a.get("title") or "").strip()[:100]
+                        sub_id = str(a.get("subjectId") or "").strip()[:50]
+                        due_date = str(a.get("dueDate") or "").strip()[:20]
+                        if not t_id or not title or not sub_id or not due_date:
+                            continue
+                        period = a.get("period")
+                        period_int = int(period) if period not in (None, "", 0, "0") else None
+                        subtasks = a.get("subtasks", [])
+                        if not isinstance(subtasks, list):
+                            subtasks = []
+                        clean_subtasks = [
+                            {
+                                "id": str(st.get("id", f"st-{idx}"))[:40],
+                                "text": str(st.get("text", "")).strip()[:200],
+                            }
+                            for idx, st in enumerate(subtasks[:20])
+                            if isinstance(st, dict) and str(st.get("text", "")).strip()
+                        ]
+                        cur.execute(
+                            """
+                            INSERT OR REPLACE INTO assessments
+                            (id, title, subject_id, plan_id, area_id, type, due_date, period, weight, memo, subtasks_json, updated_at)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            """,
+                            (
+                                t_id,
+                                title,
+                                sub_id,
+                                str(a.get("planId") or "")[:50],
+                                str(a.get("areaId") or "")[:50],
+                                str(a.get("type") or "보고서")[:30],
+                                due_date,
+                                period_int,
+                                int(a.get("weight", 0) or 0),
+                                str(a.get("memo") or "").strip()[:500],
+                                json.dumps(clean_subtasks, ensure_ascii=False),
+                                str(a.get("updatedAt") or now_str)[:30],
+                            ),
+                        )
+
+                timetable = body.get("timetable")
+                if isinstance(timetable, dict) and len(timetable) <= 60:
+                    cur.execute("DELETE FROM timetable")
+                    for slot_key, cell in timetable.items():
+                        if isinstance(cell, dict) and cell.get("subject"):
+                            cur.execute(
+                                "INSERT OR REPLACE INTO timetable (slot_key, subject, changed) VALUES (?, ?, ?)",
+                                (str(slot_key)[:10], str(cell["subject"]).strip()[:30], 1 if cell.get("changed") else 0),
+                            )
+
+                _bump_db_version(cur, explicit_ts=incoming_ts)
+                conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
         if parsed.path.startswith("/api/admin/"):
             if not self._check_admin(body):
                 self._send_json(401, {"ok": False, "error": "서버 관리자 권한이 필요합니다."})
@@ -928,6 +1023,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                     datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                 ),
             )
+            _bump_db_version(cur)
             conn.commit()
             conn.close()
             self._send_json(200, get_bootstrap_data())
@@ -938,6 +1034,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             conn = get_db_conn()
             cur = conn.cursor()
             cur.execute("DELETE FROM assessments WHERE id = ?", (task_id,))
+            _bump_db_version(cur)
             conn.commit()
             conn.close()
             self._send_json(200, get_bootstrap_data())
@@ -985,6 +1082,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                     sort_order,
                 ),
             )
+            _bump_db_version(cur)
             conn.commit()
             conn.close()
             self._send_json(200, get_bootstrap_data())
@@ -1013,6 +1111,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                         "INSERT INTO subjects (id, name, group_name, plan_id, color, sort_order) VALUES (?, ?, ?, '', '#64748B', 99)",
                         (sub_id, subject_name, subject_name[:2]),
                     )
+            _bump_db_version(cur)
             conn.commit()
             conn.close()
             self._send_json(200, get_bootstrap_data())
@@ -1048,9 +1147,27 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
         sys.stderr.write("[Server] %s - %s\n" % (self.address_string(), fmt % args))
 
 
+def _start_keepalive_thread():
+    """Render 무료 인스턴스 15분 절전(Spin-down) 및 DB 초기화 방지를 위한 8분 주기 Keep-Alive 핑"""
+    external_url = os.environ.get("RENDER_EXTERNAL_URL", "https://bakhyun-planner.onrender.com").rstrip("/")
+    health_url = f"{external_url}/healthz"
+
+    def _ping_loop():
+        while True:
+            time.sleep(480)
+            try:
+                _http_get(health_url, timeout=10.0)
+            except Exception:
+                pass
+
+    t = threading.Thread(target=_ping_loop, daemon=True)
+    t.start()
+
+
 def run_server(port: int = 8080):
     init_db()
     os.chdir(BASE_DIR)
+    _start_keepalive_thread()
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", port), SuhaengDBRequestHandler) as httpd:
         print("============================================================")

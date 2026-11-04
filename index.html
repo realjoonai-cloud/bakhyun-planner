@@ -1502,6 +1502,7 @@ button {
   const CACHE_STORAGE_KEY = 'suhaeng_baekhyun_1_3_db_cache_v3';
   const ADMIN_SESSION_KEY = 'suhaeng_baekhyun_admin_pw';
   const TERMS_CONSENT_KEY = 'suhaeng_baekhyun_terms_consent_v1';
+  const SURVEY_DONE_KEY = 'suhaeng_baekhyun_survey_done_v1';
 
   function getTodayStr() {
     const now = new Date();
@@ -1816,6 +1817,9 @@ button {
         if (typeof sessionStorage !== 'undefined') {
           this.adminPassword = sessionStorage.getItem(ADMIN_SESSION_KEY) || '';
         }
+        if (!this.adminPassword && typeof localStorage !== 'undefined') {
+          this.adminPassword = localStorage.getItem(ADMIN_SESSION_KEY) || '';
+        }
       } catch (e) {}
 
       this.state = this.loadInitialState();
@@ -1832,6 +1836,20 @@ button {
     acceptTerms() {
       try {
         localStorage.setItem(TERMS_CONSENT_KEY, 'agreed');
+      } catch (e) {}
+    }
+
+    hasCompletedSurvey() {
+      try {
+        return localStorage.getItem(SURVEY_DONE_KEY) === 'done';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    markSurveyCompleted() {
+      try {
+        localStorage.setItem(SURVEY_DONE_KEY, 'done');
       } catch (e) {}
     }
 
@@ -1995,6 +2013,36 @@ button {
       if (!data || !data.ok) {
         throw new Error('유효하지 않은 부트스트랩 응답');
       }
+
+      const serverTs = Number((data.schoolInfo && data.schoolInfo.dbUpdatedAt) || 0);
+      const localTs = Number((this.state.schoolInfo && this.state.schoolInfo.dbUpdatedAt) || 0);
+
+      // 서버 컨테이너가 재시작되어 초기(dbUpdatedAt == 0)로 돌아갔는데 내 브라우저에 더 최신 일정이 있는 경우 자동 복구
+      if (localTs > serverTs) {
+        try {
+          const restoreResp = await fetch('/api/bootstrap/restore', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Password': this.adminPassword || ''
+            },
+            body: JSON.stringify({
+              dbUpdatedAt: localTs,
+              assessments: this.state.rawAssessments,
+              timetable: this.state.timetable
+            })
+          });
+          if (restoreResp.ok) {
+            const restoredData = await restoreResp.json();
+            if (restoredData && restoredData.ok) {
+              this.applyServerBootstrapData(restoredData);
+              return restoredData;
+            }
+          }
+        } catch (e) {}
+        return this.state;
+      }
+
       this.applyServerBootstrapData(data);
       return data;
     }
@@ -2027,6 +2075,9 @@ button {
         if (typeof sessionStorage !== 'undefined') {
           sessionStorage.setItem(ADMIN_SESSION_KEY, trimmed);
         }
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(ADMIN_SESSION_KEY, trimmed);
+        }
       } catch (e) {}
       this.state.ui.isAdmin = true;
       this.notify();
@@ -2038,6 +2089,9 @@ button {
       try {
         if (typeof sessionStorage !== 'undefined') {
           sessionStorage.removeItem(ADMIN_SESSION_KEY);
+        }
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem(ADMIN_SESSION_KEY);
         }
       } catch (e) {}
       this.state.ui.isAdmin = false;
@@ -3711,30 +3765,58 @@ button {
       }
     });
 
-    // 설문조사 유도 모달 (3분마다 표시)
+    // 설문조사 유도 모달 (3분마다 표시, 설문 링크 클릭 시 영구 종료)
     const modalSurvey = document.getElementById('modalSurveyPrompt');
     const btnCloseSurvey = document.getElementById('btnCloseSurveyModal');
     const btnGoSurvey = document.getElementById('btnGoSurveyModal');
+    const btnHeaderSurvey = document.getElementById('btnHeaderSurvey');
+    let surveyTimerId = null;
+
+    function completeSurveyAndStopTimer() {
+      store.markSurveyCompleted();
+      if (surveyTimerId) {
+        clearInterval(surveyTimerId);
+        surveyTimerId = null;
+      }
+      if (modalSurvey) {
+        modalSurvey.classList.remove('open');
+      }
+      showToast('🙏 설문에 참여해 주셔서 감사합니다! 더 이상 설문 알림이 뜨지 않습니다.');
+    }
 
     if (btnCloseSurvey && modalSurvey) {
       btnCloseSurvey.addEventListener('click', () => {
         modalSurvey.classList.remove('open');
       });
     }
-    if (btnGoSurvey && modalSurvey) {
-      btnGoSurvey.addEventListener('click', () => {
-        modalSurvey.classList.remove('open');
-        showToast('🙏 설문에 참여해 주셔서 감사합니다!');
-      });
+    if (btnGoSurvey) {
+      btnGoSurvey.addEventListener('click', completeSurveyAndStopTimer);
+    }
+    if (btnHeaderSurvey) {
+      btnHeaderSurvey.addEventListener('click', completeSurveyAndStopTimer);
     }
 
-    setInterval(() => {
-      const termsModal = document.getElementById('modalTermsConsent');
-      if (termsModal && termsModal.classList.contains('open')) return;
-      if (modalSurvey && !modalSurvey.classList.contains('open')) {
-        modalSurvey.classList.add('open');
-      }
-    }, 180000);
+    if (!store.hasCompletedSurvey()) {
+      surveyTimerId = setInterval(() => {
+        if (store.hasCompletedSurvey()) {
+          clearInterval(surveyTimerId);
+          surveyTimerId = null;
+          return;
+        }
+        const termsModal = document.getElementById('modalTermsConsent');
+        if (termsModal && termsModal.classList.contains('open')) return;
+        if (modalSurvey && !modalSurvey.classList.contains('open')) {
+          modalSurvey.classList.add('open');
+        }
+      }, 180000);
+    }
+
+    // 서버 절전 방지 및 DB 자동 복구 동기화 (4분 주기)
+    if (window.location.protocol.startsWith('http')) {
+      setInterval(() => {
+        store.fetchBootstrapFromServer().catch(() => {});
+      }, 240000);
+    }
   }
 
   store.subscribe(renderAll);
