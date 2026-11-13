@@ -400,12 +400,12 @@ INITIAL_ACADEMIC_EVENTS = [
     {"id": "acad-1126", "title": "동아리(5,6,7교시)", "startDate": "2026-11-26", "endDate": "2026-11-26", "category": "club", "memo": "목요일 5·6·7교시 동아리 활동"},
     {"id": "acad-1203", "title": "학급운영협의회", "startDate": "2026-12-03", "endDate": "2026-12-03", "category": "event", "memo": ""},
     {"id": "acad-1208", "title": "1, 2학년 2차 정기고사 (1일차)", "startDate": "2026-12-08", "endDate": "2026-12-08", "category": "exam", "memo": "✏️ 1·2학년 2차 지필평가 1일차"},
-    {"id": "acad-1209", "title": "1, 2학년 2차 정기고사 (비급식)", "startDate": "2026-12-09", "endDate": "2026-12-09", "category": "nomeal", "memo": "⚠️ 비급식일 · 1·2학년 2차 지필평가 2일차"},
+    {"id": "acad-1209", "title": "1, 2학년 2차 정기고사 (2일차)", "startDate": "2026-12-09", "endDate": "2026-12-09", "category": "exam", "memo": "✏️ 1·2학년 2차 지필평가 2일차"},
     {"id": "acad-1210", "title": "성매매예방교육", "startDate": "2026-12-10", "endDate": "2026-12-10", "category": "event", "memo": ""},
     {"id": "acad-1214", "title": "진로진학멘토링(2학년)", "startDate": "2026-12-14", "endDate": "2026-12-14", "category": "event", "memo": ""},
     {"id": "acad-1217", "title": "학생자치회 정부회장선거", "startDate": "2026-12-17", "endDate": "2026-12-17", "category": "event", "memo": ""},
     {"id": "acad-1225", "title": "성탄절", "startDate": "2026-12-25", "endDate": "2026-12-25", "category": "holiday", "memo": "공휴일 (수업 없음)"},
-    {"id": "acad-1231", "title": "졸업식 · 종업식 (비급식)", "startDate": "2026-12-31", "endDate": "2026-12-31", "category": "nomeal", "memo": "⚠️ 비급식일 · 2학기 종업식 (겨울방학 59일)"},
+    {"id": "acad-1231", "title": "졸업식 · 종업식", "startDate": "2026-12-31", "endDate": "2026-12-31", "category": "event", "memo": "🏫 2학기 종업식 및 졸업식 (겨울방학 59일)"},
     {"id": "acad-0101", "title": "신정", "startDate": "2027-01-01", "endDate": "2027-01-01", "category": "holiday", "memo": "공휴일"},
     {"id": "acad-0206", "title": "설날 연휴", "startDate": "2027-02-06", "endDate": "2027-02-08", "category": "holiday", "memo": "설날 명절 연휴"},
     {"id": "acad-0209", "title": "설날 대체공휴일", "startDate": "2027-02-09", "endDate": "2027-02-09", "category": "holiday", "memo": "대체공휴일"},
@@ -420,8 +420,8 @@ INITIAL_COMMUNITY_POSTS = [
         "title": "📢 백현중 1-3 수행평가 플래너 v4 업데이트 & 커뮤니티 안내",
         "content": (
             "1학년 3반 친구들 안녕! 수행평가 플래너가 v4로 업그레이드되었어.\n"
-            "1) 상단 [로그인/회원가입]으로 내 아이디를 만들면 어디서든 내 목표 완료일과 수행평가 계획이 저장돼.\n"
-            "2) 2학기 학사일정(11/19 재량휴업일, 12/8~9 2차 지필평가 및 비급식일 등)과 오늘/내일 급식 식단표가 추가되었어.\n"
+            "1) 상단 [로그인/가입]으로 내 아이디를 만들면 어디서든 내 목표 완료일과 수행평가 계획이 저장돼. (1인 1계정 원칙으로 동일 IP 중복 가입은 제한돼)\n"
+            "2) 2학기 학사일정(11/19 재량휴업일, 11/26 동아리, 12/8~9 2차 정기고사 등)과 주간 날짜별 시간표 연동이 추가되었어.\n"
             "3) 사이트를 쓰면서 추가되었으면 하는 기능이나 수행평가 질문이 있으면 여기에 자유롭게 남겨줘!"
         ),
         "isPinned": True,
@@ -559,12 +559,17 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             username TEXT PRIMARY KEY,
             password_hash TEXT NOT NULL,
+            ip_hash TEXT DEFAULT '',
             user_data_json TEXT NOT NULL,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
         """
     )
+    cur.execute("PRAGMA table_info(users)")
+    user_cols = {r["name"] for r in cur.fetchall()}
+    if "ip_hash" not in user_cols:
+        cur.execute("ALTER TABLE users ADD COLUMN ip_hash TEXT DEFAULT ''")
 
     cur.execute(
         """
@@ -685,6 +690,13 @@ def init_db():
                 """,
                 (ev["id"], ev["title"], ev["startDate"], ev["endDate"], ev["category"], ev.get("memo", "")),
             )
+    else:
+        cur.execute(
+            "UPDATE academic_events SET title = '1, 2학년 2차 정기고사 (2일차)', category = 'exam', memo = '✏️ 1·2학년 2차 지필평가 2일차' WHERE id = 'acad-1209'"
+        )
+        cur.execute(
+            "UPDATE academic_events SET title = '졸업식 · 종업식', category = 'event', memo = '🏫 2학기 종업식 및 졸업식 (겨울방학 59일)' WHERE id = 'acad-1231'"
+        )
 
     cur.execute("SELECT COUNT(*) AS cnt FROM community_posts")
     if cur.fetchone()["cnt"] == 0:
@@ -710,6 +722,11 @@ def init_db():
                     p["createdAt"],
                 ),
             )
+    else:
+        cur.execute(
+            "UPDATE community_posts SET content = ? WHERE id = 'post-welcome-1'",
+            (INITIAL_COMMUNITY_POSTS[0]["content"],),
+        )
 
     conn.commit()
     conn.close()
@@ -991,73 +1008,22 @@ def sync_timetable_to_db(api_key: str = "") -> dict:
     }
 
 
-_MEAL_CACHE = {}
-
-
-def fetch_neis_meals_cached(ym: str = "") -> dict:
-    """
-    교육부 나이스(NEIS) 공식 Open API (mealServiceDietInfo)에서 백현중학교 월간 급식 식단표를 조회합니다.
-    """
-    if not ym or len(ym) != 6 or not ym.isdigit():
-        ym = datetime.date.today().strftime("%Y%m")
-
-    now_ts = time.time()
-    cached = _MEAL_CACHE.get(ym)
-    if cached and (now_ts - cached["ts"] < 3600):
-        return cached["meals"]
-
-    params = {
-        "Type": "json",
-        "pIndex": "1",
-        "pSize": "100",
-        "ATPT_OFCDC_SC_CODE": NEIS_OFFICE_CODE,
-        "SD_SCHUL_CODE": NEIS_SCHOOL_CODE,
-        "MLSV_YMD": ym,
-    }
-    env_key = os.environ.get("NEIS_API_KEY", "")
-    if env_key:
-        params["KEY"] = env_key
-
-    meals = {}
-    try:
-        query_str = urllib.parse.urlencode(params)
-        url = f"{NEIS_BASE_URL}/mealServiceDietInfo?{query_str}"
-        raw_json = _http_get(url, encoding="utf-8", timeout=5.0)
-        data = json.loads(raw_json)
-        if "mealServiceDietInfo" in data:
-            rows = []
-            for block in data["mealServiceDietInfo"]:
-                if "row" in block:
-                    rows.extend(block["row"])
-            for r in rows:
-                ymd = str(r.get("MLSV_YMD", "")).strip()
-                ddish = str(r.get("DDISH_NM", "")).strip()
-                cal = str(r.get("CAL_INFO", "")).strip()
-                if len(ymd) == 8 and ddish:
-                    date_str = f"{ymd[:4]}-{ymd[4:6]}-{ymd[6:8]}"
-                    items = []
-                    for part in re.split(r"<br\s*/?>|\n", ddish):
-                        cleaned = re.sub(r"\([0-9\.\s]+\)", "", part)
-                        cleaned = re.sub(r"[\*\s]+$", "", cleaned).strip()
-                        if cleaned:
-                            items.append(cleaned)
-                    meals[date_str] = {
-                        "items": items,
-                        "cal": cal,
-                        "source": "neis_official_api",
-                    }
-    except Exception:
-        pass
-
-    _MEAL_CACHE[ym] = {"ts": now_ts, "meals": meals}
-    return meals
-
-
 # ============================================================================
 # HTTP 요청 핸들러 (REST API + 정적 파일 서빙)
 # ============================================================================
 
 class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def _get_client_ip(self) -> str:
+        xff = self.headers.get("X-Forwarded-For", "")
+        if xff:
+            first_ip = xff.split(",")[0].strip()
+            if first_ip:
+                return first_ip
+        real_ip = self.headers.get("X-Real-IP", "").strip()
+        if real_ip:
+            return real_ip
+        return (self.client_address[0] if self.client_address else "unknown").strip()
+
     def _send_json(self, status_code: int, data: dict):
         payload = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status_code)
@@ -1095,13 +1061,6 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         if parsed.path == "/api/bootstrap":
             self._send_json(200, get_bootstrap_data())
-            return
-
-        if parsed.path == "/api/meals":
-            qs = urllib.parse.parse_qs(parsed.query)
-            ym = (qs.get("ym", [""])[0] or "").strip()
-            meals = fetch_neis_meals_cached(ym)
-            self._send_json(200, {"ok": True, "ym": ym, "meals": meals})
             return
 
         return super().do_GET()
@@ -1247,6 +1206,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         # ====================================================================
         # 학생 간편 회원가입 / 로그인 / 내 수행평가 완료 계획 & 점수 동기화 API
+        # (동일 IP에서 2회 이상 중복 가입 방지)
         # ====================================================================
         if parsed.path == "/api/auth/register":
             username = str(body.get("username", "")).strip()
@@ -1263,8 +1223,26 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(400, {"ok": False, "error": "비밀번호는 4자 이상 입력해 주세요."})
                 return
 
+            client_ip = self._get_client_ip()
+            ip_hash = _hash_pw(f"signup_ip:{client_ip}")
+
             conn = get_db_conn()
             cur = conn.cursor()
+
+            if ip_hash:
+                cur.execute("SELECT username FROM users WHERE ip_hash = ?", (ip_hash,))
+                existing_ip_row = cur.fetchone()
+                if existing_ip_row:
+                    conn.close()
+                    self._send_json(
+                        409,
+                        {
+                            "ok": False,
+                            "error": f"동일한 IP에서 이미 가입된 계정('{existing_ip_row['username']}')이 있습니다. 1인 1계정 원칙에 따라 같은 IP에서 두 번 이상 가입할 수 없습니다. 기존 계정으로 로그인해 주세요.",
+                        },
+                    )
+                    return
+
             cur.execute("SELECT username FROM users WHERE username = ?", (username,))
             if cur.fetchone():
                 conn.close()
@@ -1274,10 +1252,10 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
             now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
             cur.execute(
                 """
-                INSERT INTO users (username, password_hash, user_data_json, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO users (username, password_hash, ip_hash, user_data_json, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
-                (username, _hash_pw(password), json.dumps(initial_data, ensure_ascii=False), now_str, now_str),
+                (username, _hash_pw(password), ip_hash, json.dumps(initial_data, ensure_ascii=False), now_str, now_str),
             )
             conn.commit()
             conn.close()
@@ -1312,6 +1290,9 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(401, {"ok": False, "error": "로그인이 필요합니다."})
                 return
 
+            client_ip = self._get_client_ip()
+            ip_hash = _hash_pw(f"signup_ip:{client_ip}")
+
             conn = get_db_conn()
             cur = conn.cursor()
             cur.execute("SELECT * FROM users WHERE username = ?", (username,))
@@ -1321,10 +1302,10 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 # 서버 재시작 등으로 계정이 초기화된 경우 동일 계정 자동 복원
                 cur.execute(
                     """
-                    INSERT INTO users (username, password_hash, user_data_json, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO users (username, password_hash, ip_hash, user_data_json, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
                     """,
-                    (username, _hash_pw(password), json.dumps(user_data, ensure_ascii=False), now_str, now_str),
+                    (username, _hash_pw(password), ip_hash, json.dumps(user_data, ensure_ascii=False), now_str, now_str),
                 )
             else:
                 if not hmac.compare_digest(row["password_hash"], _hash_pw(password)):

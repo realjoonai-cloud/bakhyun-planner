@@ -1,16 +1,18 @@
 /**
- * 백현중학교 1학년 3반 수행평가 플래너 & 예상 성적표 스토어 v2 (store.js)
+ * 백현중학교 1학년 3반 수행평가 플래너 & 예상 성적표 스토어 v3 (store.js)
  * - 학급 공통 데이터(시간표, 평가계획, 수행평가 일정): 서버 SQLite DB (/api/bootstrap)에서 로드
  * - 학생 개인 데이터(데일리 체크, 체크리스트, 내 수행/정기시험 점수): 각자 브라우저 LocalStorage에 저장
- * - 서버 관리자(Admin) 전용 CRUD API 연동 지원
- * - 교사 성함 완전 제거
+ * - 법적 고지 및 사이트 이용 동의 상태 관리
  */
 (function (global) {
   'use strict';
 
-  const PERSONAL_STORAGE_KEY = 'suhaeng_baekhyun_1_3_personal_v2';
-  const CACHE_STORAGE_KEY = 'suhaeng_baekhyun_1_3_db_cache_v2';
+  const PERSONAL_STORAGE_KEY = 'suhaeng_baekhyun_1_3_personal_v3';
+  const CACHE_STORAGE_KEY = 'suhaeng_baekhyun_1_3_db_cache_v4';
   const ADMIN_SESSION_KEY = 'suhaeng_baekhyun_admin_pw';
+  const TERMS_CONSENT_KEY = 'suhaeng_baekhyun_terms_consent_v2';
+  const SURVEY_DONE_KEY = 'suhaeng_baekhyun_survey_done_v1';
+  const USER_AUTH_STORAGE_KEY = 'suhaeng_baekhyun_user_auth_v4';
 
   function getTodayStr() {
     const now = new Date();
@@ -33,7 +35,7 @@
   function getWeekdayIndex(dateStr) {
     const [y, m, d] = dateStr.split('-').map(Number);
     const jsDay = new Date(y, m - 1, d).getDay();
-    return jsDay === 0 ? 6 : jsDay - 1; // 0:월 ~ 4:금, 5:토, 6:일
+    return jsDay === 0 ? 6 : jsDay - 1;
   }
 
   function getNextWeekdayDate(baseStr, targetWeekdayIdx) {
@@ -46,7 +48,6 @@
     return baseStr;
   }
 
-  // 오프라인/파일 직접 열기 폴백용 기본 공통 데이터 (교사 성함 없음)
   const FALLBACK_TIMETABLE = {
     '0-1': { subject: '스포', changed: false },
     '0-2': { subject: '체육', changed: false },
@@ -301,9 +302,6 @@
     ];
   }
 
-  // 중학교 성취도 등급 산출 함수
-  // 일반 교과(5tier): A(90이상), B(80이상), C(70이상), D(60이상), E(60미만)
-  // 체육·예술(3tier): A(80이상), B(60이상), C(60미만)
   function computeAchievementGrade(score, gradeScale) {
     if (score === null || score === undefined || Number.isNaN(score)) {
       return { grade: '-', cls: 'grade-none', targetA: gradeScale === '3tier' ? 80 : 90 };
@@ -321,17 +319,105 @@
     return { grade: 'E', cls: 'grade-e', targetA: 90 };
   }
 
+  const FALLBACK_ACADEMIC_EVENTS = [
+    { id: 'acad-1001', title: '전문직업인특강(1학년)', startDate: '2026-10-01', endDate: '2026-10-01', category: 'event', memo: '1학년 진로 특강' },
+    { id: 'acad-1003', title: '개천절', startDate: '2026-10-03', endDate: '2026-10-03', category: 'holiday', memo: '공휴일' },
+    { id: 'acad-1005', title: '대체공휴일', startDate: '2026-10-05', endDate: '2026-10-05', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1008', title: '정보통신윤리교육', startDate: '2026-10-08', endDate: '2026-10-08', category: 'event', memo: '' },
+    { id: 'acad-1009', title: '한글날', startDate: '2026-10-09', endDate: '2026-10-09', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1013', title: '인적성검사', startDate: '2026-10-13', endDate: '2026-10-13', category: 'event', memo: '' },
+    { id: 'acad-1015', title: '백현제(동아리)', startDate: '2026-10-15', endDate: '2026-10-15', category: 'club', memo: '학교 축제 및 동아리 발표' },
+    { id: 'acad-1022', title: '정보통신윤리교육 · 독도의날 행사', startDate: '2026-10-22', endDate: '2026-10-22', category: 'event', memo: '' },
+    { id: 'acad-1029', title: '학생자치회 정부회장선거', startDate: '2026-10-29', endDate: '2026-10-29', category: 'event', memo: '' },
+    { id: 'acad-1102', title: '학부모상담주간', startDate: '2026-11-02', endDate: '2026-11-06', category: 'event', memo: '11/2(월) ~ 11/6(금) 학부모 상담 주간' },
+    { id: 'acad-1109', title: '3학년 정기고사', startDate: '2026-11-09', endDate: '2026-11-11', category: 'exam', memo: '11/9(월) ~ 11/11(수) 3학년 지필고사' },
+    { id: 'acad-1112', title: '장애인식개선교육(장애이해교육)', startDate: '2026-11-12', endDate: '2026-11-12', category: 'event', memo: '' },
+    { id: 'acad-1116', title: '진로진학멘토링(3학년)', startDate: '2026-11-16', endDate: '2026-11-16', category: 'event', memo: '' },
+    { id: 'acad-1119', title: '대학수학능력시험 · 재량휴업일', startDate: '2026-11-19', endDate: '2026-11-19', category: 'holiday', memo: '🔴 재량휴업일 (등교하지 않음)' },
+    { id: 'acad-1125', title: '교육공동체 대토론회(전학공)', startDate: '2026-11-25', endDate: '2026-11-25', category: 'event', memo: '' },
+    { id: 'acad-1126', title: '동아리(5,6,7교시)', startDate: '2026-11-26', endDate: '2026-11-26', category: 'club', memo: '목요일 5·6·7교시 동아리 활동' },
+    { id: 'acad-1203', title: '학급운영협의회', startDate: '2026-12-03', endDate: '2026-12-03', category: 'event', memo: '' },
+    { id: 'acad-1208', title: '1, 2학년 2차 정기고사 (1일차)', startDate: '2026-12-08', endDate: '2026-12-08', category: 'exam', memo: '✏️ 1·2학년 2차 지필평가 1일차' },
+    { id: 'acad-1209', title: '1, 2학년 2차 정기고사 (2일차)', startDate: '2026-12-09', endDate: '2026-12-09', category: 'exam', memo: '✏️ 1·2학년 2차 지필평가 2일차' },
+    { id: 'acad-1210', title: '성매매예방교육', startDate: '2026-12-10', endDate: '2026-12-10', category: 'event', memo: '' },
+    { id: 'acad-1214', title: '진로진학멘토링(2학년)', startDate: '2026-12-14', endDate: '2026-12-14', category: 'event', memo: '' },
+    { id: 'acad-1217', title: '학생자치회 정부회장선거', startDate: '2026-12-17', endDate: '2026-12-17', category: 'event', memo: '' },
+    { id: 'acad-1225', title: '성탄절', startDate: '2026-12-25', endDate: '2026-12-25', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1231', title: '졸업식 · 종업식', startDate: '2026-12-31', endDate: '2026-12-31', category: 'event', memo: '🏫 2학기 종업식 및 졸업식 (겨울방학 59일)' },
+    { id: 'acad-0101', title: '신정', startDate: '2027-01-01', endDate: '2027-01-01', category: 'holiday', memo: '공휴일' },
+    { id: 'acad-0206', title: '설날 연휴', startDate: '2027-02-06', endDate: '2027-02-08', category: 'holiday', memo: '설날 명절 연휴' },
+    { id: 'acad-0209', title: '설날 대체공휴일', startDate: '2027-02-09', endDate: '2027-02-09', category: 'holiday', memo: '대체공휴일' }
+  ];
+
+  const FALLBACK_COMMUNITY_POSTS = [
+    {
+      id: 'post-welcome-1',
+      author: '제작자(관리자)',
+      isAdminPost: true,
+      category: '제작자 피드백',
+      title: '📢 백현중 1-3 수행평가 플래너 v4 업데이트 & 커뮤니티 안내',
+      content: '1학년 3반 친구들 안녕! 수행평가 플래너가 v4로 업그레이드되었어.\n1) 상단 [로그인/가입]으로 내 아이디를 만들면 어디서든 내 목표 완료일과 수행평가 계획이 저장돼. (1인 1계정 원칙으로 동일 IP 중복 가입은 제한돼)\n2) 2학기 학사일정(11/19 재량휴업일, 11/26 동아리, 12/8~9 2차 정기고사 등)과 주간 날짜별 시간표 연동이 추가되었어.\n3) 사이트를 쓰면서 추가되었으면 하는 기능이나 수행평가 질문이 있으면 여기에 자유롭게 남겨줘!',
+      isPinned: true,
+      feedbackStatus: '반영완료',
+      likes: 3,
+      likedUsers: [],
+      comments: [],
+      createdAt: '2026-11-13 18:00'
+    }
+  ];
+
   class Store {
     constructor() {
       this.listeners = [];
       this.adminPassword = '';
+      this.userAuth = { username: '', password: '' };
       try {
         if (typeof sessionStorage !== 'undefined') {
           this.adminPassword = sessionStorage.getItem(ADMIN_SESSION_KEY) || '';
         }
+        if (!this.adminPassword && typeof localStorage !== 'undefined') {
+          this.adminPassword = localStorage.getItem(ADMIN_SESSION_KEY) || '';
+        }
+        if (typeof localStorage !== 'undefined') {
+          const rawAuth = localStorage.getItem(USER_AUTH_STORAGE_KEY);
+          if (rawAuth) {
+            const parsed = JSON.parse(rawAuth);
+            if (parsed && parsed.username && parsed.password) {
+              this.userAuth = { username: parsed.username, password: parsed.password };
+            }
+          }
+        }
       } catch (e) {}
 
       this.state = this.loadInitialState();
+    }
+
+    hasAgreedTerms() {
+      try {
+        return localStorage.getItem(TERMS_CONSENT_KEY) === 'agreed';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    acceptTerms() {
+      try {
+        localStorage.setItem(TERMS_CONSENT_KEY, 'agreed');
+      } catch (e) {}
+    }
+
+    hasCompletedSurvey() {
+      try {
+        return localStorage.getItem(SURVEY_DONE_KEY) === 'done';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    markSurveyCompleted() {
+      try {
+        localStorage.setItem(SURVEY_DONE_KEY, 'done');
+      } catch (e) {}
     }
 
     loadInitialState() {
@@ -351,7 +437,6 @@
 
       const schoolInfo = (cachedShared && cachedShared.schoolInfo) || {
         schoolName: '백현중학교',
-        schoolCode: 26268,
         neisOfficeCode: 'J10',
         neisSchoolCode: '7531032',
         region: '경기(성남)',
@@ -385,19 +470,28 @@
           ? cachedShared.assessments
           : buildFallbackAssessments(todayStr);
 
+      const academicEvents =
+        cachedShared && Array.isArray(cachedShared.academicEvents) && cachedShared.academicEvents.length
+          ? cachedShared.academicEvents
+          : JSON.parse(JSON.stringify(FALLBACK_ACADEMIC_EVENTS));
+
+      const communityPosts =
+        cachedShared && Array.isArray(cachedShared.communityPosts)
+          ? cachedShared.communityPosts
+          : JSON.parse(JSON.stringify(FALLBACK_COMMUNITY_POSTS));
+
       const myProgress = (personal && personal.myProgress) || {};
       const myScores = (personal && personal.myScores) || {};
+      const myPlans = (personal && personal.myPlans) || {};
       const ui = Object.assign(
         {
-          activeTab: 'calendar', // 'calendar' | 'timetable' | 'grades' | 'analytics'
+          activeTab: 'calendar', // 'calendar' | 'timetable' | 'grades' | 'community'
           calendarMode: 'month',
           selectedDate: todayStr,
           currentMonthDate: todayStr,
           filterSubjectId: 'all',
-          filterType: 'all',
-          filterStatus: 'all',
-          sortBy: 'dday',
-          darkMode: false
+          timetableWeekOffset: 0,
+          communityCategory: 'all'
         },
         (personal && personal.ui) || {},
         {
@@ -406,7 +500,13 @@
         }
       );
 
-      const mergedAssessments = this.mergeAssessmentsWithPersonal(rawAssessments, myProgress);
+      const user = {
+        isLoggedIn: !!(this.userAuth && this.userAuth.username),
+        username: (this.userAuth && this.userAuth.username) || '',
+        nickname: (this.userAuth && this.userAuth.username) || ''
+      };
+
+      const mergedAssessments = this.mergeAssessmentsWithPersonal(rawAssessments, myProgress, myPlans);
 
       return {
         schoolInfo,
@@ -415,16 +515,21 @@
         subjectPlans,
         rawAssessments,
         assessments: mergedAssessments,
+        academicEvents,
+        communityPosts,
         myProgress,
         myScores,
+        myPlans,
+        user,
+        currentUser: user.isLoggedIn ? user : null,
         ui
       };
     }
 
-    // 서버 공통 수행평가 일정과 학생 개인 체크 상태를 결합
-    mergeAssessmentsWithPersonal(rawList, myProgress) {
+    mergeAssessmentsWithPersonal(rawList, myProgress, myPlans = {}) {
       return (rawList || []).map((item) => {
         const prog = myProgress[item.id] || {};
+        const plan = myPlans[item.id] || {};
         const doneSubtaskIds = Array.isArray(prog.doneSubtaskIds) ? prog.doneSubtaskIds : [];
         const subtasks = (item.subtasks || []).map((st, idx) => {
           const stId = st.id || `st-${idx}`;
@@ -437,7 +542,11 @@
         return Object.assign({}, item, {
           status: prog.status || 'todo',
           dailyChecks: Array.isArray(prog.dailyChecks) ? prog.dailyChecks.slice() : [],
-          subtasks
+          subtasks,
+          myPlan: {
+            targetDate: plan.targetDate || '',
+            planMemo: plan.planMemo || ''
+          }
         });
       });
     }
@@ -447,10 +556,10 @@
         const payload = {
           myProgress: this.state.myProgress,
           myScores: this.state.myScores,
+          myPlans: this.state.myPlans,
           ui: {
             activeTab: this.state.ui.activeTab,
-            calendarMode: this.state.ui.calendarMode,
-            darkMode: this.state.ui.darkMode
+            calendarMode: this.state.ui.calendarMode
           }
         };
         localStorage.setItem(PERSONAL_STORAGE_KEY, JSON.stringify(payload));
@@ -464,7 +573,9 @@
           subjects: this.state.subjects,
           timetable: this.state.timetable,
           subjectPlans: this.state.subjectPlans,
-          assessments: this.state.rawAssessments
+          assessments: this.state.rawAssessments,
+          academicEvents: this.state.academicEvents,
+          communityPosts: this.state.communityPosts
         };
         localStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify(payload));
       } catch (e) {}
@@ -477,13 +588,17 @@
       };
     }
 
-    notify() {
+    notify(syncUser = false) {
       this.state.assessments = this.mergeAssessmentsWithPersonal(
         this.state.rawAssessments,
-        this.state.myProgress
+        this.state.myProgress,
+        this.state.myPlans
       );
       this.savePersonalToStorage();
       this.saveSharedCacheToStorage();
+      if (syncUser && this.state.user && this.state.user.isLoggedIn) {
+        this.syncUserDataToServer().catch(() => {});
+      }
       this.listeners.forEach((fn) => fn(this.state));
     }
 
@@ -492,7 +607,6 @@
       this.notify();
     }
 
-    // 서버 SQLite DB로부터 공통 데이터(시간표, 평가계획, 수행평가 목록) 불러오기
     async fetchBootstrapFromServer() {
       const resp = await fetch('/api/bootstrap', { cache: 'no-store' });
       if (!resp.ok) {
@@ -502,6 +616,38 @@
       if (!data || !data.ok) {
         throw new Error('유효하지 않은 부트스트랩 응답');
       }
+
+      const serverTs = Number((data.schoolInfo && data.schoolInfo.dbUpdatedAt) || 0);
+      const localTs = Number((this.state.schoolInfo && this.state.schoolInfo.dbUpdatedAt) || 0);
+
+      // 서버 컨테이너가 재시작되어 초기(dbUpdatedAt == 0)로 돌아갔는데 내 브라우저에 더 최신 일정이 있는 경우 자동 복구
+      if (localTs > serverTs) {
+        try {
+          const restoreResp = await fetch('/api/bootstrap/restore', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Password': this.adminPassword || ''
+            },
+            body: JSON.stringify({
+              dbUpdatedAt: localTs,
+              assessments: this.state.rawAssessments,
+              timetable: this.state.timetable,
+              academicEvents: this.state.academicEvents,
+              communityPosts: this.state.communityPosts
+            })
+          });
+          if (restoreResp.ok) {
+            const restoredData = await restoreResp.json();
+            if (restoredData && restoredData.ok) {
+              this.applyServerBootstrapData(restoredData);
+              return restoredData;
+            }
+          }
+        } catch (e) {}
+        return this.state;
+      }
+
       this.applyServerBootstrapData(data);
       return data;
     }
@@ -512,41 +658,214 @@
       if (data.timetable) this.state.timetable = data.timetable;
       if (Array.isArray(data.subjectPlans)) this.state.subjectPlans = data.subjectPlans;
       if (Array.isArray(data.assessments)) this.state.rawAssessments = data.assessments;
+      if (Array.isArray(data.academicEvents)) this.state.academicEvents = data.academicEvents;
+      if (Array.isArray(data.communityPosts)) this.state.communityPosts = data.communityPosts;
       this.notify();
     }
 
-    // ========================================================================
-    // 관리자(Admin) 인증 및 서버 DB 관리 메서드
-    // ========================================================================
+    // =========================================================================
+    // 학생 회원가입 / 로그인 / 내 계획 & 점수 서버 동기화
+    // =========================================================================
+    async registerUser(username, password) {
+      const u = (username || '').trim();
+      const p = (password || '').trim();
+      if (u.length < 2 || u.length > 20) {
+        throw new Error('아이디(닉네임)는 2~20자 이내로 입력해 주세요.');
+      }
+      if (p.length < 4) {
+        throw new Error('비밀번호는 4자 이상 입력해 주세요.');
+      }
+
+      const initialPayload = {
+        myProgress: this.state.myProgress,
+        myScores: this.state.myScores,
+        myPlans: this.state.myPlans
+      };
+
+      const resp = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p, userData: initialPayload })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '회원가입에 실패했습니다.');
+      }
+
+      this.userAuth = { username: u, password: p };
+      try {
+        localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(this.userAuth));
+      } catch (e) {}
+      this.state.user = { isLoggedIn: true, username: u, nickname: u };
+      this.state.currentUser = this.state.user;
+      this.notify();
+      return data;
+    }
+
+    async loginUser(username, password) {
+      const u = (username || '').trim();
+      const p = (password || '').trim();
+      if (!u || !p) {
+        throw new Error('아이디와 비밀번호를 모두 입력해 주세요.');
+      }
+
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '로그인에 실패했습니다.');
+      }
+
+      this.userAuth = { username: u, password: p };
+      try {
+        localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(this.userAuth));
+      } catch (e) {}
+      this.state.user = { isLoggedIn: true, username: u, nickname: u };
+      this.state.currentUser = this.state.user;
+
+      const serverUserData = data.userData || {};
+      if (serverUserData.myProgress) {
+        this.state.myProgress = Object.assign({}, this.state.myProgress, serverUserData.myProgress);
+      }
+      if (serverUserData.myScores) {
+        this.state.myScores = Object.assign({}, this.state.myScores, serverUserData.myScores);
+      }
+      if (serverUserData.myPlans) {
+        this.state.myPlans = Object.assign({}, this.state.myPlans, serverUserData.myPlans);
+      }
+      this.notify(true);
+      return data;
+    }
+
+    logoutUser() {
+      this.userAuth = { username: '', password: '' };
+      try {
+        localStorage.removeItem(USER_AUTH_STORAGE_KEY);
+      } catch (e) {}
+      this.state.user = { isLoggedIn: false, username: '', nickname: '' };
+      this.state.currentUser = null;
+      this.notify();
+    }
+
+    async syncUserDataToServer() {
+      if (!this.userAuth || !this.userAuth.username || !this.userAuth.password) return;
+      if (!window.location.protocol.startsWith('http')) return;
+      await fetch('/api/user/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: this.userAuth.username,
+          password: this.userAuth.password,
+          userData: {
+            myProgress: this.state.myProgress,
+            myScores: this.state.myScores,
+            myPlans: this.state.myPlans
+          }
+        })
+      });
+    }
+
+    // =========================================================================
+    // 수행평가별 맞춤 완료 계획 (내 목표 완료일 & 자동 공부 계획 추천)
+    // =========================================================================
+    getTaskPlan(taskId) {
+      const p = this.state.myPlans[taskId] || {
+        targetDate: '',
+        planMemo: '',
+        steps: [],
+        memo: ''
+      };
+      return {
+        targetDate: p.targetDate || '',
+        planMemo: p.planMemo || '',
+        steps: Array.isArray(p.steps) && p.steps.length ? p.steps : (p.planMemo ? p.planMemo.split('\n') : []),
+        memo: p.memo || ''
+      };
+    }
+
+    saveTaskPlan(taskId, { targetDate, planMemo, steps, memo }) {
+      const combinedMemo =
+        planMemo !== undefined
+          ? planMemo
+          : [Array.isArray(steps) ? steps.join('\n') : '', memo || '']
+              .filter(Boolean)
+              .join('\n');
+      this.state.myPlans[taskId] = {
+        targetDate: (targetDate || '').trim(),
+        planMemo: (combinedMemo || '').trim(),
+        steps: Array.isArray(steps) ? steps : [],
+        memo: (memo || '').trim()
+      };
+      this.notify(true);
+    }
+
+    generateRecommendedPlan(taskId) {
+      const task = this.state.rawAssessments.find((a) => a.id === taskId);
+      if (!task) return null;
+      const todayStr = getTodayStr();
+      const diff = this.getDDay(task.dueDate, todayStr);
+      const targetOffset = diff >= 3 ? -2 : diff >= 1 ? -1 : 0;
+      const targetDate = addDaysStr(task.dueDate, targetOffset);
+
+      const step1Date = diff >= 5 ? addDaysStr(task.dueDate, -4) : todayStr;
+      const step2Date = targetDate;
+      const step3Date = diff >= 1 ? addDaysStr(task.dueDate, -1) : task.dueDate;
+
+      let stepsArr = [];
+      if (task.type === '발표') {
+        stepsArr = [
+          `[1단계 · ${step1Date.slice(5)}] 발표 주제 및 대본 구성 완료`,
+          `[2단계 · ${step2Date.slice(5)} 목표 완료일] 발표 자료 완성 및 1분 리허설`,
+          `[3단계 · ${step3Date.slice(5)}] 최종 암기 및 질의응답 대비`
+        ];
+      } else if (task.type === '실기') {
+        stepsArr = [
+          `[1단계 · ${step1Date.slice(5)}] 실기 평가 기준 및 핵심 동작/재료 숙지`,
+          `[2단계 · ${step2Date.slice(5)} 목표 완료일] 실전 연습 및 부족한 부분 보완`,
+          `[3단계 · ${step3Date.slice(5)}] 컨디션 조절 및 준비물 챙기기`
+        ];
+      } else {
+        stepsArr = [
+          `[1단계 · ${step1Date.slice(5)}] 평가 루브릭 확인 및 핵심 자료 조사`,
+          `[2단계 · ${step2Date.slice(5)} 목표 완료일] 보고서/논술 초안 작성 완료`,
+          `[3단계 · ${step3Date.slice(5)}] 맞춤법·분량 최종 검토 및 제출 준비`
+        ];
+      }
+
+      this.state.myPlans[taskId] = {
+        targetDate,
+        planMemo: stepsArr.join('\n'),
+        steps: stepsArr,
+        memo: '마감 하루 전 완벽 준비 완료!'
+      };
+      this.notify(true);
+      return this.state.myPlans[taskId];
+    }
+
     async loginAdmin(password) {
       const trimmed = (password || '').trim();
       if (!trimmed) throw new Error('비밀번호를 입력해 주세요.');
 
-      try {
-        const resp = await fetch('/api/admin/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: trimmed })
-        });
-        const data = await resp.json();
-        if (!resp.ok || !data.ok) {
-          throw new Error(data.error || '비밀번호가 일치하지 않습니다.');
-        }
-      } catch (err) {
-        // 만약 로컬 파일(file://)로 열었을 때는 기본 비밀번호('1300')와 비교
-        if (window.location.protocol === 'file:') {
-          if (trimmed !== '1300') {
-            throw new Error('관리자 비밀번호가 일치하지 않습니다.');
-          }
-        } else {
-          throw err;
-        }
+      const resp = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: trimmed })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '비밀번호가 일치하지 않습니다.');
       }
 
       this.adminPassword = trimmed;
       try {
         if (typeof sessionStorage !== 'undefined') {
           sessionStorage.setItem(ADMIN_SESSION_KEY, trimmed);
+        }
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(ADMIN_SESSION_KEY, trimmed);
         }
       } catch (e) {}
       this.state.ui.isAdmin = true;
@@ -559,6 +878,9 @@
       try {
         if (typeof sessionStorage !== 'undefined') {
           sessionStorage.removeItem(ADMIN_SESSION_KEY);
+        }
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem(ADMIN_SESSION_KEY);
         }
       } catch (e) {}
       this.state.ui.isAdmin = false;
@@ -586,7 +908,6 @@
         return data;
       }
 
-      // 오프라인/파일 모드 폴백
       const taskId = payload.id || 'task-' + Date.now();
       const idx = this.state.rawAssessments.findIndex((a) => a.id === taskId);
       const record = {
@@ -664,7 +985,7 @@
       this.notify();
     }
 
-    async adminUpdateTimetableCell(weekdayIdx, period, subjectName) {
+    async adminUpdateTimetableCell(weekdayIdx, period, subjectName, changed = false) {
       if (!this.state.ui.isAdmin) {
         throw new Error('관리자 권한이 필요합니다.');
       }
@@ -676,7 +997,7 @@
             'Content-Type': 'application/json',
             'X-Admin-Password': this.adminPassword
           },
-          body: JSON.stringify({ slotKey, subject: subjectName })
+          body: JSON.stringify({ slotKey, subject: subjectName, changed: !!changed })
         });
         const data = await resp.json();
         if (!resp.ok || !data.ok) {
@@ -688,12 +1009,183 @@
       if (!subjectName || !subjectName.trim()) {
         delete this.state.timetable[slotKey];
       } else {
-        this.state.timetable[slotKey] = { subject: subjectName.trim(), changed: false };
+        this.state.timetable[slotKey] = { subject: subjectName.trim(), changed: !!changed };
       }
       this.notify();
     }
 
-    async adminSyncTimetable(mode = 'auto', neisApiKey = '') {
+    async adminSaveAcademicEvent(payload) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const resp = await fetch('/api/admin/academic-event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '학사일정 저장 실패');
+      }
+      this.applyServerBootstrapData(data);
+      return data;
+    }
+
+    async adminDeleteAcademicEvent(id) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const resp = await fetch('/api/admin/academic-event/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword
+        },
+        body: JSON.stringify({ id })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '학사일정 삭제 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    // =========================================================================
+    // 학사일정 & 커뮤니티 [Beta] 메서드
+    // =========================================================================
+    getAcademicEventsOnDate(dateStr) {
+      if (!dateStr) return [];
+      return (this.state.academicEvents || []).filter(
+        (ev) => ev.startDate <= dateStr && dateStr <= (ev.endDate || ev.startDate)
+      );
+    }
+
+    async createCommunityPost({ category, title, content, nickname, isPinned }) {
+      const author = this.state.ui.isAdmin
+        ? '제작자(관리자)'
+        : (this.state.user && this.state.user.isLoggedIn && this.state.user.username) ||
+          (nickname || '').trim() ||
+          '';
+      if (!author) {
+        throw new Error('커뮤니티에 글을 작성하려면 먼저 상단 [로그인/가입]을 해주세요!');
+      }
+      const resp = await fetch('/api/community/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ author, category, title, content, isPinned: !!isPinned })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '게시글 등록 실패');
+      }
+      this.applyServerBootstrapData(data);
+      return data;
+    }
+
+    async addCommunityComment(postId, payloadOrText) {
+      const text =
+        typeof payloadOrText === 'string'
+          ? payloadOrText
+          : (payloadOrText && (payloadOrText.text || payloadOrText.content)) || '';
+      const author = this.state.ui.isAdmin
+        ? '제작자(관리자)'
+        : this.state.user && this.state.user.isLoggedIn
+        ? this.state.user.username
+        : '';
+      if (!author) {
+        throw new Error('댓글을 작성하려면 먼저 상단 [로그인/가입]을 해주세요!');
+      }
+      const resp = await fetch('/api/community/comment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, author, text })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '댓글 등록 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    async toggleCommunityLike(postId) {
+      const username =
+        (this.state.user && this.state.user.username) ||
+        (this.state.ui.isAdmin ? 'admin' : 'guest');
+      const resp = await fetch('/api/community/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId, username })
+      });
+      const data = await resp.json();
+      if (resp.ok && data.ok) {
+        this.applyServerBootstrapData(data);
+      }
+    }
+
+    async likeCommunityPost(postId) {
+      return this.toggleCommunityLike(postId);
+    }
+
+    async deleteCommunityPost(postId) {
+      const username = (this.state.user && this.state.user.username) || '';
+      const resp = await fetch('/api/community/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, username })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '게시글 삭제 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    async adminUpdateCommunityStatus(postId, { isPinned, pinned, feedbackStatus, status }) {
+      const existing = (this.state.communityPosts || []).find((p) => p.id === postId) || {};
+      const nextPinned =
+        isPinned !== undefined
+          ? !!isPinned
+          : pinned !== undefined
+          ? !!pinned
+          : !!existing.isPinned;
+      const nextStatus =
+        feedbackStatus !== undefined
+          ? feedbackStatus
+          : status !== undefined
+          ? status
+          : existing.feedbackStatus || '';
+      const resp = await fetch('/api/admin/community/status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, isPinned: nextPinned, feedbackStatus: nextStatus })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '상태 변경 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    async adminUpdateCommunityPostStatus(postId, opts) {
+      return this.adminUpdateCommunityStatus(postId, opts);
+    }
+
+    async adminSyncTimetable(neisApiKey = '') {
       if (!this.state.ui.isAdmin) {
         throw new Error('관리자 권한이 필요합니다.');
       }
@@ -703,7 +1195,7 @@
           'Content-Type': 'application/json',
           'X-Admin-Password': this.adminPassword
         },
-        body: JSON.stringify({ mode, neisApiKey })
+        body: JSON.stringify({ neisApiKey })
       });
       const data = await resp.json();
       if (!resp.ok || !data.ok) {
@@ -713,9 +1205,6 @@
       return data.syncResult;
     }
 
-    // ========================================================================
-    // 조회 및 학생 개인 체크 / 개인 성적표 점수 관리 메서드
-    // ========================================================================
     getSubjectById(subjectId) {
       return this.state.subjects.find((s) => s.id === subjectId) || null;
     }
@@ -739,7 +1228,7 @@
     }
 
     formatDDayBadge(dueDateStr, status) {
-      if (status === 'done') return { text: '제출완료', cls: 'badge-done' };
+      if (status === 'done') return { text: '완료됨', cls: 'badge-done' };
       const diff = this.getDDay(dueDateStr);
       if (diff === 0) return { text: 'D-Day', cls: 'badge-dday-today' };
       if (diff > 0 && diff <= 3) return { text: `D-${diff}`, cls: 'badge-dday-urgent' };
@@ -747,7 +1236,6 @@
       return { text: `D+${Math.abs(diff)}`, cls: 'badge-dday-overdue' };
     }
 
-    // 특정 날짜의 시간표 반환 (교사 성함 없음)
     getDaySchedule(dateStr) {
       const weekdayIdx = getWeekdayIndex(dateStr);
       if (weekdayIdx > 4) return [];
@@ -799,23 +1287,6 @@
       return slots;
     }
 
-    getDateTimetableAlerts(dateStr = getTodayStr()) {
-      const schedule = this.getDaySchedule(dateStr);
-      const subjectIdsToday = new Set(schedule.map((s) => s.subjectId).filter(Boolean));
-      const subjectNamesToday = new Set(schedule.map((s) => s.subjectName));
-
-      const dueOnDate = this.state.assessments.filter((a) => a.dueDate === dateStr);
-      const linkedToTodayClasses = this.state.assessments.filter((a) => {
-        if (a.status === 'done') return false;
-        const dday = this.getDDay(a.dueDate, dateStr);
-        if (dday < 0) return false;
-        const subj = this.getSubjectById(a.subjectId);
-        return subjectIdsToday.has(a.subjectId) || (subj && subjectNamesToday.has(subj.name));
-      });
-
-      return { schedule, dueOnDate, linkedToTodayClasses };
-    }
-
     _ensureTaskProgress(id) {
       if (!this.state.myProgress[id]) {
         this.state.myProgress[id] = {
@@ -834,7 +1305,7 @@
       if (status === 'done' && raw && Array.isArray(raw.subtasks)) {
         prog.doneSubtaskIds = raw.subtasks.map((st, idx) => st.id || `st-${idx}`);
       }
-      this.notify();
+      this.notify(true);
     }
 
     toggleDailyCheck(id, dateStr = getTodayStr()) {
@@ -849,7 +1320,7 @@
         prog.dailyChecks.splice(idx, 1);
         checked = false;
       }
-      this.notify();
+      this.notify(true);
       return checked;
     }
 
@@ -874,12 +1345,9 @@
       } else if (doneCount < totalCount && prog.status === 'done') {
         prog.status = 'in_progress';
       }
-      this.notify();
+      this.notify(true);
     }
 
-    // ========================================================================
-    // 개인 맞춤형 예상 성적표 점수 저장 & 성취도 등급 계산 엔진
-    // ========================================================================
     getPersonalSubjectScore(planId) {
       return (
         this.state.myScores[planId] || {
@@ -908,26 +1376,25 @@
           entry[field] = Math.min(100, Math.max(0, Number(value)));
         }
       }
-      this.notify();
+      this.notify(true);
     }
 
-    // 모든 과목의 예상 성적표를 100% 만점假设(시뮬레이션)으로 자동 채우기
     fillSamplePersonalScores() {
       this.state.subjectPlans.forEach((plan) => {
         const entry = { exam1: '', exam2: '', areaScores: {} };
         if (plan.exam1Ratio > 0) entry.exam1 = 92;
         if (plan.exam2Ratio > 0) entry.exam2 = 90;
         (plan.areas || []).forEach((area) => {
-          entry.areaScores[area.id] = area.weight; // 만점 기본 세팅
+          entry.areaScores[area.id] = area.weight;
         });
         this.state.myScores[plan.id] = entry;
       });
-      this.notify();
+      this.notify(true);
     }
 
     clearPersonalScores() {
       this.state.myScores = {};
-      this.notify();
+      this.notify(true);
     }
 
     calculateGradeReport() {
@@ -936,7 +1403,6 @@
         let earnedTotal = 0;
         let enteredMaxTotal = 0;
 
-        // 1. 1차 정기시험 (지필)
         let exam1Weighted = null;
         if (plan.exam1Ratio > 0) {
           if (userScore.exam1 !== '' && userScore.exam1 !== null && userScore.exam1 !== undefined) {
@@ -947,7 +1413,6 @@
           }
         }
 
-        // 2. 2차 정기시험 (지필)
         let exam2Weighted = null;
         if (plan.exam2Ratio > 0) {
           if (userScore.exam2 !== '' && userScore.exam2 !== null && userScore.exam2 !== undefined) {
@@ -958,7 +1423,6 @@
           }
         }
 
-        // 3. 수행평가 영역별 점수 합산
         let perfEarned = 0;
         let perfEnteredMax = 0;
         const areaDetails = (plan.areas || []).map((area) => {
@@ -982,32 +1446,25 @@
 
         earnedTotal = Number(earnedTotal.toFixed(2));
         const remainingMax = Math.max(0, 100 - enteredMaxTotal);
-
-        // 만약 아직 입력하지 않은 평가가 있다면:
-        // - maxPossibleScore: 남은 평가를 모두 만점 받았을 때 가능한 최고 점수
-        // - projectedScore: 현재 입력된 성취율(%)을 100점 만점으로 환산한 예상 점수
         const maxPossibleScore = Number((earnedTotal + remainingMax).toFixed(2));
         const projectedScore =
           enteredMaxTotal > 0
             ? Number(((earnedTotal / enteredMaxTotal) * 100).toFixed(1))
             : null;
 
-        // 최종 성취도 판정 기준 점수 (모든 배점이 입력되었으면 실제 합계, 일부만 입력되었으면 현재 합계 및 환산 예상)
         const gradeTargetScore = enteredMaxTotal === 100 ? earnedTotal : projectedScore;
         const gradeInfo = computeAchievementGrade(gradeTargetScore, plan.gradeScale);
 
-        // 목표 성취도 A(일반 90점, 예체능 80점) 달성까지 남은 평가에서 필요한 점수 계산
         const cutoffA = plan.gradeScale === '3tier' ? 80 : 90;
         const neededPointsForA = Number(Math.max(0, cutoffA - earnedTotal).toFixed(1));
         let guideMessage = '';
         if (enteredMaxTotal === 0) {
           guideMessage = `점수를 입력하면 예상 등급과 A등급(${cutoffA}점) 달성 조건을 계산합니다.`;
         } else if (earnedTotal >= cutoffA) {
-          guideMessage = `🎉 현재 확보한 점수(${earnedTotal}점)만으로 이미 A등급(${cutoffA}점 이상) 확정입니다!`;
+          guideMessage = `🎉 현재 확보 점수(${earnedTotal}점)만으로 A등급(${cutoffA}점 이상) 확정입니다!`;
         } else if (neededPointsForA > remainingMax) {
-          guideMessage = `현재 최고 도달 가능 점수는 ${maxPossibleScore}점입니다. (다음 등급 목표 추천)`;
+          guideMessage = `현재 최고 도달 가능 점수는 ${maxPossibleScore}점입니다.`;
         } else if (remainingMax > 0) {
-          // 만약 남은 배점이 정확히 정기시험(1차 또는 2차 50%) 하나뿐이라면 100점 만점 원점수 기준으로도 안내!
           const onlyExam1Left =
             plan.exam1Ratio > 0 && exam1Weighted === null && remainingMax === plan.exam1Ratio;
           const onlyExam2Left =
@@ -1043,7 +1500,6 @@
         };
       });
 
-      // 전체 요약 통계 (점수가 1개 이상 입력된 과목 기준)
       const activeRows = rows.filter((r) => r.enteredMaxTotal > 0);
       let avgProjected = 0;
       let weightedSum = 0;
@@ -1068,76 +1524,6 @@
           countA
         }
       };
-    }
-
-    getFilteredAssessments() {
-      const { filterSubjectId, filterType, filterStatus, sortBy } = this.state.ui;
-      let list = this.state.assessments.slice();
-
-      if (filterSubjectId && filterSubjectId !== 'all') {
-        if (filterSubjectId.startsWith('group:')) {
-          const groupName = filterSubjectId.replace('group:', '');
-          list = list.filter((a) => {
-            const s = this.getSubjectById(a.subjectId);
-            return s && s.group === groupName;
-          });
-        } else {
-          list = list.filter((a) => a.subjectId === filterSubjectId);
-        }
-      }
-
-      if (filterType && filterType !== 'all') {
-        list = list.filter((a) => a.type === filterType);
-      }
-
-      if (filterStatus === 'incomplete') {
-        list = list.filter((a) => a.status !== 'done');
-      } else if (filterStatus === 'done') {
-        list = list.filter((a) => a.status === 'done');
-      }
-
-      list.sort((a, b) => {
-        if ((a.status === 'done') !== (b.status === 'done')) {
-          return a.status === 'done' ? 1 : -1;
-        }
-        if (sortBy === 'weight') {
-          return (Number(b.weight) || 0) - (Number(a.weight) || 0);
-        }
-        if (sortBy === 'subject') {
-          const sa = this.getSubjectById(a.subjectId);
-          const sb = this.getSubjectById(b.subjectId);
-          return (sa ? sa.name : '').localeCompare(sb ? sb.name : '', 'ko');
-        }
-        if (a.dueDate !== b.dueDate) {
-          return a.dueDate.localeCompare(b.dueDate);
-        }
-        return (a.period || 9) - (b.period || 9);
-      });
-
-      return list;
-    }
-
-    exportPersonalJSON() {
-      return JSON.stringify(
-        {
-          version: 2,
-          exportedAt: getTodayStr(),
-          myProgress: this.state.myProgress,
-          myScores: this.state.myScores
-        },
-        null,
-        2
-      );
-    }
-
-    importPersonalJSON(jsonStr) {
-      const parsed = JSON.parse(jsonStr);
-      if (!parsed || (!parsed.myProgress && !parsed.myScores)) {
-        throw new Error('올바른 개인 체크/성적 백업 파일 형식이 아닙니다.');
-      }
-      if (parsed.myProgress) this.state.myProgress = parsed.myProgress;
-      if (parsed.myScores) this.state.myScores = parsed.myScores;
-      this.notify();
     }
   }
 
