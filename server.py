@@ -381,6 +381,66 @@ def _build_initial_assessments() -> list:
     ]
 
 
+INITIAL_ACADEMIC_EVENTS = [
+    {"id": "acad-1001", "title": "전문직업인특강(1학년)", "startDate": "2026-10-01", "endDate": "2026-10-01", "category": "event", "memo": "1학년 진로 특강"},
+    {"id": "acad-1003", "title": "개천절", "startDate": "2026-10-03", "endDate": "2026-10-03", "category": "holiday", "memo": "공휴일"},
+    {"id": "acad-1005", "title": "대체공휴일", "startDate": "2026-10-05", "endDate": "2026-10-05", "category": "holiday", "memo": "공휴일 (수업 없음)"},
+    {"id": "acad-1008", "title": "정보통신윤리교육", "startDate": "2026-10-08", "endDate": "2026-10-08", "category": "event", "memo": ""},
+    {"id": "acad-1009", "title": "한글날", "startDate": "2026-10-09", "endDate": "2026-10-09", "category": "holiday", "memo": "공휴일 (수업 없음)"},
+    {"id": "acad-1013", "title": "인적성검사", "startDate": "2026-10-13", "endDate": "2026-10-13", "category": "event", "memo": ""},
+    {"id": "acad-1015", "title": "백현제(동아리)", "startDate": "2026-10-15", "endDate": "2026-10-15", "category": "club", "memo": "학교 축제 및 동아리 발표"},
+    {"id": "acad-1022", "title": "정보통신윤리교육 · 독도의날 행사", "startDate": "2026-10-22", "endDate": "2026-10-22", "category": "event", "memo": ""},
+    {"id": "acad-1029", "title": "학생자치회 정부회장선거", "startDate": "2026-10-29", "endDate": "2026-10-29", "category": "event", "memo": ""},
+    {"id": "acad-1102", "title": "학부모상담주간", "startDate": "2026-11-02", "endDate": "2026-11-06", "category": "event", "memo": "11/2(월) ~ 11/6(금) 학부모 상담 주간"},
+    {"id": "acad-1109", "title": "3학년 정기고사", "startDate": "2026-11-09", "endDate": "2026-11-11", "category": "exam", "memo": "11/9(월) ~ 11/11(수) 3학년 지필고사"},
+    {"id": "acad-1112", "title": "장애인식개선교육(장애이해교육)", "startDate": "2026-11-12", "endDate": "2026-11-12", "category": "event", "memo": ""},
+    {"id": "acad-1116", "title": "진로진학멘토링(3학년)", "startDate": "2026-11-16", "endDate": "2026-11-16", "category": "event", "memo": ""},
+    {"id": "acad-1119", "title": "대학수학능력시험 · 재량휴업일", "startDate": "2026-11-19", "endDate": "2026-11-19", "category": "holiday", "memo": "🔴 재량휴업일 (등교하지 않음)"},
+    {"id": "acad-1125", "title": "교육공동체 대토론회(전학공)", "startDate": "2026-11-25", "endDate": "2026-11-25", "category": "event", "memo": ""},
+    {"id": "acad-1126", "title": "동아리(5,6,7교시)", "startDate": "2026-11-26", "endDate": "2026-11-26", "category": "club", "memo": "목요일 5·6·7교시 동아리 활동"},
+    {"id": "acad-1203", "title": "학급운영협의회", "startDate": "2026-12-03", "endDate": "2026-12-03", "category": "event", "memo": ""},
+    {"id": "acad-1208", "title": "1, 2학년 2차 정기고사 (1일차)", "startDate": "2026-12-08", "endDate": "2026-12-08", "category": "exam", "memo": "✏️ 1·2학년 2차 지필평가 1일차"},
+    {"id": "acad-1209", "title": "1, 2학년 2차 정기고사 (비급식)", "startDate": "2026-12-09", "endDate": "2026-12-09", "category": "nomeal", "memo": "⚠️ 비급식일 · 1·2학년 2차 지필평가 2일차"},
+    {"id": "acad-1210", "title": "성매매예방교육", "startDate": "2026-12-10", "endDate": "2026-12-10", "category": "event", "memo": ""},
+    {"id": "acad-1214", "title": "진로진학멘토링(2학년)", "startDate": "2026-12-14", "endDate": "2026-12-14", "category": "event", "memo": ""},
+    {"id": "acad-1217", "title": "학생자치회 정부회장선거", "startDate": "2026-12-17", "endDate": "2026-12-17", "category": "event", "memo": ""},
+    {"id": "acad-1225", "title": "성탄절", "startDate": "2026-12-25", "endDate": "2026-12-25", "category": "holiday", "memo": "공휴일 (수업 없음)"},
+    {"id": "acad-1231", "title": "졸업식 · 종업식 (비급식)", "startDate": "2026-12-31", "endDate": "2026-12-31", "category": "nomeal", "memo": "⚠️ 비급식일 · 2학기 종업식 (겨울방학 59일)"},
+    {"id": "acad-0101", "title": "신정", "startDate": "2027-01-01", "endDate": "2027-01-01", "category": "holiday", "memo": "공휴일"},
+    {"id": "acad-0206", "title": "설날 연휴", "startDate": "2027-02-06", "endDate": "2027-02-08", "category": "holiday", "memo": "설날 명절 연휴"},
+    {"id": "acad-0209", "title": "설날 대체공휴일", "startDate": "2027-02-09", "endDate": "2027-02-09", "category": "holiday", "memo": "대체공휴일"},
+]
+
+INITIAL_COMMUNITY_POSTS = [
+    {
+        "id": "post-welcome-1",
+        "author": "제작자(관리자)",
+        "isAdminPost": True,
+        "category": "제작자 피드백",
+        "title": "📢 백현중 1-3 수행평가 플래너 v4 업데이트 & 커뮤니티 안내",
+        "content": (
+            "1학년 3반 친구들 안녕! 수행평가 플래너가 v4로 업그레이드되었어.\n"
+            "1) 상단 [로그인/회원가입]으로 내 아이디를 만들면 어디서든 내 목표 완료일과 수행평가 계획이 저장돼.\n"
+            "2) 2학기 학사일정(11/19 재량휴업일, 12/8~9 2차 지필평가 및 비급식일 등)과 오늘/내일 급식 식단표가 추가되었어.\n"
+            "3) 사이트를 쓰면서 추가되었으면 하는 기능이나 수행평가 질문이 있으면 여기에 자유롭게 남겨줘!"
+        ),
+        "isPinned": True,
+        "feedbackStatus": "반영완료",
+        "likes": 3,
+        "likedUsers": [],
+        "comments": [],
+        "createdAt": "2026-11-13 18:00",
+    }
+]
+
+PROFANITY_WORDS = ["시발", "씨발", "병신", "좆", "개새끼", "꺼져", "미친놈", "지랄"]
+
+
+def _contains_profanity(text: str) -> bool:
+    lowered = (text or "").replace(" ", "").lower()
+    return any(w in lowered for w in PROFANITY_WORDS)
+
+
 # ============================================================================
 # SQLite 데이터베이스 초기화 및 헬퍼 함수
 # ============================================================================
@@ -481,6 +541,50 @@ def init_db():
         """
     )
 
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS academic_events (
+            id TEXT PRIMARY KEY,
+            title TEXT NOT NULL,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            category TEXT NOT NULL,
+            memo TEXT DEFAULT ''
+        )
+        """
+    )
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS users (
+            username TEXT PRIMARY KEY,
+            password_hash TEXT NOT NULL,
+            user_data_json TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        )
+        """
+    )
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS community_posts (
+            id TEXT PRIMARY KEY,
+            author TEXT NOT NULL,
+            is_admin_post INTEGER DEFAULT 0,
+            category TEXT NOT NULL,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            is_pinned INTEGER DEFAULT 0,
+            feedback_status TEXT DEFAULT '',
+            likes INTEGER DEFAULT 0,
+            liked_users_json TEXT DEFAULT '[]',
+            comments_json TEXT DEFAULT '[]',
+            created_at TEXT NOT NULL
+        )
+        """
+    )
+
     cur.execute("SELECT value FROM settings WHERE key = 'school_info'")
     if not cur.fetchone():
         school_info = {
@@ -571,6 +675,42 @@ def init_db():
                 ),
             )
 
+    cur.execute("SELECT COUNT(*) AS cnt FROM academic_events")
+    if cur.fetchone()["cnt"] == 0:
+        for ev in INITIAL_ACADEMIC_EVENTS:
+            cur.execute(
+                """
+                INSERT INTO academic_events (id, title, start_date, end_date, category, memo)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (ev["id"], ev["title"], ev["startDate"], ev["endDate"], ev["category"], ev.get("memo", "")),
+            )
+
+    cur.execute("SELECT COUNT(*) AS cnt FROM community_posts")
+    if cur.fetchone()["cnt"] == 0:
+        for p in INITIAL_COMMUNITY_POSTS:
+            cur.execute(
+                """
+                INSERT INTO community_posts
+                (id, author, is_admin_post, category, title, content, is_pinned, feedback_status, likes, liked_users_json, comments_json, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    p["id"],
+                    p["author"],
+                    1 if p.get("isAdminPost") else 0,
+                    p["category"],
+                    p["title"],
+                    p["content"],
+                    1 if p.get("isPinned") else 0,
+                    p.get("feedbackStatus", ""),
+                    int(p.get("likes", 0)),
+                    json.dumps(p.get("likedUsers", []), ensure_ascii=False),
+                    json.dumps(p.get("comments", []), ensure_ascii=False),
+                    p["createdAt"],
+                ),
+            )
+
     conn.commit()
     conn.close()
 
@@ -639,6 +779,38 @@ def get_bootstrap_data() -> dict:
         for r in cur.fetchall()
     ]
 
+    cur.execute("SELECT * FROM academic_events ORDER BY start_date ASC")
+    academic_events = [
+        {
+            "id": r["id"],
+            "title": r["title"],
+            "startDate": r["start_date"],
+            "endDate": r["end_date"],
+            "category": r["category"],
+            "memo": r["memo"],
+        }
+        for r in cur.fetchall()
+    ]
+
+    cur.execute("SELECT * FROM community_posts ORDER BY is_pinned DESC, created_at DESC")
+    community_posts = [
+        {
+            "id": r["id"],
+            "author": r["author"],
+            "isAdminPost": bool(r["is_admin_post"]),
+            "category": r["category"],
+            "title": r["title"],
+            "content": r["content"],
+            "isPinned": bool(r["is_pinned"]),
+            "feedbackStatus": r["feedback_status"] or "",
+            "likes": r["likes"],
+            "likedUsers": json.loads(r["liked_users_json"] or "[]"),
+            "comments": json.loads(r["comments_json"] or "[]"),
+            "createdAt": r["created_at"],
+        }
+        for r in cur.fetchall()
+    ]
+
     conn.close()
     return {
         "ok": True,
@@ -647,6 +819,8 @@ def get_bootstrap_data() -> dict:
         "timetable": timetable,
         "subjectPlans": subject_plans,
         "assessments": assessments,
+        "academicEvents": academic_events,
+        "communityPosts": community_posts,
     }
 
 
@@ -817,6 +991,68 @@ def sync_timetable_to_db(api_key: str = "") -> dict:
     }
 
 
+_MEAL_CACHE = {}
+
+
+def fetch_neis_meals_cached(ym: str = "") -> dict:
+    """
+    교육부 나이스(NEIS) 공식 Open API (mealServiceDietInfo)에서 백현중학교 월간 급식 식단표를 조회합니다.
+    """
+    if not ym or len(ym) != 6 or not ym.isdigit():
+        ym = datetime.date.today().strftime("%Y%m")
+
+    now_ts = time.time()
+    cached = _MEAL_CACHE.get(ym)
+    if cached and (now_ts - cached["ts"] < 3600):
+        return cached["meals"]
+
+    params = {
+        "Type": "json",
+        "pIndex": "1",
+        "pSize": "100",
+        "ATPT_OFCDC_SC_CODE": NEIS_OFFICE_CODE,
+        "SD_SCHUL_CODE": NEIS_SCHOOL_CODE,
+        "MLSV_YMD": ym,
+    }
+    env_key = os.environ.get("NEIS_API_KEY", "")
+    if env_key:
+        params["KEY"] = env_key
+
+    meals = {}
+    try:
+        query_str = urllib.parse.urlencode(params)
+        url = f"{NEIS_BASE_URL}/mealServiceDietInfo?{query_str}"
+        raw_json = _http_get(url, encoding="utf-8", timeout=5.0)
+        data = json.loads(raw_json)
+        if "mealServiceDietInfo" in data:
+            rows = []
+            for block in data["mealServiceDietInfo"]:
+                if "row" in block:
+                    rows.extend(block["row"])
+            for r in rows:
+                ymd = str(r.get("MLSV_YMD", "")).strip()
+                ddish = str(r.get("DDISH_NM", "")).strip()
+                cal = str(r.get("CAL_INFO", "")).strip()
+                if len(ymd) == 8 and ddish:
+                    date_str = f"{ymd[:4]}-{ymd[4:6]}-{ymd[6:8]}"
+                    items = []
+                    for part in re.split(r"<br\s*/?>|\n", ddish):
+                        cleaned = re.sub(r"\([0-9\.\s]+\)", "", part)
+                        cleaned = re.sub(r"[\*\s]+$", "", cleaned).strip()
+                        if cleaned:
+                            items.append(cleaned)
+                    meals[date_str] = {
+                        "items": items,
+                        "cal": cal,
+                        "source": "neis_official_api",
+                    }
+    except Exception:
+        pass
+
+    _MEAL_CACHE[ym] = {"ts": now_ts, "meals": meals}
+    return meals
+
+
 # ============================================================================
 # HTTP 요청 핸들러 (REST API + 정적 파일 서빙)
 # ============================================================================
@@ -859,6 +1095,13 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         if parsed.path == "/api/bootstrap":
             self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/meals":
+            qs = urllib.parse.parse_qs(parsed.query)
+            ym = (qs.get("ym", [""])[0] or "").strip()
+            meals = fetch_neis_meals_cached(ym)
+            self._send_json(200, {"ok": True, "ym": ym, "meals": meals})
             return
 
         return super().do_GET()
@@ -952,8 +1195,294 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                                 (str(slot_key)[:10], str(cell["subject"]).strip()[:30], 1 if cell.get("changed") else 0),
                             )
 
+                academic_events = body.get("academicEvents")
+                if isinstance(academic_events, list) and 0 < len(academic_events) <= 200:
+                    cur.execute("DELETE FROM academic_events")
+                    for ev in academic_events:
+                        if isinstance(ev, dict) and ev.get("id") and ev.get("title") and ev.get("startDate"):
+                            cur.execute(
+                                "INSERT OR REPLACE INTO academic_events (id, title, start_date, end_date, category, memo) VALUES (?, ?, ?, ?, ?, ?)",
+                                (
+                                    str(ev["id"])[:50],
+                                    str(ev["title"]).strip()[:80],
+                                    str(ev["startDate"]).strip()[:20],
+                                    str(ev.get("endDate") or ev["startDate"]).strip()[:20],
+                                    str(ev.get("category") or "event")[:20],
+                                    str(ev.get("memo") or "").strip()[:200],
+                                ),
+                            )
+
+                community_posts = body.get("communityPosts")
+                if isinstance(community_posts, list) and len(community_posts) <= 200:
+                    cur.execute("DELETE FROM community_posts")
+                    for p in community_posts:
+                        if isinstance(p, dict) and p.get("id") and p.get("title"):
+                            cur.execute(
+                                """
+                                INSERT OR REPLACE INTO community_posts
+                                (id, author, is_admin_post, category, title, content, is_pinned, feedback_status, likes, liked_users_json, comments_json, created_at)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                """,
+                                (
+                                    str(p["id"])[:50],
+                                    str(p.get("author") or "익명")[:20],
+                                    1 if p.get("isAdminPost") else 0,
+                                    str(p.get("category") or "자유소통")[:20],
+                                    str(p["title"]).strip()[:80],
+                                    str(p.get("content") or "").strip()[:1000],
+                                    1 if p.get("isPinned") else 0,
+                                    str(p.get("feedbackStatus") or "")[:20],
+                                    int(p.get("likes", 0) or 0),
+                                    json.dumps(p.get("likedUsers", [])[:100], ensure_ascii=False),
+                                    json.dumps(p.get("comments", [])[:50], ensure_ascii=False),
+                                    str(p.get("createdAt") or "")[:30],
+                                ),
+                            )
+
                 _bump_db_version(cur, explicit_ts=incoming_ts)
                 conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        # ====================================================================
+        # 학생 간편 회원가입 / 로그인 / 내 수행평가 완료 계획 & 점수 동기화 API
+        # ====================================================================
+        if parsed.path == "/api/auth/register":
+            username = str(body.get("username", "")).strip()
+            password = str(body.get("password", "")).strip()
+            initial_data = body.get("userData") if isinstance(body.get("userData"), dict) else {}
+
+            if len(username) < 2 or len(username) > 20:
+                self._send_json(400, {"ok": False, "error": "아이디(닉네임)는 2~20자 이내로 입력해 주세요."})
+                return
+            if _contains_profanity(username):
+                self._send_json(400, {"ok": False, "error": "사용할 수 없는 단어가 포함된 아이디입니다."})
+                return
+            if len(password) < 4 or len(password) > 40:
+                self._send_json(400, {"ok": False, "error": "비밀번호는 4자 이상 입력해 주세요."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT username FROM users WHERE username = ?", (username,))
+            if cur.fetchone():
+                conn.close()
+                self._send_json(409, {"ok": False, "error": "이미 사용 중인 아이디(닉네임)입니다. 다른 이름을 입력하거나 로그인을 이용해 주세요."})
+                return
+
+            now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+            cur.execute(
+                """
+                INSERT INTO users (username, password_hash, user_data_json, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (username, _hash_pw(password), json.dumps(initial_data, ensure_ascii=False), now_str, now_str),
+            )
+            conn.commit()
+            conn.close()
+            self._send_json(200, {"ok": True, "username": username, "userData": initial_data})
+            return
+
+        if parsed.path == "/api/auth/login":
+            username = str(body.get("username", "")).strip()
+            password = str(body.get("password", "")).strip()
+            if not username or not password:
+                self._send_json(400, {"ok": False, "error": "아이디와 비밀번호를 모두 입력해 주세요."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE username = ?", (username,))
+            row = cur.fetchone()
+            conn.close()
+            if not row or not hmac.compare_digest(row["password_hash"], _hash_pw(password)):
+                self._send_json(401, {"ok": False, "error": "아이디가 없거나 비밀번호가 일치하지 않습니다."})
+                return
+
+            user_data = json.loads(row["user_data_json"] or "{}")
+            self._send_json(200, {"ok": True, "username": row["username"], "userData": user_data})
+            return
+
+        if parsed.path == "/api/user/sync":
+            username = str(body.get("username", "")).strip()
+            password = str(body.get("password", "")).strip()
+            user_data = body.get("userData") if isinstance(body.get("userData"), dict) else {}
+            if not username or not password:
+                self._send_json(401, {"ok": False, "error": "로그인이 필요합니다."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE username = ?", (username,))
+            row = cur.fetchone()
+            now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+            if not row:
+                # 서버 재시작 등으로 계정이 초기화된 경우 동일 계정 자동 복원
+                cur.execute(
+                    """
+                    INSERT INTO users (username, password_hash, user_data_json, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?)
+                    """,
+                    (username, _hash_pw(password), json.dumps(user_data, ensure_ascii=False), now_str, now_str),
+                )
+            else:
+                if not hmac.compare_digest(row["password_hash"], _hash_pw(password)):
+                    conn.close()
+                    self._send_json(401, {"ok": False, "error": "사용자 인증에 실패했습니다."})
+                    return
+                cur.execute(
+                    "UPDATE users SET user_data_json = ?, updated_at = ? WHERE username = ?",
+                    (json.dumps(user_data, ensure_ascii=False), now_str, username),
+                )
+            conn.commit()
+            conn.close()
+            self._send_json(200, {"ok": True, "updatedAt": now_str})
+            return
+
+        # ====================================================================
+        # 커뮤니티 [Beta] API (학급 소통 & 제작자 피드백 게시판)
+        # ====================================================================
+        if parsed.path == "/api/community/post":
+            is_admin = self._check_admin(body)
+            author = str(body.get("author", "")).strip()[:20]
+            category = str(body.get("category", "자유소통")).strip()[:20]
+            title = str(body.get("title", "")).strip()
+            content = str(body.get("content", "")).strip()
+            is_pinned = 1 if (is_admin and body.get("isPinned")) else 0
+
+            if not author:
+                self._send_json(401, {"ok": False, "error": "글을 작성하려면 먼저 로그인해 주세요."})
+                return
+            if not title or not content:
+                self._send_json(400, {"ok": False, "error": "제목과 내용을 모두 입력해 주세요."})
+                return
+            if len(title) > 80 or len(content) > 1000:
+                self._send_json(400, {"ok": False, "error": "제목은 80자, 본문은 1000자 이내로 입력해 주세요."})
+                return
+            if _contains_profanity(title) or _contains_profanity(content):
+                self._send_json(400, {"ok": False, "error": "바르고 고운 말을 사용해 주세요 (비속어 필터 작동)."})
+                return
+
+            post_id = f"post-{int(time.time() * 1000)}"
+            now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+            fb_status = "검토중" if category == "제작자 피드백" else ""
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                INSERT INTO community_posts
+                (id, author, is_admin_post, category, title, content, is_pinned, feedback_status, likes, liked_users_json, comments_json, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, '[]', '[]', ?)
+                """,
+                (post_id, author, 1 if is_admin else 0, category, title, content, is_pinned, fb_status, now_str),
+            )
+            _bump_db_version(cur)
+            conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/community/comment":
+            is_admin = self._check_admin(body)
+            post_id = str(body.get("postId", "")).strip()
+            author = str(body.get("author", "")).strip()[:20]
+            text = str(body.get("text", "")).strip()
+
+            if not author:
+                self._send_json(401, {"ok": False, "error": "댓글을 작성하려면 먼저 로그인해 주세요."})
+                return
+            if not post_id or not text:
+                self._send_json(400, {"ok": False, "error": "댓글 내용을 입력해 주세요."})
+                return
+            if len(text) > 300:
+                self._send_json(400, {"ok": False, "error": "댓글은 300자 이내로 입력해 주세요."})
+                return
+            if _contains_profanity(text):
+                self._send_json(400, {"ok": False, "error": "바르고 고운 말을 사용해 주세요."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT comments_json, feedback_status, category FROM community_posts WHERE id = ?", (post_id,))
+            row = cur.fetchone()
+            if not row:
+                conn.close()
+                self._send_json(404, {"ok": False, "error": "게시글을 찾을 수 없습니다."})
+                return
+
+            comments = json.loads(row["comments_json"] or "[]")
+            comments.append(
+                {
+                    "id": f"cmt-{int(time.time() * 1000)}",
+                    "author": author,
+                    "isAdmin": is_admin,
+                    "text": text,
+                    "createdAt": datetime.datetime.now().strftime("%m/%d %H:%M"),
+                }
+            )
+            new_fb_status = row["feedback_status"]
+            if is_admin and row["category"] == "제작자 피드백" and new_fb_status in ("", "검토중"):
+                new_fb_status = "답변완료"
+
+            cur.execute(
+                "UPDATE community_posts SET comments_json = ?, feedback_status = ? WHERE id = ?",
+                (json.dumps(comments[-50:], ensure_ascii=False), new_fb_status, post_id),
+            )
+            _bump_db_version(cur)
+            conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/community/like":
+            post_id = str(body.get("postId", "")).strip()
+            username = str(body.get("username", "")).strip()[:20] or "guest"
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT likes, liked_users_json FROM community_posts WHERE id = ?", (post_id,))
+            row = cur.fetchone()
+            if row:
+                liked_users = json.loads(row["liked_users_json"] or "[]")
+                likes = int(row["likes"] or 0)
+                if username in liked_users:
+                    liked_users.remove(username)
+                    likes = max(0, likes - 1)
+                else:
+                    liked_users.append(username)
+                    likes += 1
+                cur.execute(
+                    "UPDATE community_posts SET likes = ?, liked_users_json = ? WHERE id = ?",
+                    (likes, json.dumps(liked_users, ensure_ascii=False), post_id),
+                )
+                _bump_db_version(cur)
+                conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/community/delete":
+            is_admin = self._check_admin(body)
+            post_id = str(body.get("postId", "")).strip()
+            username = str(body.get("username", "")).strip()
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT author FROM community_posts WHERE id = ?", (post_id,))
+            row = cur.fetchone()
+            if not row:
+                conn.close()
+                self._send_json(404, {"ok": False, "error": "게시글이 존재하지 않습니다."})
+                return
+            if not is_admin and row["author"] != username:
+                conn.close()
+                self._send_json(403, {"ok": False, "error": "본인이 작성한 글만 삭제할 수 있습니다."})
+                return
+
+            cur.execute("DELETE FROM community_posts WHERE id = ?", (post_id,))
+            _bump_db_version(cur)
+            conn.commit()
             conn.close()
             self._send_json(200, get_bootstrap_data())
             return
@@ -1091,6 +1620,7 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
         if parsed.path == "/api/admin/timetable/cell":
             slot_key = str(body.get("slotKey", "")).strip()
             subject_name = str(body.get("subject", "")).strip()
+            changed_flag = 1 if body.get("changed") else 0
             if not slot_key:
                 self._send_json(400, {"ok": False, "error": "slotKey가 필요합니다."})
                 return
@@ -1101,8 +1631,8 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                 cur.execute("DELETE FROM timetable WHERE slot_key = ?", (slot_key,))
             else:
                 cur.execute(
-                    "INSERT OR REPLACE INTO timetable (slot_key, subject, changed) VALUES (?, ?, 0)",
-                    (slot_key, subject_name),
+                    "INSERT OR REPLACE INTO timetable (slot_key, subject, changed) VALUES (?, ?, ?)",
+                    (slot_key, subject_name, changed_flag),
                 )
                 cur.execute("SELECT id FROM subjects WHERE name = ?", (subject_name,))
                 if not cur.fetchone():
@@ -1111,6 +1641,59 @@ class SuhaengDBRequestHandler(http.server.SimpleHTTPRequestHandler):
                         "INSERT INTO subjects (id, name, group_name, plan_id, color, sort_order) VALUES (?, ?, ?, '', '#64748B', 99)",
                         (sub_id, subject_name, subject_name[:2]),
                     )
+            _bump_db_version(cur)
+            conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/admin/academic-event":
+            ev_id = str(body.get("id") or f"acad-{int(time.time() * 1000)}")[:50]
+            title = str(body.get("title", "")).strip()[:80]
+            start_date = str(body.get("startDate", "")).strip()[:20]
+            end_date = str(body.get("endDate") or start_date).strip()[:20]
+            category = str(body.get("category", "event")).strip()[:20]
+            memo = str(body.get("memo", "")).strip()[:200]
+            if not title or not start_date:
+                self._send_json(400, {"ok": False, "error": "학사일정 제목과 시작일은 필수입니다."})
+                return
+
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                INSERT OR REPLACE INTO academic_events (id, title, start_date, end_date, category, memo)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (ev_id, title, start_date, end_date, category, memo),
+            )
+            _bump_db_version(cur)
+            conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/admin/academic-event/delete":
+            ev_id = str(body.get("id", "")).strip()
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute("DELETE FROM academic_events WHERE id = ?", (ev_id,))
+            _bump_db_version(cur)
+            conn.commit()
+            conn.close()
+            self._send_json(200, get_bootstrap_data())
+            return
+
+        if parsed.path == "/api/admin/community/status":
+            post_id = str(body.get("postId", "")).strip()
+            is_pinned = 1 if body.get("isPinned") else 0
+            fb_status = str(body.get("feedbackStatus", "")).strip()[:20]
+            conn = get_db_conn()
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE community_posts SET is_pinned = ?, feedback_status = ? WHERE id = ?",
+                (is_pinned, fb_status, post_id),
+            )
             _bump_db_version(cur)
             conn.commit()
             conn.close()

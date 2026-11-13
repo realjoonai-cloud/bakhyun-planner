@@ -1068,6 +1068,364 @@ button {
   font-size: 0.86rem;
 }
 
+/* ==========================================================================
+   v4: 학사일정 칩, 급식 카드, 맞춤 완료 계획, 커뮤니티 [Beta]
+   ========================================================================== */
+.beta-badge {
+  background: #FEF3C7;
+  color: #D97706;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.btn-user-auth {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid #BFDBFE;
+}
+
+.btn-user-auth:hover {
+  background: #DBEAFE;
+}
+
+.cal-acad-pill {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.67rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acad-holiday {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.acad-exam {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.acad-nomeal {
+  background: #FFEDD5;
+  color: #C2410C;
+}
+
+.acad-club {
+  background: #E0E7FF;
+  color: #4338CA;
+}
+
+.acad-event {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.cal-cell.is-holiday-cell .cal-date-row span:first-child {
+  color: var(--accent-red);
+}
+
+/* 선택 날짜 학사일정 & 급식 카드 */
+.day-info-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.acad-day-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.meal-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.meal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.meal-card-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.meal-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.meal-badge.nomeal,
+.meal-badge.holiday {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.meal-items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.meal-item-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+/* 수행평가별 내 맞춤 완료 계획 박스 */
+.my-plan-box {
+  background: #F8FAFC;
+  border: 1px dashed #CBD5E1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.my-plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.my-plan-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.target-dday-badge {
+  background: #DBEAFE;
+  color: #1D4ED8;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.my-plan-memo-view {
+  font-size: 0.76rem;
+  color: var(--text-sub);
+  white-space: pre-line;
+  line-height: 1.5;
+  background: var(--bg-card);
+  padding: 7px 9px;
+  border-radius: 7px;
+  border: 1px solid var(--border-color);
+}
+
+/* 시간표 주간 이동 및 변동교시/학사일정 배지 */
+.tt-changed-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: #FEF3C7;
+  color: #B45309;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+.tt-special-event {
+  margin-top: 5px;
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: #EEF2FF;
+  color: #4338CA;
+}
+
+/* 커뮤니티 [Beta] 레이아웃 */
+.community-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.category-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cat-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--bg-muted);
+  color: var(--text-sub);
+}
+
+.cat-pill.active {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.post-card.is-pinned {
+  background: #F8FAFF;
+  border-color: #93C5FD;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.post-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pin-tag {
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.cat-tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.fb-status-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.fb-status-review {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.fb-status-done {
+  background: #E8FDF2;
+  color: #00A859;
+}
+
+.post-title {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.post-content {
+  font-size: 0.86rem;
+  color: var(--text-sub);
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.comments-section {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+}
+
+.comment-form {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.comment-form input {
+  flex: 1;
+}
+
 </style>
 </head>
 <body>
@@ -1081,13 +1439,16 @@ button {
 
       <nav class="segment-tabs" role="tablist">
         <button type="button" class="tab-btn active" data-tab="calendar" id="tabBtnCalendar">
-          📅 수행평가 일정
+          📅 수행평가·학사일정
         </button>
         <button type="button" class="tab-btn" data-tab="timetable" id="tabBtnTimetable">
-          🕒 시간표
+          🕒 시간표·급식
         </button>
         <button type="button" class="tab-btn" data-tab="grades" id="tabBtnGrades">
           🎓 예상 성적표
+        </button>
+        <button type="button" class="tab-btn" data-tab="community" id="tabBtnCommunity">
+          💬 커뮤니티 <span class="beta-badge">Beta</span>
         </button>
       </nav>
 
@@ -1101,6 +1462,9 @@ button {
         >
           📝 설문 참여
         </a>
+        <button type="button" class="btn btn-user-auth btn-sm" id="btnUserAuthToggle">
+          🔐 로그인/가입
+        </button>
         <button type="button" class="btn btn-secondary btn-sm" id="btnAdminToggle">
           🔒 관리자
         </button>
@@ -1114,10 +1478,11 @@ button {
     <section class="admin-banner" id="adminBanner" style="display: none;">
       <div class="admin-banner-left">
         <span class="admin-tag">ADMIN</span>
-        <span>서버 관리자 모드 — 수행평가 등록, 평가계획 수정, 시간표 변경 사항이 서버 DB에 즉시 저장됩니다.</span>
+        <span>서버 관리자 모드 — 수행평가 등록, 학사일정 추가, 평가계획 수정, 시간표 변경 사항이 서버 DB에 즉시 저장됩니다.</span>
       </div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button type="button" class="btn-admin-action" id="btnAdminAddTask">＋ 수행평가 추가</button>
+        <button type="button" class="btn-admin-action" id="btnAdminAddAcadEvent">📅 학사일정 추가</button>
         <button type="button" class="btn-admin-action" id="btnAdminSyncNeis">🔄 나이스 시간표 동기화</button>
         <button type="button" class="btn-admin-action" id="btnAdminLogout">로그아웃</button>
       </div>
@@ -1141,6 +1506,12 @@ button {
                   <button type="button" id="btnModeWeek">주간</button>
                 </div>
               </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:0.73rem;color:var(--text-sub);">
+              <span><strong style="color:#DC2626;">🔴 빨간색</strong>: 공휴일·재량휴업일(11/19)</span>
+              <span><strong style="color:#6D28D9;">✏️ 보라색</strong>: 정기고사(12/8~9)</span>
+              <span><strong style="color:#D97706;">⚠️ 주황색</strong>: 비급식일(12/9, 12/31)</span>
+              <span><strong style="color:#0F766E;">🎯 청록색</strong>: 동아리(11/26)</span>
             </div>
             <div id="calendarBody"></div>
           </div>
@@ -1166,10 +1537,16 @@ button {
         <div class="panel-card">
           <div class="panel-header">
             <div>
-              <h2 class="panel-title">🕒 1학년 3반 주간 시간표</h2>
+              <h2 class="panel-title">🕒 1학년 3반 주간 시간표 &amp; 급식</h2>
               <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 2px;" id="timetableSubDesc">
-                각 교시 과목에 진행 중인 수행평가가 있으면 함께 표시됩니다.
+                주간 학사일정(재량휴업일·동아리·정기고사)과 진행 중인 수행평가, 중식 안내가 시간표에 함께 표시됩니다.
               </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span id="timetableWeekLabel" style="font-size: 0.82rem; font-weight: 800; color: var(--primary); margin-right: 4px;"></span>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnTtPrevWeek">◀ 이전 주</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnTtThisWeek">이번 주</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnTtNextWeek">다음 주 ▶</button>
             </div>
           </div>
           <div class="timetable-wrapper" id="fullTimetableContainer"></div>
@@ -1183,7 +1560,7 @@ button {
             <div>
               <h2 class="panel-title">🎓 내 예상 성적표 &amp; 등급 계산기</h2>
               <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 2px;">
-                2026학년도 2학기 평가계획 기준 · 입력한 점수는 서버에 전송되지 않고 내 기기에만 저장됩니다.
+                2026학년도 2학기 평가계획 기준 · 로그인 시 내 계정에 안전하게 동기화되며 비로그인 시 기기 내부에만 저장됩니다.
               </p>
             </div>
             <div style="display: flex; gap: 6px;">
@@ -1201,6 +1578,36 @@ button {
             <h3 class="panel-title">✍️ 과목별 점수 입력</h3>
           </div>
           <div class="subject-score-grid" id="subjectScoreCardsContainer"></div>
+        </div>
+      </section>
+
+      <!-- 탭 4: 커뮤니티 Beta -->
+      <section id="viewCommunity" class="tab-view" style="display: none;">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">
+                💬 1학년 3반 커뮤니티 &amp; 제작자 피드백 <span class="beta-badge">Beta</span>
+              </h2>
+              <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 2px;">
+                수행평가 준비 팁을 공유하거나 제작자에게 건의사항·오류 제보를 남겨주세요!
+              </p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btnOpenCommWrite">
+              ✍️ 새 글 쓰기
+            </button>
+          </div>
+
+          <div class="community-header-bar">
+            <div class="comm-filter-group">
+              <button type="button" class="btn btn-secondary btn-sm active" data-comm-cat="all">전체 보기</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-comm-cat="qna">🙋 질문/수행공유</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-comm-cat="feedback">💌 제작자 피드백</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-comm-cat="free">💬 자유소통</button>
+            </div>
+          </div>
+
+          <div class="post-list" id="communityPostList"></div>
         </div>
       </section>
     </main>
@@ -1445,10 +1852,167 @@ button {
           <label for="inputCellSubject">교시 과목명 변경</label>
           <input type="text" id="inputCellSubject" class="form-input" placeholder="예: 국어A, 수학B" />
         </div>
+        <label class="consent-check-label" style="margin-bottom: 4px; padding: 8px 10px;">
+          <input type="checkbox" id="chkCellChanged" />
+          <span style="font-size: 0.78rem;">🔄 이번 주 임시 시간표 변경 배지 표시</span>
+        </label>
         <div style="display: flex; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary btn-sm" id="btnSaveCellEdit">과목명 저장</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 4-A: 학생 로그인 / 간편 회원가입 모달
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalUserAuth" data-auth-mode="login">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalUserAuthTitle">🔐 학생 로그인</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseUserAuth">닫기 ✕</button>
+      </div>
+      <form id="formUserAuth" class="form-grid">
+        <div class="timetable-hint-box">
+          실명·전화번호·이메일 등 개인정보를 일절 수집하지 않습니다.<br />
+          자유로운 <strong>닉네임(아이디)과 비밀번호</strong>만 정하면 내 맞춤 완료 계획, 체크리스트, 성적표가 어디서든 자동 저장됩니다!
+        </div>
+        <div class="form-field">
+          <label for="inputUserNickname">닉네임(아이디) (2~20자)</label>
+          <input type="text" id="inputUserNickname" class="form-input" minlength="2" maxlength="20" placeholder="예: 백현103_준" required />
+        </div>
+        <div class="form-field">
+          <label for="inputUserPassword">비밀번호 (4자 이상)</label>
+          <input type="password" id="inputUserPassword" class="form-input" minlength="4" maxlength="40" placeholder="비밀번호 입력" required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSubmitUserAuth" style="width: 100%; padding: 11px;">
+          로그인
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnSwitchAuthMode" style="width: 100%;">
+          처음 오셨나요? 10초 간편 회원가입
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 4-B: 내 맞춤 수행평가 완료 계획 설정 모달
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalMyTaskPlan">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🎯 내 맞춤 수행평가 완료 계획</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseMyTaskPlan">닫기 ✕</button>
+      </div>
+      <form id="formMyTaskPlan" class="form-grid">
+        <input type="hidden" id="inputMyPlanTaskId" />
+        <div class="timetable-hint-box" id="myPlanTaskTitleLabel"></div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnAutoRecommendInModal">
+            ✨ 마감일 기준 3단계 자동 계획 채우기
+          </button>
+        </div>
+        <div class="form-field">
+          <label for="inputMyPlanTargetDate">내 목표 완료일 (실제 마감일보다 여유 있게 설정해 보세요!)</label>
+          <input type="date" id="inputMyPlanTargetDate" class="form-input" required />
+        </div>
+        <div class="form-field">
+          <label for="inputMyPlanSteps">일자별 실천 계획 (줄바꿈으로 구분)</label>
+          <textarea id="inputMyPlanSteps" class="form-input" rows="4" placeholder="예:&#10;[D-3] 주제 선정 및 자료 조사&#10;[D-2] 보고서 초안 작성&#10;[D-1] 최종 점검 완료"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="inputMyPlanMemo">나만의 다짐 / 준비 메모</label>
+          <input type="text" id="inputMyPlanMemo" class="form-input" maxlength="200" placeholder="예: 주말에 도서관에서 초안 끝내기!" />
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="submit" class="btn btn-primary">내 맞춤 계획 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 4-C: 커뮤니티 새 글 작성 모달 (Beta)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalCommunityWrite">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">✍️ 커뮤니티 글쓰기 <span class="beta-badge">Beta</span></h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseCommWrite">닫기 ✕</button>
+      </div>
+      <form id="formCommunityWrite" class="form-grid">
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputCommCategory">말머리 선택 *</label>
+            <select id="inputCommCategory" class="form-input">
+              <option value="qna">🙋 질문/수행공유</option>
+              <option value="feedback">💌 제작자 피드백</option>
+              <option value="free">💬 자유소통</option>
+              <option value="notice">📢 공지 (관리자 전용)</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="inputCommNickname">작성자 닉네임 (미입력 시 익명)</label>
+            <input type="text" id="inputCommNickname" class="form-input" maxlength="20" placeholder="익명 학우" />
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="inputCommTitle">제목 * (80자 이내)</label>
+          <input type="text" id="inputCommTitle" class="form-input" maxlength="80" placeholder="예: 과학B 탐구 보고서 분량 얼마나 되나요?" required />
+        </div>
+        <div class="form-field">
+          <label for="inputCommContent">내용 * (1,000자 이내, 바른 말 고운 말을 사용해 주세요)</label>
+          <textarea id="inputCommContent" class="form-input" rows="4" maxlength="1000" placeholder="학급 친구들과 공유할 내용이나 제작자에게 전할 피드백을 적어주세요." required></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn btn-primary">등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       모달 4-D: 학사일정 추가 모달 (관리자 전용)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="modalAcademicEvent">
+    <div class="modal-box" role="dialog" aria-modal="true" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title">📅 백현중 학사일정 추가</h3>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseAcadModal">닫기 ✕</button>
+      </div>
+      <form id="formAcademicEvent" class="form-grid">
+        <div class="form-field">
+          <label for="inputAcadTitle">학사일정명 *</label>
+          <input type="text" id="inputAcadTitle" class="form-input" maxlength="80" placeholder="예: 대학수학능력시험(재량휴업일)" required />
+        </div>
+        <div class="form-field">
+          <label for="inputAcadCategory">일정 분류 *</label>
+          <select id="inputAcadCategory" class="form-input">
+            <option value="event">🏫 일반 학사행사</option>
+            <option value="holiday">🔴 공휴일 / 재량휴업일 (등교 안 함)</option>
+            <option value="exam">✏️ 정기고사 (지필평가)</option>
+            <option value="nomeal">⚠️ 비급식일 (급식 미제공)</option>
+            <option value="club">🎯 동아리 활동 (5·6·7교시)</option>
+          </select>
+        </div>
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="inputAcadStartDate">시작일 *</label>
+            <input type="date" id="inputAcadStartDate" class="form-input" required />
+          </div>
+          <div class="form-field">
+            <label for="inputAcadEndDate">종료일 *</label>
+            <input type="date" id="inputAcadEndDate" class="form-input" required />
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="inputAcadMemo">안내 메모</label>
+          <input type="text" id="inputAcadMemo" class="form-input" maxlength="300" placeholder="예: 급식 미실시 — 하교 후 식사 유의" />
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button type="submit" class="btn btn-primary">학사일정 저장</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1503,6 +2067,7 @@ button {
   const ADMIN_SESSION_KEY = 'suhaeng_baekhyun_admin_pw';
   const TERMS_CONSENT_KEY = 'suhaeng_baekhyun_terms_consent_v1';
   const SURVEY_DONE_KEY = 'suhaeng_baekhyun_survey_done_v1';
+  const USER_AUTH_STORAGE_KEY = 'suhaeng_baekhyun_user_auth_v4';
 
   function getTodayStr() {
     const now = new Date();
@@ -1809,16 +2374,73 @@ button {
     return { grade: 'E', cls: 'grade-e', targetA: 90 };
   }
 
+  const FALLBACK_ACADEMIC_EVENTS = [
+    { id: 'acad-1001', title: '전문직업인특강(1학년)', startDate: '2026-10-01', endDate: '2026-10-01', category: 'event', memo: '1학년 진로 특강' },
+    { id: 'acad-1003', title: '개천절', startDate: '2026-10-03', endDate: '2026-10-03', category: 'holiday', memo: '공휴일' },
+    { id: 'acad-1005', title: '대체공휴일', startDate: '2026-10-05', endDate: '2026-10-05', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1008', title: '정보통신윤리교육', startDate: '2026-10-08', endDate: '2026-10-08', category: 'event', memo: '' },
+    { id: 'acad-1009', title: '한글날', startDate: '2026-10-09', endDate: '2026-10-09', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1013', title: '인적성검사', startDate: '2026-10-13', endDate: '2026-10-13', category: 'event', memo: '' },
+    { id: 'acad-1015', title: '백현제(동아리)', startDate: '2026-10-15', endDate: '2026-10-15', category: 'club', memo: '학교 축제 및 동아리 발표' },
+    { id: 'acad-1022', title: '정보통신윤리교육 · 독도의날 행사', startDate: '2026-10-22', endDate: '2026-10-22', category: 'event', memo: '' },
+    { id: 'acad-1029', title: '학생자치회 정부회장선거', startDate: '2026-10-29', endDate: '2026-10-29', category: 'event', memo: '' },
+    { id: 'acad-1102', title: '학부모상담주간', startDate: '2026-11-02', endDate: '2026-11-06', category: 'event', memo: '11/2(월) ~ 11/6(금) 학부모 상담 주간' },
+    { id: 'acad-1109', title: '3학년 정기고사', startDate: '2026-11-09', endDate: '2026-11-11', category: 'exam', memo: '11/9(월) ~ 11/11(수) 3학년 지필고사' },
+    { id: 'acad-1112', title: '장애인식개선교육(장애이해교육)', startDate: '2026-11-12', endDate: '2026-11-12', category: 'event', memo: '' },
+    { id: 'acad-1116', title: '진로진학멘토링(3학년)', startDate: '2026-11-16', endDate: '2026-11-16', category: 'event', memo: '' },
+    { id: 'acad-1119', title: '대학수학능력시험 · 재량휴업일', startDate: '2026-11-19', endDate: '2026-11-19', category: 'holiday', memo: '🔴 재량휴업일 (등교하지 않음)' },
+    { id: 'acad-1125', title: '교육공동체 대토론회(전학공)', startDate: '2026-11-25', endDate: '2026-11-25', category: 'event', memo: '' },
+    { id: 'acad-1126', title: '동아리(5,6,7교시)', startDate: '2026-11-26', endDate: '2026-11-26', category: 'club', memo: '목요일 5·6·7교시 동아리 활동' },
+    { id: 'acad-1203', title: '학급운영협의회', startDate: '2026-12-03', endDate: '2026-12-03', category: 'event', memo: '' },
+    { id: 'acad-1208', title: '1, 2학년 2차 정기고사 (1일차)', startDate: '2026-12-08', endDate: '2026-12-08', category: 'exam', memo: '✏️ 1·2학년 2차 지필평가 1일차' },
+    { id: 'acad-1209', title: '1, 2학년 2차 정기고사 (비급식)', startDate: '2026-12-09', endDate: '2026-12-09', category: 'nomeal', memo: '⚠️ 비급식일 · 1·2학년 2차 지필평가 2일차' },
+    { id: 'acad-1210', title: '성매매예방교육', startDate: '2026-12-10', endDate: '2026-12-10', category: 'event', memo: '' },
+    { id: 'acad-1214', title: '진로진학멘토링(2학년)', startDate: '2026-12-14', endDate: '2026-12-14', category: 'event', memo: '' },
+    { id: 'acad-1217', title: '학생자치회 정부회장선거', startDate: '2026-12-17', endDate: '2026-12-17', category: 'event', memo: '' },
+    { id: 'acad-1225', title: '성탄절', startDate: '2026-12-25', endDate: '2026-12-25', category: 'holiday', memo: '공휴일 (수업 없음)' },
+    { id: 'acad-1231', title: '졸업식 · 종업식 (비급식)', startDate: '2026-12-31', endDate: '2026-12-31', category: 'nomeal', memo: '⚠️ 비급식일 · 2학기 종업식 (겨울방학 59일)' },
+    { id: 'acad-0101', title: '신정', startDate: '2027-01-01', endDate: '2027-01-01', category: 'holiday', memo: '공휴일' },
+    { id: 'acad-0206', title: '설날 연휴', startDate: '2027-02-06', endDate: '2027-02-08', category: 'holiday', memo: '설날 명절 연휴' },
+    { id: 'acad-0209', title: '설날 대체공휴일', startDate: '2027-02-09', endDate: '2027-02-09', category: 'holiday', memo: '대체공휴일' }
+  ];
+
+  const FALLBACK_COMMUNITY_POSTS = [
+    {
+      id: 'post-welcome-1',
+      author: '제작자(관리자)',
+      isAdminPost: true,
+      category: '제작자 피드백',
+      title: '📢 백현중 1-3 수행평가 플래너 v4 업데이트 & 커뮤니티 안내',
+      content: '1학년 3반 친구들 안녕! 수행평가 플래너가 v4로 업그레이드되었어.\n1) 상단 [로그인/회원가입]으로 내 아이디를 만들면 어디서든 내 목표 완료일과 수행평가 계획이 저장돼.\n2) 2학기 학사일정(11/19 재량휴업일, 12/8~9 2차 지필평가 및 비급식일 등)과 오늘/내일 급식 식단표가 추가되었어.\n3) 사이트를 쓰면서 추가되었으면 하는 기능이나 수행평가 질문이 있으면 여기에 자유롭게 남겨줘!',
+      isPinned: true,
+      feedbackStatus: '반영완료',
+      likes: 3,
+      likedUsers: [],
+      comments: [],
+      createdAt: '2026-11-13 18:00'
+    }
+  ];
+
   class Store {
     constructor() {
       this.listeners = [];
       this.adminPassword = '';
+      this.userAuth = { username: '', password: '' };
       try {
         if (typeof sessionStorage !== 'undefined') {
           this.adminPassword = sessionStorage.getItem(ADMIN_SESSION_KEY) || '';
         }
         if (!this.adminPassword && typeof localStorage !== 'undefined') {
           this.adminPassword = localStorage.getItem(ADMIN_SESSION_KEY) || '';
+        }
+        if (typeof localStorage !== 'undefined') {
+          const rawAuth = localStorage.getItem(USER_AUTH_STORAGE_KEY);
+          if (rawAuth) {
+            const parsed = JSON.parse(rawAuth);
+            if (parsed && parsed.username && parsed.password) {
+              this.userAuth = { username: parsed.username, password: parsed.password };
+            }
+          }
         }
       } catch (e) {}
 
@@ -1903,15 +2525,30 @@ button {
           ? cachedShared.assessments
           : buildFallbackAssessments(todayStr);
 
+      const academicEvents =
+        cachedShared && Array.isArray(cachedShared.academicEvents) && cachedShared.academicEvents.length
+          ? cachedShared.academicEvents
+          : JSON.parse(JSON.stringify(FALLBACK_ACADEMIC_EVENTS));
+
+      const communityPosts =
+        cachedShared && Array.isArray(cachedShared.communityPosts)
+          ? cachedShared.communityPosts
+          : JSON.parse(JSON.stringify(FALLBACK_COMMUNITY_POSTS));
+
+      const meals = (cachedShared && cachedShared.meals) || {};
+
       const myProgress = (personal && personal.myProgress) || {};
       const myScores = (personal && personal.myScores) || {};
+      const myPlans = (personal && personal.myPlans) || {};
       const ui = Object.assign(
         {
-          activeTab: 'calendar', // 'calendar' | 'timetable' | 'grades'
+          activeTab: 'calendar', // 'calendar' | 'timetable' | 'grades' | 'community'
           calendarMode: 'month',
           selectedDate: todayStr,
           currentMonthDate: todayStr,
-          filterSubjectId: 'all'
+          filterSubjectId: 'all',
+          timetableWeekOffset: 0,
+          communityCategory: 'all'
         },
         (personal && personal.ui) || {},
         {
@@ -1920,7 +2557,12 @@ button {
         }
       );
 
-      const mergedAssessments = this.mergeAssessmentsWithPersonal(rawAssessments, myProgress);
+      const user = {
+        isLoggedIn: !!(this.userAuth && this.userAuth.username),
+        username: (this.userAuth && this.userAuth.username) || ''
+      };
+
+      const mergedAssessments = this.mergeAssessmentsWithPersonal(rawAssessments, myProgress, myPlans);
 
       return {
         schoolInfo,
@@ -1929,15 +2571,21 @@ button {
         subjectPlans,
         rawAssessments,
         assessments: mergedAssessments,
+        academicEvents,
+        communityPosts,
+        meals,
         myProgress,
         myScores,
+        myPlans,
+        user,
         ui
       };
     }
 
-    mergeAssessmentsWithPersonal(rawList, myProgress) {
+    mergeAssessmentsWithPersonal(rawList, myProgress, myPlans = {}) {
       return (rawList || []).map((item) => {
         const prog = myProgress[item.id] || {};
+        const plan = myPlans[item.id] || {};
         const doneSubtaskIds = Array.isArray(prog.doneSubtaskIds) ? prog.doneSubtaskIds : [];
         const subtasks = (item.subtasks || []).map((st, idx) => {
           const stId = st.id || `st-${idx}`;
@@ -1950,7 +2598,11 @@ button {
         return Object.assign({}, item, {
           status: prog.status || 'todo',
           dailyChecks: Array.isArray(prog.dailyChecks) ? prog.dailyChecks.slice() : [],
-          subtasks
+          subtasks,
+          myPlan: {
+            targetDate: plan.targetDate || '',
+            planMemo: plan.planMemo || ''
+          }
         });
       });
     }
@@ -1960,6 +2612,7 @@ button {
         const payload = {
           myProgress: this.state.myProgress,
           myScores: this.state.myScores,
+          myPlans: this.state.myPlans,
           ui: {
             activeTab: this.state.ui.activeTab,
             calendarMode: this.state.ui.calendarMode
@@ -1976,7 +2629,10 @@ button {
           subjects: this.state.subjects,
           timetable: this.state.timetable,
           subjectPlans: this.state.subjectPlans,
-          assessments: this.state.rawAssessments
+          assessments: this.state.rawAssessments,
+          academicEvents: this.state.academicEvents,
+          communityPosts: this.state.communityPosts,
+          meals: this.state.meals
         };
         localStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify(payload));
       } catch (e) {}
@@ -1989,13 +2645,17 @@ button {
       };
     }
 
-    notify() {
+    notify(syncUser = false) {
       this.state.assessments = this.mergeAssessmentsWithPersonal(
         this.state.rawAssessments,
-        this.state.myProgress
+        this.state.myProgress,
+        this.state.myPlans
       );
       this.savePersonalToStorage();
       this.saveSharedCacheToStorage();
+      if (syncUser && this.state.user && this.state.user.isLoggedIn) {
+        this.syncUserDataToServer().catch(() => {});
+      }
       this.listeners.forEach((fn) => fn(this.state));
     }
 
@@ -2029,7 +2689,9 @@ button {
             body: JSON.stringify({
               dbUpdatedAt: localTs,
               assessments: this.state.rawAssessments,
-              timetable: this.state.timetable
+              timetable: this.state.timetable,
+              academicEvents: this.state.academicEvents,
+              communityPosts: this.state.communityPosts
             })
           });
           if (restoreResp.ok) {
@@ -2053,7 +2715,160 @@ button {
       if (data.timetable) this.state.timetable = data.timetable;
       if (Array.isArray(data.subjectPlans)) this.state.subjectPlans = data.subjectPlans;
       if (Array.isArray(data.assessments)) this.state.rawAssessments = data.assessments;
+      if (Array.isArray(data.academicEvents)) this.state.academicEvents = data.academicEvents;
+      if (Array.isArray(data.communityPosts)) this.state.communityPosts = data.communityPosts;
       this.notify();
+    }
+
+    // =========================================================================
+    // 학생 회원가입 / 로그인 / 내 계획 & 점수 서버 동기화
+    // =========================================================================
+    async registerUser(username, password) {
+      const u = (username || '').trim();
+      const p = (password || '').trim();
+      if (u.length < 2 || u.length > 20) {
+        throw new Error('아이디(닉네임)는 2~20자 이내로 입력해 주세요.');
+      }
+      if (p.length < 4) {
+        throw new Error('비밀번호는 4자 이상 입력해 주세요.');
+      }
+
+      const initialPayload = {
+        myProgress: this.state.myProgress,
+        myScores: this.state.myScores,
+        myPlans: this.state.myPlans
+      };
+
+      const resp = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p, userData: initialPayload })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '회원가입에 실패했습니다.');
+      }
+
+      this.userAuth = { username: u, password: p };
+      try {
+        localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(this.userAuth));
+      } catch (e) {}
+      this.state.user = { isLoggedIn: true, username: u };
+      this.notify();
+      return data;
+    }
+
+    async loginUser(username, password) {
+      const u = (username || '').trim();
+      const p = (password || '').trim();
+      if (!u || !p) {
+        throw new Error('아이디와 비밀번호를 모두 입력해 주세요.');
+      }
+
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '로그인에 실패했습니다.');
+      }
+
+      this.userAuth = { username: u, password: p };
+      try {
+        localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(this.userAuth));
+      } catch (e) {}
+      this.state.user = { isLoggedIn: true, username: u };
+
+      const serverUserData = data.userData || {};
+      if (serverUserData.myProgress) {
+        this.state.myProgress = Object.assign({}, this.state.myProgress, serverUserData.myProgress);
+      }
+      if (serverUserData.myScores) {
+        this.state.myScores = Object.assign({}, this.state.myScores, serverUserData.myScores);
+      }
+      if (serverUserData.myPlans) {
+        this.state.myPlans = Object.assign({}, this.state.myPlans, serverUserData.myPlans);
+      }
+      this.notify(true);
+      return data;
+    }
+
+    logoutUser() {
+      this.userAuth = { username: '', password: '' };
+      try {
+        localStorage.removeItem(USER_AUTH_STORAGE_KEY);
+      } catch (e) {}
+      this.state.user = { isLoggedIn: false, username: '' };
+      this.notify();
+    }
+
+    async syncUserDataToServer() {
+      if (!this.userAuth || !this.userAuth.username || !this.userAuth.password) return;
+      if (!window.location.protocol.startsWith('http')) return;
+      await fetch('/api/user/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: this.userAuth.username,
+          password: this.userAuth.password,
+          userData: {
+            myProgress: this.state.myProgress,
+            myScores: this.state.myScores,
+            myPlans: this.state.myPlans
+          }
+        })
+      });
+    }
+
+    // =========================================================================
+    // 수행평가별 맞춤 완료 계획 (내 목표 완료일 & 자동 공부 계획 추천)
+    // =========================================================================
+    getTaskPlan(taskId) {
+      return (
+        this.state.myPlans[taskId] || {
+          targetDate: '',
+          planMemo: ''
+        }
+      );
+    }
+
+    saveTaskPlan(taskId, { targetDate, planMemo }) {
+      this.state.myPlans[taskId] = {
+        targetDate: (targetDate || '').trim(),
+        planMemo: (planMemo || '').trim()
+      };
+      this.notify(true);
+    }
+
+    generateRecommendedPlan(taskId) {
+      const task = this.state.rawAssessments.find((a) => a.id === taskId);
+      if (!task) return null;
+      const todayStr = getTodayStr();
+      const diff = this.getDDay(task.dueDate, todayStr);
+      const targetOffset = diff >= 3 ? -2 : diff >= 1 ? -1 : 0;
+      const targetDate = addDaysStr(task.dueDate, targetOffset);
+
+      const step1Date = diff >= 5 ? addDaysStr(task.dueDate, -4) : todayStr;
+      const step2Date = targetDate;
+      const step3Date = diff >= 1 ? addDaysStr(task.dueDate, -1) : task.dueDate;
+
+      let customSteps = '';
+      if (task.type === '발표') {
+        customSteps = `[1단계 · ${step1Date.slice(5)}] 발표 주제 및 대본 구성 완료\n[2단계 · ${step2Date.slice(5)} 목표 완료일] 발표 자료 완성 및 1분 리허설\n[3단계 · ${step3Date.slice(5)}] 최종 암기 및 질의응답 대비`;
+      } else if (task.type === '실기') {
+        customSteps = `[1단계 · ${step1Date.slice(5)}] 실기 평가 기준 및 핵심 동작/재료 숙지\n[2단계 · ${step2Date.slice(5)} 목표 완료일] 실전 연습 및 부족한 부분 보완\n[3단계 · ${step3Date.slice(5)}] 컨디션 조절 및 준비물 챙기기`;
+      } else {
+        customSteps = `[1단계 · ${step1Date.slice(5)}] 평가 루브릭 확인 및 핵심 자료 조사\n[2단계 · ${step2Date.slice(5)} 목표 완료일] 보고서/논술 초안 작성 완료\n[3단계 · ${step3Date.slice(5)}] 맞춤법·분량 최종 검토 및 제출 준비`;
+      }
+
+      this.state.myPlans[taskId] = {
+        targetDate,
+        planMemo: customSteps
+      };
+      this.notify(true);
+      return this.state.myPlans[taskId];
     }
 
     async loginAdmin(password) {
@@ -2196,7 +3011,7 @@ button {
       this.notify();
     }
 
-    async adminUpdateTimetableCell(weekdayIdx, period, subjectName) {
+    async adminUpdateTimetableCell(weekdayIdx, period, subjectName, changed = false) {
       if (!this.state.ui.isAdmin) {
         throw new Error('관리자 권한이 필요합니다.');
       }
@@ -2208,7 +3023,7 @@ button {
             'Content-Type': 'application/json',
             'X-Admin-Password': this.adminPassword
           },
-          body: JSON.stringify({ slotKey, subject: subjectName })
+          body: JSON.stringify({ slotKey, subject: subjectName, changed: !!changed })
         });
         const data = await resp.json();
         if (!resp.ok || !data.ok) {
@@ -2220,9 +3035,215 @@ button {
       if (!subjectName || !subjectName.trim()) {
         delete this.state.timetable[slotKey];
       } else {
-        this.state.timetable[slotKey] = { subject: subjectName.trim(), changed: false };
+        this.state.timetable[slotKey] = { subject: subjectName.trim(), changed: !!changed };
       }
       this.notify();
+    }
+
+    async adminSaveAcademicEvent(payload) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const resp = await fetch('/api/admin/academic-event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '학사일정 저장 실패');
+      }
+      this.applyServerBootstrapData(data);
+      return data;
+    }
+
+    async adminDeleteAcademicEvent(id) {
+      if (!this.state.ui.isAdmin) {
+        throw new Error('관리자 권한이 필요합니다.');
+      }
+      const resp = await fetch('/api/admin/academic-event/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword
+        },
+        body: JSON.stringify({ id })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '학사일정 삭제 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    // =========================================================================
+    // 학사일정 & 급식 식단표 & 커뮤니티 [Beta] 메서드
+    // =========================================================================
+    getAcademicEventsOnDate(dateStr) {
+      if (!dateStr) return [];
+      return (this.state.academicEvents || []).filter(
+        (ev) => ev.startDate <= dateStr && dateStr <= (ev.endDate || ev.startDate)
+      );
+    }
+
+    async fetchMealsForMonth(ym) {
+      if (!window.location.protocol.startsWith('http')) return;
+      const targetYm = ym || getTodayStr().slice(0, 7).replace('-', '');
+      try {
+        const resp = await fetch(`/api/meals?ym=${encodeURIComponent(targetYm)}`, { cache: 'no-store' });
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (data && data.ok && data.meals) {
+          this.state.meals = Object.assign({}, this.state.meals, data.meals);
+          this.notify();
+        }
+      } catch (e) {}
+    }
+
+    getMealForDate(dateStr) {
+      const weekdayIdx = getWeekdayIndex(dateStr);
+      const events = this.getAcademicEventsOnDate(dateStr);
+      const holidayEv = events.find((e) => e.category === 'holiday');
+      if (holidayEv) {
+        return {
+          status: 'holiday',
+          badge: '🔴 휴업/공휴일',
+          title: `${holidayEv.title} — 급식 미실시`,
+          items: []
+        };
+      }
+      const noMealEv = events.find((e) => e.category === 'nomeal');
+      if (noMealEv) {
+        return {
+          status: 'nomeal',
+          badge: '⚠️ 비급식일',
+          title: `${noMealEv.title} — 급식 미실시 (하교)`,
+          items: []
+        };
+      }
+      if (weekdayIdx > 4) {
+        return {
+          status: 'weekend',
+          badge: '주말',
+          title: '주말 (급식 없음)',
+          items: []
+        };
+      }
+      const meal = this.state.meals && this.state.meals[dateStr];
+      if (meal && Array.isArray(meal.items) && meal.items.length > 0) {
+        return {
+          status: 'ok',
+          badge: meal.cal || '중식',
+          title: '나이스(NEIS) 공식 중식 식단',
+          items: meal.items
+        };
+      }
+      return {
+        status: 'pending',
+        badge: '식단 준비중',
+        title: '해당 날짜의 나이스 급식 식단 데이터가 아직 등록되지 않았습니다.',
+        items: []
+      };
+    }
+
+    async createCommunityPost({ category, title, content, isPinned }) {
+      const author = this.state.ui.isAdmin
+        ? '제작자(관리자)'
+        : this.state.user && this.state.user.isLoggedIn
+        ? this.state.user.username
+        : '';
+      if (!author) {
+        throw new Error('커뮤니티에 글을 작성하려면 먼저 상단 [로그인/회원가입]을 해주세요!');
+      }
+      const resp = await fetch('/api/community/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ author, category, title, content, isPinned: !!isPinned })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '게시글 등록 실패');
+      }
+      this.applyServerBootstrapData(data);
+      return data;
+    }
+
+    async addCommunityComment(postId, text) {
+      const author = this.state.ui.isAdmin
+        ? '제작자(관리자)'
+        : this.state.user && this.state.user.isLoggedIn
+        ? this.state.user.username
+        : '';
+      if (!author) {
+        throw new Error('댓글을 작성하려면 먼저 상단 [로그인/회원가입]을 해주세요!');
+      }
+      const resp = await fetch('/api/community/comment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, author, text })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '댓글 등록 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    async toggleCommunityLike(postId) {
+      const username =
+        (this.state.user && this.state.user.username) ||
+        (this.state.ui.isAdmin ? 'admin' : 'guest');
+      const resp = await fetch('/api/community/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId, username })
+      });
+      const data = await resp.json();
+      if (resp.ok && data.ok) {
+        this.applyServerBootstrapData(data);
+      }
+    }
+
+    async deleteCommunityPost(postId) {
+      const username = (this.state.user && this.state.user.username) || '';
+      const resp = await fetch('/api/community/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, username })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '게시글 삭제 실패');
+      }
+      this.applyServerBootstrapData(data);
+    }
+
+    async adminUpdateCommunityStatus(postId, { isPinned, feedbackStatus }) {
+      const resp = await fetch('/api/admin/community/status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': this.adminPassword || ''
+        },
+        body: JSON.stringify({ postId, isPinned, feedbackStatus })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || '상태 변경 실패');
+      }
+      this.applyServerBootstrapData(data);
     }
 
     async adminSyncTimetable(neisApiKey = '') {
@@ -2345,7 +3366,7 @@ button {
       if (status === 'done' && raw && Array.isArray(raw.subtasks)) {
         prog.doneSubtaskIds = raw.subtasks.map((st, idx) => st.id || `st-${idx}`);
       }
-      this.notify();
+      this.notify(true);
     }
 
     toggleDailyCheck(id, dateStr = getTodayStr()) {
@@ -2360,7 +3381,7 @@ button {
         prog.dailyChecks.splice(idx, 1);
         checked = false;
       }
-      this.notify();
+      this.notify(true);
       return checked;
     }
 
@@ -2385,7 +3406,7 @@ button {
       } else if (doneCount < totalCount && prog.status === 'done') {
         prog.status = 'in_progress';
       }
-      this.notify();
+      this.notify(true);
     }
 
     getPersonalSubjectScore(planId) {
@@ -2416,7 +3437,7 @@ button {
           entry[field] = Math.min(100, Math.max(0, Number(value)));
         }
       }
-      this.notify();
+      this.notify(true);
     }
 
     fillSamplePersonalScores() {
@@ -2429,12 +3450,12 @@ button {
         });
         this.state.myScores[plan.id] = entry;
       });
-      this.notify();
+      this.notify(true);
     }
 
     clearPersonalScores() {
       this.state.myScores = {};
-      this.notify();
+      this.notify(true);
     }
 
     calculateGradeReport() {
@@ -2576,8 +3597,8 @@ button {
   };
 })(window);
 
-</script>
-<script>
+  </script>
+  <script>
 /**
  * 백현중 1-3 수행평가 플래너 v3 컨트롤러 (app.js)
  * - 심플 3탭 카드형 (수행평가 일정 / 시간표 / 예상 성적표)
@@ -2594,6 +3615,33 @@ button {
   const CAL_HEADERS = ['일', '월', '화', '수', '목', '금', '토'];
 
   let activeCellModalContext = null;
+  let activePlanTaskId = null;
+  const fetchedMealMonths = new Set();
+
+  function ensureMealsLoadedForDate(dateStr) {
+    if (!dateStr || dateStr.length < 7) return;
+    const ym = dateStr.slice(0, 7).replace('-', '');
+    if (!fetchedMealMonths.has(ym)) {
+      fetchedMealMonths.add(ym);
+      store.fetchMealsForMonth(ym);
+    }
+  }
+
+  function getAcadCategoryClass(cat) {
+    if (cat === 'holiday') return 'acad-holiday';
+    if (cat === 'exam') return 'acad-exam';
+    if (cat === 'nomeal') return 'acad-nomeal';
+    if (cat === 'club') return 'acad-club';
+    return 'acad-event';
+  }
+
+  function getAcadCategoryIcon(cat) {
+    if (cat === 'holiday') return '🔴';
+    if (cat === 'exam') return '✏️';
+    if (cat === 'nomeal') return '⚠️';
+    if (cat === 'club') return '🎯';
+    return '📅';
+  }
 
   function escapeHtml(str) {
     if (str === null || str === undefined) return '';
@@ -2643,6 +3691,7 @@ button {
     const btnAdminToggle = document.getElementById('btnAdminToggle');
     const btnAddAssessment = document.getElementById('btnAddAssessment');
     const btnAddOnSelectedDate = document.getElementById('btnAddOnSelectedDate');
+    const btnUserAuthToggle = document.getElementById('btnUserAuthToggle');
 
     if (adminBanner) adminBanner.style.display = isAdmin ? 'flex' : 'none';
     if (btnAdminToggle) {
@@ -2653,6 +3702,13 @@ button {
     }
     if (btnAddOnSelectedDate) {
       btnAddOnSelectedDate.style.display = isAdmin ? 'inline-flex' : 'none';
+    }
+    if (btnUserAuthToggle) {
+      if (state.user && state.user.isLoggedIn) {
+        btnUserAuthToggle.textContent = `👤 ${state.user.username}님 (로그아웃)`;
+      } else {
+        btnUserAuthToggle.textContent = '👤 로그인/가입';
+      }
     }
   }
 
@@ -2698,6 +3754,40 @@ button {
       `
       : '';
 
+    const myPlan = task.myPlan || { targetDate: '', planMemo: '' };
+    let targetDdayHtml = '';
+    if (myPlan.targetDate) {
+      const tDiff = store.getDDay(myPlan.targetDate, todayStr);
+      const tLabel = tDiff === 0 ? '오늘 목표일!' : tDiff > 0 ? `목표 D-${tDiff}` : `목표 D+${Math.abs(tDiff)}`;
+      targetDdayHtml = `<span class="target-dday-badge">🎯 내 목표일: ${escapeHtml(myPlan.targetDate.slice(5))} (${tLabel})</span>`;
+    } else {
+      targetDdayHtml = `<span style="font-size:0.72rem;color:var(--text-muted);">미설정 (자동 추천 가능)</span>`;
+    }
+
+    const myPlanBoxHtml = `
+      <div class="my-plan-box">
+        <div class="my-plan-header">
+          <div class="my-plan-title">
+            <span>🗓️ 내 완료 계획</span>
+            ${targetDdayHtml}
+          </div>
+          <div style="display:flex;gap:4px;">
+            <button type="button" class="btn btn-secondary btn-sm" data-action="auto-plan" data-id="${escapeHtml(task.id)}" style="font-size:0.72rem;padding:4px 8px;">
+              ✨ 자동 계획 추천
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" data-action="open-plan" data-id="${escapeHtml(task.id)}" style="font-size:0.72rem;padding:4px 8px;">
+              ✏️ 계획 수정
+            </button>
+          </div>
+        </div>
+        ${
+          myPlan.planMemo
+            ? `<div class="my-plan-memo-view">${escapeHtml(myPlan.planMemo)}</div>`
+            : ''
+        }
+      </div>
+    `;
+
     return `
       <article class="task-card status-${escapeHtml(task.status)}" data-card-id="${escapeHtml(task.id)}">
         <div class="task-card-top">
@@ -2713,10 +3803,11 @@ button {
 
         <h4 class="task-title">${escapeHtml(task.title)}</h4>
         <div class="task-meta">
-          📅 ${escapeHtml(task.dueDate)} (${periodText})
+          📅 마감/실시: ${escapeHtml(task.dueDate)} (${periodText})
         </div>
 
         ${task.memo ? `<div class="task-memo">${escapeHtml(task.memo)}</div>` : ''}
+        ${myPlanBoxHtml}
         ${subtasksHtml}
 
         <div class="task-card-footer">
@@ -2766,6 +3857,23 @@ button {
       });
     });
 
+    container.querySelectorAll('[data-action="auto-plan"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const generated = store.generateRecommendedPlan(id);
+        if (generated) {
+          showToast('✨ 마감일 기준 3단계 맞춤 공부 계획이 생성되었습니다!');
+        }
+      });
+    });
+
+    container.querySelectorAll('[data-action="open-plan"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        openMyTaskPlanModal(id);
+      });
+    });
+
     container.querySelectorAll('[data-action="edit"]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
@@ -2791,14 +3899,43 @@ button {
     });
   }
 
+  function getAcadPillClass(category) {
+    if (category === 'holiday') return 'acad-holiday';
+    if (category === 'exam') return 'acad-exam';
+    if (category === 'nomeal') return 'acad-nomeal';
+    if (category === 'club') return 'acad-club';
+    return 'acad-event';
+  }
+
+  function getAcadIcon(category) {
+    if (category === 'holiday') return '🔴';
+    if (category === 'exam') return '✏️';
+    if (category === 'nomeal') return '⚠️';
+    if (category === 'club') return '🎯';
+    return '🏫';
+  }
+
+  const loadedMealMonths = new Set();
+  function ensureMealsLoadedForDate(dateStr) {
+    if (!dateStr || !window.location.protocol.startsWith('http')) return;
+    const ym = dateStr.replace(/-/g, '').slice(0, 6);
+    if (loadedMealMonths.has(ym)) return;
+    loadedMealMonths.add(ym);
+    store.fetchMealsForMonth(ym).catch(() => {});
+  }
+
   // ==========================================================================
-  // 3. 탭 1: 수행평가 일정 (캘린더 + 우측 체크리스트)
+  // 3. 탭 1: 수행평가 & 학사일정 (캘린더 + 우측 체크리스트 & 급식)
   // ==========================================================================
   function renderCalendarTab(state) {
     const { ui, assessments } = state;
     const todayStr = getTodayStr();
     const selectedDate = ui.selectedDate || todayStr;
     const baseDate = ui.currentMonthDate || selectedDate;
+
+    ensureMealsLoadedForDate(baseDate);
+    ensureMealsLoadedForDate(selectedDate);
+    ensureMealsLoadedForDate(addDaysStr(selectedDate, 1));
 
     const btnMonth = document.getElementById('btnModeMonth');
     const btnWeek = document.getElementById('btnModeWeek');
@@ -2834,9 +3971,26 @@ button {
         const isToday = dateStr === todayStr;
         const isSelected = dateStr === selectedDate;
 
+        const acadEvents = store.getAcademicEventsOnDate(dateStr);
+        const isHoliday = acadEvents.some((ev) => ev.category === 'holiday');
+
+        const acadPillsHtml = acadEvents
+          .slice(0, 2)
+          .map((ev) => {
+            const cls = getAcadPillClass(ev.category);
+            const icon = getAcadIcon(ev.category);
+            return `
+              <div class="cal-acad-pill ${cls}" title="${escapeHtml(ev.title)}">
+                ${icon} ${escapeHtml(ev.title)}
+              </div>
+            `;
+          })
+          .join('');
+
         const dayTasks = assessments.filter((a) => a.dueDate === dateStr);
+        const maxTaskPills = Math.max(1, 3 - acadEvents.slice(0, 2).length);
         const pillsHtml = dayTasks
-          .slice(0, 3)
+          .slice(0, maxTaskPills)
           .map((t) => {
             const subj = store.getSubjectById(t.subjectId) || { name: '기타', color: '#64748B' };
             return `
@@ -2846,18 +4000,20 @@ button {
             `;
           })
           .join('');
+        const hiddenCount = dayTasks.length - maxTaskPills + Math.max(0, acadEvents.length - 2);
         const moreHtml =
-          dayTasks.length > 3
-            ? `<div style="font-size:0.66rem;color:var(--text-sub);font-weight:700;">+${dayTasks.length - 3}건</div>`
+          hiddenCount > 0
+            ? `<div style="font-size:0.65rem;color:var(--text-sub);font-weight:700;">+${hiddenCount}건</div>`
             : '';
 
         cellsHtml += `
           <div class="cal-cell ${isCurrentMonth ? '' : 'other-month'} ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}" data-date="${dateStr}">
             <div class="cal-date-row">
-              <span>${cellDt.getDate()}</span>
+              <span style="${isHoliday ? 'color:var(--accent-red);font-weight:900;' : ''}">${cellDt.getDate()}</span>
               ${isToday ? '<span class="today-tag">오늘</span>' : ''}
             </div>
             <div class="cal-task-list">
+              ${acadPillsHtml}
               ${pillsHtml}
               ${moreHtml}
             </div>
@@ -2884,7 +4040,16 @@ button {
         const dStr = addDaysStr(mondayStr, i);
         const isToday = dStr === todayStr;
         const isSelected = dStr === selectedDate;
+        const acadEvents = store.getAcademicEventsOnDate(dStr);
         const dayTasks = assessments.filter((a) => a.dueDate === dStr);
+
+        const acadHtml = acadEvents
+          .map((ev) => {
+            const cls = getAcadPillClass(ev.category);
+            const icon = getAcadIcon(ev.category);
+            return `<span class="cal-acad-pill ${cls}" style="display:inline-block;margin-right:4px;margin-top:4px;">${icon} ${escapeHtml(ev.title)}</span>`;
+          })
+          .join('');
 
         const tasksHtml =
           dayTasks.length > 0
@@ -2903,7 +4068,9 @@ button {
                   `;
                 })
                 .join('')
-            : '<div style="font-size:0.76rem;color:var(--text-muted);">예정된 수행평가 없음</div>';
+            : acadEvents.length === 0
+              ? '<div style="font-size:0.76rem;color:var(--text-muted);">예정된 일정 없음</div>'
+              : '';
 
         rowsHtml += `
           <div class="week-day-row ${isSelected ? 'is-selected' : ''}" data-date="${dStr}">
@@ -2913,6 +4080,7 @@ button {
                 ${isToday ? '<span class="today-tag">오늘</span>' : ''}
               </div>
             </div>
+            ${acadHtml ? `<div style="margin-bottom:4px;">${acadHtml}</div>` : ''}
             ${tasksHtml}
           </div>
         `;
@@ -2931,6 +4099,35 @@ button {
     renderTaskSidePanel(state, selectedDate);
   }
 
+  function renderMealSummaryHtml(dateStr, labelPrefix) {
+    const acadEvents = store.getAcademicEventsOnDate(dateStr);
+    const isNoMeal = acadEvents.some((e) => e.category === 'nomeal');
+    const isHoliday = acadEvents.some((e) => e.category === 'holiday');
+    const wIdx = getWeekdayIndex(dateStr);
+
+    if (isNoMeal) {
+      return `<div class="meal-Warning">⚠️ <strong>${labelPrefix}(${dateStr.slice(5)}) 비급식일</strong>: 급식이 제공되지 않습니다. (${escapeHtml(acadEvents.map((e) => e.title).join(', '))})</div>`;
+    }
+    if (isHoliday || wIdx >= 5) {
+      return `<div style="font-size:0.74rem;color:var(--text-muted);">${labelPrefix}(${dateStr.slice(5)}): 주말/공휴일·재량휴업일로 급식이 없습니다.</div>`;
+    }
+
+    const meal = store.getMealForDate(dateStr);
+    if (meal && Array.isArray(meal.items) && meal.items.length > 0) {
+      return `
+        <div>
+          <div style="font-size:0.73rem;font-weight:800;color:#9A3412;margin-bottom:3px;">
+            🍴 ${labelPrefix}(${dateStr.slice(5)}) 중식 ${meal.calInfo ? `<span style="font-weight:600;color:#C2410C;">(${escapeHtml(meal.calInfo)})</span>` : ''}
+          </div>
+          <div class="meal-menu-items">
+            ${meal.items.map((item) => `<span class="meal-chip">${escapeHtml(item)}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+    return `<div style="font-size:0.74rem;color:#9A3412;">🍴 ${labelPrefix}(${dateStr.slice(5)}): 나이스 급식 식단표 준비중 (정상 급식 예정)</div>`;
+  }
+
   function renderTaskSidePanel(state, selectedDate) {
     const panelTitle = document.getElementById('selectedDatePanelTitle');
     const tasksBox = document.getElementById('selectedDateTasksBox');
@@ -2946,6 +4143,41 @@ button {
       optHtml += `<option value="group:${g}" ${state.ui.filterSubjectId === 'group:' + g ? 'selected' : ''}>${g}</option>`;
     });
     selFilter.innerHTML = optHtml;
+
+    const acadEvents = store.getAcademicEventsOnDate(selectedDate);
+    const tomorrowDate = addDaysStr(selectedDate, 1);
+
+    let dayInfoHtml = `<div class="day-info-stack">`;
+    if (acadEvents.length > 0) {
+      acadEvents.forEach((ev) => {
+        const icon = getAcadIcon(ev.category);
+        const delBtn = state.ui.isAdmin
+          ? `<button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:0.68rem;" data-del-acad="${escapeHtml(ev.id)}">삭제</button>`
+          : '';
+        dayInfoHtml += `
+          <div class="acad-day-banner">
+            <div>
+              <div class="acad-title">${icon} [학사일정] ${escapeHtml(ev.title)}</div>
+              ${ev.memo ? `<div style="font-size:0.74rem;color:var(--text-sub);margin-top:2px;">${escapeHtml(ev.memo)}</div>` : ''}
+            </div>
+            ${delBtn}
+          </div>
+        `;
+      });
+    }
+
+    dayInfoHtml += `
+      <div class="meal-card">
+        <div class="meal-card-header">
+          <span>🍱 백현중 급식 & 등교 안내</span>
+          <span style="font-size:0.68rem;color:#9A3412;">나이스(NEIS) 연동</span>
+        </div>
+        ${renderMealSummaryHtml(selectedDate, '선택일')}
+        <div style="border-top:1px dashed #FED7AA;padding-top:5px;margin-top:2px;">
+          ${renderMealSummaryHtml(tomorrowDate, '다음날')}
+        </div>
+      </div>
+    </div>`;
 
     let list = state.assessments.slice();
     if (state.ui.filterSubjectId && state.ui.filterSubjectId !== 'all') {
@@ -2967,7 +4199,7 @@ button {
         return a.dueDate.localeCompare(b.dueDate);
       });
 
-    let html = '';
+    let html = dayInfoHtml;
 
     if (dueOnSelected.length > 0) {
       html += `
@@ -2997,25 +4229,53 @@ button {
 
     tasksBox.innerHTML = html;
     bindTaskCardEvents(tasksBox);
+
+    tasksBox.querySelectorAll('[data-del-acad]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-del-acad');
+        if (window.confirm('이 학사일정을 삭제하시겠습니까?')) {
+          try {
+            await store.adminDeleteAcademicEvent(id);
+            showToast('학사일정이 삭제되었습니다.');
+          } catch (err) {
+            alert(err.message);
+          }
+        }
+      });
+    });
   }
 
   // ==========================================================================
-  // 4. 탭 2: 시간표 렌더링
+  // 4. 탭 2: 시간표 렌더링 (주간 날짜 연동 + 학사일정 자동 오버레이 + 급식)
   // ==========================================================================
   function renderFullTimetable(state) {
     const container = document.getElementById('fullTimetableContainer');
     const descEl = document.getElementById('timetableSubDesc');
+    const weekLabelEl = document.getElementById('timetableWeekLabel');
     if (!container) return;
 
     const isAdmin = !!state.ui.isAdmin;
     if (descEl) {
       descEl.textContent = isAdmin
-        ? '관리자 모드: 교시 칸을 클릭하면 수행평가를 바로 추가하거나 과목명을 수정할 수 있습니다.'
-        : '각 교시 과목에 진행 중인 수행평가가 있으면 함께 표시됩니다.';
+        ? '관리자 모드: 교시 칸을 클릭하면 수행평가를 추가하거나 임시 시간표 변경(🔄 변경됨)을 표시할 수 있습니다.'
+        : '주간 학사일정(재량휴업일·동아리·정기고사)과 진행 중인 수행평가, 중식 안내가 시간표에 함께 표시됩니다.';
     }
 
     const todayStr = getTodayStr();
     const todayWIdx = getWeekdayIndex(todayStr);
+    const weekOffset = Number(state.ui.timetableWeekOffset || 0);
+    const baseMondayStr = addDaysStr(todayStr, -todayWIdx + weekOffset * 7);
+    const baseFridayStr = addDaysStr(baseMondayStr, 4);
+
+    ensureMealsLoadedForDate(baseMondayStr);
+    ensureMealsLoadedForDate(baseFridayStr);
+
+    if (weekLabelEl) {
+      weekLabelEl.textContent = `${baseMondayStr.slice(5).replace('-', '/')} (월) ~ ${baseFridayStr.slice(5).replace('-', '/')} (금)`;
+    }
+
+    const weekDates = [0, 1, 2, 3, 4].map((w) => addDaysStr(baseMondayStr, w));
+
     const periodTimes = state.schoolInfo.periodTimes || [
       '1(09:00)', '2(09:55)', '3(10:50)', '4(11:45)',
       '5(13:20)', '6(14:15)', '7(15:10)'
@@ -3027,9 +4287,36 @@ button {
       let colsHtml = '';
 
       for (let w = 0; w <= 4; w++) {
+        const colDateStr = weekDates[w];
+        const isTodayCol = colDateStr === todayStr;
         const key = `${w}-${p}`;
         const cell = state.timetable[key];
-        const isTodayCol = w === todayWIdx;
+        const dayAcad = store.getAcademicEventsOnDate(colDateStr);
+        const holidayEv = dayAcad.find((e) => e.category === 'holiday');
+        const clubEv = dayAcad.find((e) => e.category === 'club' && p >= 5);
+        const examEv = dayAcad.find((e) => e.category === 'exam' || e.category === 'nomeal');
+
+        if (holidayEv) {
+          colsHtml += `
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-date="${colDateStr}" style="background:#FEF2F2;">
+              <span class="tt-special-event" style="background:#FEE2E2;color:#DC2626;border-color:#FECACA;">
+                🔴 ${escapeHtml(holidayEv.title)}
+              </span>
+            </td>
+          `;
+          continue;
+        }
+
+        if (clubEv) {
+          colsHtml += `
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-date="${colDateStr}" style="background:#F0FDFA;">
+              <span class="tt-special-event" style="background:#CCFBF1;color:#0F766E;border-color:#99F6E4;">
+                🎯 ${escapeHtml(clubEv.title)}
+              </span>
+            </td>
+          `;
+          continue;
+        }
 
         if (cell && cell.subject) {
           const subjObj = store.getSubjectByName(cell.subject) || {
@@ -3056,17 +4343,27 @@ button {
             `;
           }
 
+          const changedBadgeHtml = cell.changed
+            ? `<div><span class="tt-changed-badge">🔄 변경됨</span></div>`
+            : '';
+
+          const examOverlayHtml = examEv
+            ? `<div><span class="tt-special-event">✏️ ${escapeHtml(examEv.title)}</span></div>`
+            : '';
+
           colsHtml += `
-            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-group="${escapeHtml(subjObj.group || '')}">
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-date="${colDateStr}" data-group="${escapeHtml(subjObj.group || '')}">
               <span class="tt-subj-badge" style="background:${subjObj.color}">
                 ${escapeHtml(cell.subject)}
               </span>
+              ${changedBadgeHtml}
+              ${examOverlayHtml}
               ${taskBadgeHtml}
             </td>
           `;
         } else {
           colsHtml += `
-            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-group="">
+            <td class="tt-cell ${isTodayCol ? 'today-col' : ''}" data-w="${w}" data-p="${p}" data-date="${colDateStr}" data-group="">
               <span style="color:var(--text-muted);font-size:0.78rem;">-</span>
             </td>
           `;
@@ -3081,16 +4378,47 @@ button {
       `;
     }
 
+    // 주간 급식/비급식 요약 행 추가
+    const mealColsHtml = weekDates
+      .map((dStr) => {
+        const dayAcad = store.getAcademicEventsOnDate(dStr);
+        const isNoMeal = dayAcad.some((e) => e.category === 'nomeal');
+        const isHoliday = dayAcad.some((e) => e.category === 'holiday');
+        if (isNoMeal) {
+          return `<td style="background:#FEF2F2;font-size:0.72rem;font-weight:800;color:#DC2626;">⚠️ 비급식일</td>`;
+        }
+        if (isHoliday) {
+          return `<td style="background:#FEF2F2;font-size:0.72rem;color:#DC2626;">휴업일</td>`;
+        }
+        const meal = store.getMealForDate(dStr);
+        if (meal && Array.isArray(meal.items) && meal.items.length > 0) {
+          return `<td style="background:#FFFBEB;font-size:0.7rem;color:#9A3412;line-height:1.35;">${meal.items
+            .slice(0, 4)
+            .map((i) => escapeHtml(i))
+            .join('<br>')}</td>`;
+        }
+        return `<td style="background:#FFFBEB;font-size:0.72rem;color:#9A3412;">🍱 정상 급식</td>`;
+      })
+      .join('');
+
+    rowsHtml += `
+      <tr>
+        <td class="period-col-cell" style="background:#FEF3C7;color:#9A3412;">🍱 중식</td>
+        ${mealColsHtml}
+      </tr>
+    `;
+
     container.innerHTML = `
       <table class="timetable-grid">
         <thead>
           <tr>
             <th>교시</th>
             ${[0, 1, 2, 3, 4]
-              .map(
-                (w) =>
-                  `<th class="${w === todayWIdx ? 'today-col' : ''}">${WEEKDAY_LABELS[w]}요일</th>`
-              )
+              .map((w) => {
+                const dStr = weekDates[w];
+                const isTodayCol = dStr === todayStr;
+                return `<th class="${isTodayCol ? 'today-col' : ''}">${WEEKDAY_LABELS[w]}요일 <span style="font-weight:600;font-size:0.74rem;color:var(--text-sub);">(${dStr.slice(5).replace('-', '/')})</span></th>`;
+              })
               .join('')}
           </tr>
         </thead>
@@ -3105,10 +4433,199 @@ button {
         const w = Number(td.getAttribute('data-w'));
         const p = Number(td.getAttribute('data-p'));
         const grp = td.getAttribute('data-group');
+        const dStr = td.getAttribute('data-date');
         if (store.state.ui.isAdmin) {
-          openTimetableCellModal(w, p);
+          openTimetableCellModal(w, p, dStr);
         } else if (grp) {
           store.setUI({ activeTab: 'calendar', filterSubjectId: 'group:' + grp });
+        }
+      });
+    });
+  }
+
+  // ==========================================================================
+  // 4-B. 탭 4: 커뮤니티 Beta 렌더링 (학급 소통 & 제작자 피드백)
+  // ==========================================================================
+  function renderCommunityTab(state) {
+    const listContainer = document.getElementById('communityPostList');
+    if (!listContainer) return;
+
+    const currentCat = state.ui.communityCategory || 'all';
+    document.querySelectorAll('[data-comm-cat]').forEach((btn) => {
+      btn.classList.toggle('active', btn.getAttribute('data-comm-cat') === currentCat);
+    });
+
+    const isAdmin = !!state.ui.isAdmin;
+    const currentNick = state.currentUser ? state.currentUser.nickname : '';
+
+    let posts = (state.communityPosts || []).slice();
+    if (currentCat !== 'all') {
+      posts = posts.filter((p) => p.category === currentCat);
+    }
+
+    if (posts.length === 0) {
+      listContainer.innerHTML = `<div class="empty-state">아직 작성된 게시글이 없습니다. 첫 글을 남겨보세요!</div>`;
+      return;
+    }
+
+    const catMeta = {
+      notice: { label: '📢 공지', cls: 'post-cat-notice' },
+      qna: { label: '🙋 질문/수행공유', cls: 'post-cat-qna' },
+      feedback: { label: '💌 제작자 피드백', cls: 'post-cat-feedback' },
+      free: { label: '💬 자유소통', cls: 'post-cat-free' }
+    };
+
+    const statusMeta = {
+      reviewing: { label: '🔍 검토중', cls: 'status-reviewing' },
+      answered: { label: '💬 답변완료', cls: 'status-answered' },
+      applied: { label: '✅ 반영완료', cls: 'status-applied' }
+    };
+
+    listContainer.innerHTML = posts
+      .map((post) => {
+        const cm = catMeta[post.category] || catMeta.free;
+        const sm = post.status && statusMeta[post.status] ? statusMeta[post.status] : null;
+        const canDelete = isAdmin || (currentNick && post.nickname === currentNick);
+
+        const adminControlsHtml = isAdmin
+          ? `
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" data-pin-post="${escapeHtml(post.id)}" data-pinned="${post.pinned ? '1' : '0'}">
+                ${post.pinned ? '📌 고정해제' : '📌 공지고정'}
+              </button>
+              <select class="select-input" style="font-size:0.72rem;padding:2px 6px;" data-status-post="${escapeHtml(post.id)}">
+                <option value="" ${!post.status ? 'selected' : ''}>상태 없음</option>
+                <option value="reviewing" ${post.status === 'reviewing' ? 'selected' : ''}>검토중</option>
+                <option value="answered" ${post.status === 'answered' ? 'selected' : ''}>답변완료</option>
+                <option value="applied" ${post.status === 'applied' ? 'selected' : ''}>반영완료</option>
+              </select>
+            </div>
+          `
+          : '';
+
+        const comments = Array.isArray(post.comments) ? post.comments : [];
+        const commentsHtml = comments
+          .map(
+            (c) => `
+              <div class="comment-item">
+                <div>
+                  <span class="comment-author">${escapeHtml(c.nickname)}</span>
+                  <span class="comment-text">${escapeHtml(c.content)}</span>
+                </div>
+                <span class="comment-time">${escapeHtml((c.createdAt || '').slice(5, 16))}</span>
+              </div>
+            `
+          )
+          .join('');
+
+        return `
+          <article class="post-card ${post.pinned ? 'is-pinned' : ''}">
+            <div class="post-header">
+              <div class="post-meta-left">
+                ${post.pinned ? `<span class="post-cat-badge post-cat-notice">📌 고정</span>` : ''}
+                <span class="post-cat-badge ${cm.cls}">${cm.label}</span>
+                ${sm ? `<span class="feedback-status-badge ${sm.cls}">${sm.label}</span>` : ''}
+                <span class="post-author">${escapeHtml(post.nickname)}</span>
+                <span class="post-date">${escapeHtml((post.createdAt || '').slice(0, 16))}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                ${adminControlsHtml}
+                ${
+                  canDelete
+                    ? `<button type="button" class="btn btn-danger btn-sm" data-del-post="${escapeHtml(post.id)}">삭제</button>`
+                    : ''
+                }
+              </div>
+            </div>
+            <div class="post-title">${escapeHtml(post.title)}</div>
+            <div class="post-content">${escapeHtml(post.content)}</div>
+            <div class="post-footer">
+              <button type="button" class="btn-like" data-like-post="${escapeHtml(post.id)}">
+                👍 공감 <strong>${Number(post.likes || 0)}</strong>
+              </button>
+              <span style="font-size:0.75rem;color:var(--text-sub);font-weight:700;">
+                💬 댓글 ${comments.length}개
+              </span>
+            </div>
+            <div class="comments-section">
+              ${commentsHtml}
+              <form class="comment-form" data-comment-form="${escapeHtml(post.id)}">
+                <input type="text" class="form-input" style="padding:6px 10px;font-size:0.8rem;" placeholder="${
+                  currentNick
+                    ? `${escapeHtml(currentNick)} 이름으로 댓글 남기기...`
+                    : '댓글을 입력하세요 (익명 또는 로그인 닉네임)...'
+                }" maxlength="300" required />
+                <button type="submit" class="btn btn-primary btn-sm">등록</button>
+              </form>
+            </div>
+          </article>
+        `;
+      })
+      .join('');
+
+    listContainer.querySelectorAll('[data-like-post]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const postId = btn.getAttribute('data-like-post');
+        try {
+          await store.likeCommunityPost(postId);
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    });
+
+    listContainer.querySelectorAll('[data-del-post]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const postId = btn.getAttribute('data-del-post');
+        if (window.confirm('이 게시글을 삭제하시겠습니까?')) {
+          try {
+            await store.deleteCommunityPost(postId);
+            showToast('게시글이 삭제되었습니다.');
+          } catch (err) {
+            alert(err.message);
+          }
+        }
+      });
+    });
+
+    listContainer.querySelectorAll('[data-pin-post]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const postId = btn.getAttribute('data-pin-post');
+        const currentlyPinned = btn.getAttribute('data-pinned') === '1';
+        try {
+          await store.adminUpdateCommunityPostStatus(postId, { pinned: !currentlyPinned });
+          showToast(!currentlyPinned ? '📌 상단에 고정되었습니다.' : '고정이 해제되었습니다.');
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    });
+
+    listContainer.querySelectorAll('[data-status-post]').forEach((sel) => {
+      sel.addEventListener('change', async () => {
+        const postId = sel.getAttribute('data-status-post');
+        try {
+          await store.adminUpdateCommunityPostStatus(postId, { status: sel.value });
+          showToast('피드백 상태가 변경되었습니다.');
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    });
+
+    listContainer.querySelectorAll('[data-comment-form]').forEach((form) => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const postId = form.getAttribute('data-comment-form');
+        const inp = form.querySelector('input');
+        const content = inp ? inp.value.trim() : '';
+        if (!content) return;
+        try {
+          await store.addCommunityComment(postId, { content });
+          if (inp) inp.value = '';
+          showToast('💬 댓글이 등록되었습니다.');
+        } catch (err) {
+          alert(err.message);
         }
       });
     });
@@ -3435,13 +4952,13 @@ button {
     modal.classList.add('open');
   }
 
-  function openTimetableCellModal(weekdayIdx, period) {
+  function openTimetableCellModal(weekdayIdx, period, dateOverride) {
     if (!store.state.ui.isAdmin) return;
     const modal = document.getElementById('modalTimetableCell');
     if (!modal) return;
     const key = `${weekdayIdx}-${period}`;
-    const cell = store.state.timetable[key] || { subject: '' };
-    const nextDateStr = getNextDateForWeekday(getTodayStr(), weekdayIdx);
+    const cell = store.state.timetable[key] || { subject: '', changed: false };
+    const nextDateStr = dateOverride || getNextDateForWeekday(getTodayStr(), weekdayIdx);
 
     activeCellModalContext = {
       weekdayIdx,
@@ -3459,6 +4976,83 @@ button {
       : `현재 비어 있는 교시입니다.`;
 
     document.getElementById('inputCellSubject').value = cell.subject || '';
+    const chkChanged = document.getElementById('chkCellChanged');
+    if (chkChanged) chkChanged.checked = !!cell.changed;
+    modal.classList.add('open');
+  }
+
+  function openMyTaskPlanModal(taskId) {
+    const task = store.state.rawAssessments.find((a) => a.id === taskId);
+    if (!task) return;
+    const modal = document.getElementById('modalMyTaskPlan');
+    if (!modal) return;
+
+    const myPlan = store.getTaskPlan(taskId);
+    const subj = store.getSubjectById(task.subjectId) || { name: '과목' };
+
+    document.getElementById('inputMyPlanTaskId').value = task.id;
+    document.getElementById('myPlanTaskTitleLabel').textContent = `[${subj.name}] ${task.title} (마감: ${task.dueDate})`;
+    document.getElementById('inputMyPlanTargetDate').value =
+      myPlan.targetDate || addDaysStr(task.dueDate, -1);
+    document.getElementById('inputMyPlanSteps').value = Array.isArray(myPlan.steps)
+      ? myPlan.steps.join('\n')
+      : '';
+    document.getElementById('inputMyPlanMemo').value = myPlan.memo || '';
+
+    modal.classList.add('open');
+  }
+
+  function openUserAuthModal(mode = 'login') {
+    const modal = document.getElementById('modalUserAuth');
+    if (!modal) return;
+    modal.setAttribute('data-auth-mode', mode);
+    const titleEl = document.getElementById('modalUserAuthTitle');
+    const submitBtn = document.getElementById('btnSubmitUserAuth');
+    const switchBtn = document.getElementById('btnSwitchAuthMode');
+    if (titleEl) {
+      titleEl.textContent =
+        mode === 'register'
+          ? '🔐 학생 간편 회원가입 (맞춤 계획 저장)'
+          : '🔐 학생 로그인 (내 계획 불러오기)';
+    }
+    if (submitBtn) {
+      submitBtn.textContent = mode === 'register' ? '가입하고 시작하기' : '로그인';
+    }
+    if (switchBtn) {
+      switchBtn.textContent =
+        mode === 'register'
+          ? '이미 아이디가 있나요? 로그인하기'
+          : '처음 오셨나요? 10초 간편 회원가입';
+    }
+    document.getElementById('inputUserNickname').value = '';
+    document.getElementById('inputUserPassword').value = '';
+    modal.classList.add('open');
+  }
+
+  function openAcademicEventModal(prefillDate) {
+    if (!store.state.ui.isAdmin) return;
+    const modal = document.getElementById('modalAcademicEvent');
+    if (!modal) return;
+    document.getElementById('inputAcadTitle').value = '';
+    document.getElementById('inputAcadCategory').value = 'event';
+    document.getElementById('inputAcadStartDate').value =
+      prefillDate || store.state.ui.selectedDate || getTodayStr();
+    document.getElementById('inputAcadEndDate').value =
+      prefillDate || store.state.ui.selectedDate || getTodayStr();
+    document.getElementById('inputAcadMemo').value = '';
+    modal.classList.add('open');
+  }
+
+  function openCommunityWriteModal() {
+    const modal = document.getElementById('modalCommunityWrite');
+    if (!modal) return;
+    document.getElementById('inputCommCategory').value = 'qna';
+    document.getElementById('inputCommTitle').value = '';
+    document.getElementById('inputCommContent').value = '';
+    const nickInput = document.getElementById('inputCommNickname');
+    if (nickInput) {
+      nickInput.value = store.state.currentUser ? store.state.currentUser.nickname : '';
+    }
     modal.classList.add('open');
   }
 
@@ -3479,6 +5073,10 @@ button {
       activeTab === 'timetable' ? 'block' : 'none';
     document.getElementById('viewGrades').style.display =
       activeTab === 'grades' ? 'block' : 'none';
+    const viewComm = document.getElementById('viewCommunity');
+    if (viewComm) {
+      viewComm.style.display = activeTab === 'community' ? 'block' : 'none';
+    }
 
     if (activeTab === 'calendar') {
       renderCalendarTab(state);
@@ -3486,6 +5084,8 @@ button {
       renderFullTimetable(state);
     } else if (activeTab === 'grades') {
       renderGradeReportTab(state);
+    } else if (activeTab === 'community') {
+      renderCommunityTab(state);
     }
   }
 
@@ -3527,6 +5127,199 @@ button {
     document.getElementById('selQuickSubjectFilter').addEventListener('change', (e) => {
       store.setUI({ filterSubjectId: e.target.value });
     });
+
+    // 학생 로그인/회원가입 모달
+    const btnUserAuthToggle = document.getElementById('btnUserAuthToggle');
+    if (btnUserAuthToggle) {
+      btnUserAuthToggle.addEventListener('click', () => {
+        if (store.state.currentUser) {
+          if (
+            window.confirm(
+              `'${store.state.currentUser.nickname}' 계정에서 로그아웃하시겠습니까?\n(저장된 맞춤 계획과 체크 내역은 계정에 안전하게 보관됩니다.)`
+            )
+          ) {
+            store.logoutUser();
+            showToast('로그아웃되었습니다.');
+          }
+        } else {
+          openUserAuthModal('login');
+        }
+      });
+    }
+
+    const btnCloseUserAuth = document.getElementById('btnCloseUserAuth');
+    if (btnCloseUserAuth) {
+      btnCloseUserAuth.addEventListener('click', () => {
+        document.getElementById('modalUserAuth').classList.remove('open');
+      });
+    }
+
+    const btnSwitchAuthMode = document.getElementById('btnSwitchAuthMode');
+    if (btnSwitchAuthMode) {
+      btnSwitchAuthMode.addEventListener('click', () => {
+        const modal = document.getElementById('modalUserAuth');
+        const curMode = modal.getAttribute('data-auth-mode') || 'login';
+        openUserAuthModal(curMode === 'login' ? 'register' : 'login');
+      });
+    }
+
+    const formUserAuth = document.getElementById('formUserAuth');
+    if (formUserAuth) {
+      formUserAuth.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const modal = document.getElementById('modalUserAuth');
+        const mode = modal.getAttribute('data-auth-mode') || 'login';
+        const nick = document.getElementById('inputUserNickname').value.trim();
+        const pw = document.getElementById('inputUserPassword').value.trim();
+        try {
+          if (mode === 'register') {
+            await store.registerUser(nick, pw);
+            showToast(`🎉 환영합니다, ${nick}님! 이제 맞춤 수행평가 계획이 자동 동기화됩니다.`);
+          } else {
+            await store.loginUser(nick, pw);
+            showToast(`👋 반갑습니다, ${nick}님! 저장된 맞춤 계획을 불러왔습니다.`);
+          }
+          modal.classList.remove('open');
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    }
+
+    // 내 맞춤 완료 계획 모달
+    const btnCloseMyTaskPlan = document.getElementById('btnCloseMyTaskPlan');
+    if (btnCloseMyTaskPlan) {
+      btnCloseMyTaskPlan.addEventListener('click', () => {
+        document.getElementById('modalMyTaskPlan').classList.remove('open');
+      });
+    }
+
+    const btnAutoRecommendInModal = document.getElementById('btnAutoRecommendInModal');
+    if (btnAutoRecommendInModal) {
+      btnAutoRecommendInModal.addEventListener('click', () => {
+        const taskId = document.getElementById('inputMyPlanTaskId').value;
+        const plan = store.generateRecommendedPlan(taskId);
+        if (plan) {
+          document.getElementById('inputMyPlanTargetDate').value = plan.targetDate;
+          document.getElementById('inputMyPlanSteps').value = (plan.steps || []).join('\n');
+          document.getElementById('inputMyPlanMemo').value = plan.memo || '';
+          showToast('✨ 마감일 기준 3단계 추천 계획이 채워졌습니다!');
+        }
+      });
+    }
+
+    const formMyTaskPlan = document.getElementById('formMyTaskPlan');
+    if (formMyTaskPlan) {
+      formMyTaskPlan.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const taskId = document.getElementById('inputMyPlanTaskId').value;
+        const targetDate = document.getElementById('inputMyPlanTargetDate').value;
+        const stepsRaw = document.getElementById('inputMyPlanSteps').value;
+        const memo = document.getElementById('inputMyPlanMemo').value.trim();
+        const steps = stepsRaw
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        store.saveTaskPlan(taskId, { targetDate, steps, memo });
+        document.getElementById('modalMyTaskPlan').classList.remove('open');
+        showToast(
+          store.state.currentUser
+            ? '🎯 내 맞춤 수행평가 계획이 계정에 저장되었습니다!'
+            : '🎯 내 맞춤 계획이 저장되었습니다! (로그인하면 다른 기기에서도 유지됩니다)'
+        );
+      });
+    }
+
+    // 학사일정 추가 모달 (관리자)
+    const btnAdminAddAcadEvent = document.getElementById('btnAdminAddAcadEvent');
+    if (btnAdminAddAcadEvent) {
+      btnAdminAddAcadEvent.addEventListener('click', () => {
+        openAcademicEventModal(store.state.ui.selectedDate);
+      });
+    }
+
+    const btnCloseAcadModal = document.getElementById('btnCloseAcadModal');
+    if (btnCloseAcadModal) {
+      btnCloseAcadModal.addEventListener('click', () => {
+        document.getElementById('modalAcademicEvent').classList.remove('open');
+      });
+    }
+
+    const formAcademicEvent = document.getElementById('formAcademicEvent');
+    if (formAcademicEvent) {
+      formAcademicEvent.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('inputAcadTitle').value.trim();
+        const category = document.getElementById('inputAcadCategory').value;
+        const startDate = document.getElementById('inputAcadStartDate').value;
+        const endDate = document.getElementById('inputAcadEndDate').value || startDate;
+        const memo = document.getElementById('inputAcadMemo').value.trim();
+        try {
+          await store.adminSaveAcademicEvent({ title, category, startDate, endDate, memo });
+          document.getElementById('modalAcademicEvent').classList.remove('open');
+          showToast('📅 학사일정이 등록되었습니다.');
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    }
+
+    // 시간표 주간 이동 버튼
+    const btnTtPrevWeek = document.getElementById('btnTtPrevWeek');
+    const btnTtThisWeek = document.getElementById('btnTtThisWeek');
+    const btnTtNextWeek = document.getElementById('btnTtNextWeek');
+    if (btnTtPrevWeek) {
+      btnTtPrevWeek.addEventListener('click', () => {
+        store.setUI({ timetableWeekOffset: (store.state.ui.timetableWeekOffset || 0) - 1 });
+      });
+    }
+    if (btnTtThisWeek) {
+      btnTtThisWeek.addEventListener('click', () => {
+        store.setUI({ timetableWeekOffset: 0 });
+      });
+    }
+    if (btnTtNextWeek) {
+      btnTtNextWeek.addEventListener('click', () => {
+        store.setUI({ timetableWeekOffset: (store.state.ui.timetableWeekOffset || 0) + 1 });
+      });
+    }
+
+    // 커뮤니티 Beta 이벤트
+    document.querySelectorAll('[data-comm-cat]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        store.setUI({ communityCategory: btn.getAttribute('data-comm-cat') });
+      });
+    });
+
+    const btnOpenCommWrite = document.getElementById('btnOpenCommWrite');
+    if (btnOpenCommWrite) {
+      btnOpenCommWrite.addEventListener('click', openCommunityWriteModal);
+    }
+
+    const btnCloseCommWrite = document.getElementById('btnCloseCommWrite');
+    if (btnCloseCommWrite) {
+      btnCloseCommWrite.addEventListener('click', () => {
+        document.getElementById('modalCommunityWrite').classList.remove('open');
+      });
+    }
+
+    const formCommunityWrite = document.getElementById('formCommunityWrite');
+    if (formCommunityWrite) {
+      formCommunityWrite.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const category = document.getElementById('inputCommCategory').value;
+        const title = document.getElementById('inputCommTitle').value.trim();
+        const content = document.getElementById('inputCommContent').value.trim();
+        const nickname = document.getElementById('inputCommNickname').value.trim();
+        try {
+          await store.createCommunityPost({ category, title, content, nickname });
+          document.getElementById('modalCommunityWrite').classList.remove('open');
+          showToast('💬 게시글이 등록되었습니다!');
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    }
 
     // 관리자 로그인/로그아웃
     document.getElementById('btnAdminToggle').addEventListener('click', () => {
@@ -3752,11 +5545,14 @@ button {
     document.getElementById('btnSaveCellEdit').addEventListener('click', async () => {
       if (!activeCellModalContext) return;
       const newSub = document.getElementById('inputCellSubject').value.trim();
+      const chkChanged = document.getElementById('chkCellChanged');
+      const changed = chkChanged ? chkChanged.checked : false;
       try {
         await store.adminUpdateTimetableCell(
           activeCellModalContext.weekdayIdx,
           activeCellModalContext.period,
-          newSub
+          newSub,
+          changed
         );
         document.getElementById('modalTimetableCell').classList.remove('open');
         showToast('시간표가 수정되었습니다.');
@@ -3828,6 +5624,6 @@ button {
   }
 })();
 
-</script>
+  </script>
 </body>
 </html>
